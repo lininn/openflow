@@ -38,13 +38,13 @@ export function checkDependencies(): DepStatus {
 }
 
 export function tryAutoInstall(pkg: string): boolean {
-  logger.step(`正在安装 ${pkg} ...`);
+  logger.step(`Installing ${pkg} ...`);
   try {
     execSync(`npm install -g ${pkg}@latest`, { stdio: 'inherit' });
-    logger.success(`${pkg} 安装成功`);
+    logger.success(`${pkg} installed`);
     return true;
   } catch {
-    logger.error(`${pkg} 安装失败，请手动执行: npm install -g ${pkg}@latest`);
+    logger.error(`Failed to install ${pkg} — please run manually: npm install -g ${pkg}@latest`);
     return false;
   }
 }

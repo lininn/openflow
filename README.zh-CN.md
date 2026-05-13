@@ -107,6 +107,17 @@ Works without them: yes, with manual-file fallback
                           └──────────────────────┘
 ```
 
+## 致谢
+
+openflow 编排了以下两个开源项目：
+
+| 项目 | 仓库 | 许可证 | 使用方式 |
+|------|------|--------|----------|
+| [OpenSpec](https://github.com/Fission-AI/OpenSpec) | `@fission-ai/openspec` | MIT | 生成结构化规格文件（proposal.md、design.md、specs/、tasks.md）。openflow 调用其 CLI 并读取其输出格式。 |
+| [Superpowers](https://github.com/obra/superpowers) | `superpowers` 插件 | MIT | 提供 `writing-plans` skill 用于生成详细实现计划。openflow 在 build 阶段委托其工作流执行。 |
+
+openflow 是**独立编排器** — 不捆绑、不分叉、不嵌入任何项目的代码。依赖在 init/运行时检测，任一缺失时降级为手动模式。
+
 ## License
 
 MIT

@@ -107,6 +107,17 @@ User Requirements
                           └──────────────────────┘
 ```
 
+## Acknowledgments
+
+openflow orchestrates two open-source projects:
+
+| Project | Repository | License | Usage |
+|---------|-----------|---------|-------|
+| [OpenSpec](https://github.com/Fission-AI/OpenSpec) | `@fission-ai/openspec` | MIT | Generates structured spec files (proposal.md, design.md, specs/, tasks.md). openflow calls its CLI and reads its output format. |
+| [Superpowers](https://github.com/obra/superpowers) | `superpowers` plugin | MIT | Provides `writing-plans` skill for detailed implementation planning. openflow delegates build-phase execution to its workflow. |
+
+openflow is a **standalone orchestrator** — it does not bundle, fork, or embed code from either project. Dependencies are detected at init/runtime, with manual fallback when either is not installed.
+
 ## License
 
 MIT

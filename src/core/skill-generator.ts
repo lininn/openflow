@@ -24,13 +24,13 @@ export function generateSkills(options: GenerateOptions): void {
   for (const tool of tools) {
     const toolPaths = TOOL_PATHS[tool];
     if (!toolPaths) {
-      logger.warn(`未知工具: ${tool}，跳过`);
+      logger.warn(`Unknown tool: ${tool}, skipping`);
       continue;
     }
 
     const skillsDir = path.join(cwd, toolPaths.skillsDir, SKILL_NAME);
 
-    logger.step(`生成 ${tool} skills 到 ${path.relative(cwd, skillsDir)}/`);
+    logger.step(`Generating ${tool} skills to ${path.relative(cwd, skillsDir)}/`);
 
     if (!dirExists(skillsDir)) {
       fs.mkdirSync(skillsDir, { recursive: true });
@@ -45,7 +45,7 @@ export function generateSkills(options: GenerateOptions): void {
       generateSkillFile(skillsDir, `${phase}.md`, depStatus);
     }
 
-    logger.success(`${tool} skills 生成完成`);
+    logger.success(`${tool} skills generated`);
   }
 }
 
@@ -84,13 +84,13 @@ function injectRuntimeDepCheck(content: string, depStatus: DepStatus): string {
 
 | 依赖 | 检测方式 | 不可用时 |
 |------|----------|----------|
-| Superpowers writing-plans | \\\`~/.claude/skills/writing-plans/SKILL.md\\\` 是否存在 | 降级为手动拆解 plan-ready.md 中的步骤，逐条执行 |
-| OpenSpec CLI | \\\`openspec\\\` 命令是否可执行 | 不影响 build 阶段，但 close 阶段归档需手动 mv |
+| Superpowers writing-plans | \`~/.claude/skills/writing-plans/SKILL.md\` 是否存在 | 降级为手动拆解 plan-ready.md 中的步骤，逐条执行 |
+| OpenSpec CLI | \`openspec\` 命令是否可执行 | 不影响 build 阶段，但 close 阶段归档需手动 mv |
 
 如果 Superpowers 不可用，提示用户：
 > "Superpowers 未安装，build 将使用手动执行模式。安装后体验更佳：${DEPS.superpowers.installHint}"
 
-如果 Superpowers 可用，调用其 \\\`writing-plans\\\` skill 生成详细实现计划。
+如果 Superpowers 可用，调用其 \`writing-plans\` skill 生成详细实现计划。
 `;
 
   // Insert after the first heading
@@ -106,7 +106,7 @@ function injectRuntimeDepCheck(content: string, depStatus: DepStatus): string {
 
 function injectSpecRuntimeCheck(content: string, depStatus: DepStatus): string {
   const checkNote = `
-> **OpenSpec 检测**：如果 \\\`openspec\\\` CLI 可用，调用 \\\`openspec propose\\\` 生成完整规格；否则手动根据 proposal.md 生成 design.md + specs/ + tasks.md。
+> **OpenSpec 检测**：如果 \`openspec\` CLI 可用，调用 \`openspec propose\` 生成完整规格；否则手动根据 proposal.md 生成 design.md + specs/ + tasks.md。
 `;
 
   const lines = content.split('\n');
@@ -132,21 +132,21 @@ description: "OpenSpec + Superpowers 工作流协调器。使用 /openflow propo
 
 | 命令 | 阶段 | 说明 |
 |------|------|------|
-| \\\`/openflow proposal\\\` | proposal | 轻量提问，快速收敛需求 |
-| \\\`/openflow brainstorming\\\` | brainstorming | 深度设计，多轮探索 |
-| \\\`/openflow spec\\\` | spec | 调用 OpenSpec 生成规格 + 翻译 |
-| \\\`/openflow build\\\` | build | 调用 Superpowers 执行实现 |
-| \\\`/openflow close\\\` | close | 验证一致性 + 归档 |
+| \`/openflow proposal\` | proposal | 轻量提问，快速收敛需求 |
+| \`/openflow brainstorming\` | brainstorming | 深度设计，多轮探索 |
+| \`/openflow spec\` | spec | 调用 OpenSpec 生成规格 + 翻译 |
+| \`/openflow build\` | build | 调用 Superpowers 执行实现 |
+| \`/openflow close\` | close | 验证一致性 + 归档 |
 
 ## 状态检测
 
-当用户调用 \\\`/openflow\\\` 不带子命令，或调用某个子命令需要确认前置条件时，执行以下状态检测：
+当用户调用 \`/openflow\` 不带子命令，或调用某个子命令需要确认前置条件时，执行以下状态检测：
 
 | 检查项 | 怎么查 | 结果 |
 |--------|--------|------|
-| 有活跃变更？ | \\\`openspec/changes/\\\` 下是否有非 archive 子目录 | 有→继续 |
-| 有 plan-ready.md？ | 变更目录下是否有 \\\`plan-ready.md\\\` | 有→看实现状态 |
-| 实现已开始？ | \\\`docs/superpowers/plans/\\\` 下是否有计划文件 | 有→看是否完成 |
+| 有活跃变更？ | \`openspec/changes/\` 下是否有非 archive 子目录 | 有→继续 |
+| 有 plan-ready.md？ | 变更目录下是否有 \`plan-ready.md\` | 有→看实现状态 |
+| 实现已开始？ | \`docs/superpowers/plans/\` 下是否有计划文件 | 有→看是否完成 |
 | 实现已完成？ | 计划文件全部 checkbox 已勾选 | 是→close 阶段 |
 
 判定结果：
@@ -160,9 +160,9 @@ description: "OpenSpec + Superpowers 工作流协调器。使用 /openflow propo
 
 根据子命令或状态检测结果，读取对应阶段文件并执行：
 
-1. 如果用户指定了子命令（如 \\\`/openflow build\\\`），优先按指定阶段执行，但检查前置条件
-2. 如果用户只输入 \\\`/openflow\\\`，执行状态检测，自动路由到对应阶段
-3. 读取阶段文件：\\\`\\\${CLAUDE_SKILL_DIR}/<阶段>.md\\\`
+1. 如果用户指定了子命令（如 \`/openflow build\`），优先按指定阶段执行，但检查前置条件
+2. 如果用户只输入 \`/openflow\`，执行状态检测，自动路由到对应阶段
+3. 读取阶段文件：\`\${CLAUDE_SKILL_DIR}/<阶段>.md\`
 4. 按阶段文件中的流程执行
 
 ### 前置条件检查

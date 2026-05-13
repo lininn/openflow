@@ -4,18 +4,18 @@ import { generateSkills } from '../core/skill-generator.js';
 import { logger } from '../utils/logger.js';
 
 export const updateCommand = new Command('update')
-  .description('重新生成项目内的 openflow skills')
+  .description('Regenerate openflow skills in the current project')
   .action(() => {
     const cwd = process.cwd();
     const state = readState(cwd);
 
     if (!state) {
-      logger.error('项目未初始化，请先运行 openflow init');
+      logger.error('Project not initialized — run openflow init first');
       return;
     }
 
     logger.blank();
-    logger.info('openflow update — 重新生成 skills');
+    logger.info('openflow update — regenerating skills');
     logger.blank();
 
     const depStatus = checkDependencies();
@@ -33,6 +33,6 @@ export const updateCommand = new Command('update')
     });
 
     logger.blank();
-    logger.success('skills 已更新');
+    logger.success('Skills updated');
     logger.blank();
   });

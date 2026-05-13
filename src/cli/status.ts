@@ -6,7 +6,7 @@ import { logger } from '../utils/logger.js';
 import { dirExists } from '../utils/shell.js';
 
 export const statusCommand = new Command('status')
-  .description('显示依赖状态和活跃变更')
+  .description('Show dependency status and active changes')
   .action(() => {
     const cwd = process.cwd();
 
@@ -15,50 +15,49 @@ export const statusCommand = new Command('status')
     logger.blank();
 
     // Dependencies
-    logger.step('依赖:');
+    logger.step('Dependencies:');
     const depStatus = checkDependencies();
 
     if (depStatus.openspec.installed) {
       logger.success(`OpenSpec CLI${depStatus.openspec.version ? ` v${depStatus.openspec.version}` : ''}`);
     } else {
-      logger.warn('OpenSpec CLI — 未安装');
+      logger.warn('OpenSpec CLI — not installed');
     }
 
     if (depStatus.superpowers.installed) {
       logger.success('Superpowers');
     } else {
-      logger.warn('Superpowers — 未安装 (build 阶段将使用手动模式)');
+      logger.warn('Superpowers — not installed (build phase will use manual mode)');
     }
 
     logger.blank();
 
     // Project state
-    logger.step('项目:');
+    logger.step('Project:');
     const state = readState(cwd);
 
     if (state) {
-      logger.success(`已初始化 (${state.tools.join(', ')})`);
-      logger.info(`  初始化时间: ${state.createdAt}`);
+      logger.success(`Initialized (${state.tools.join(', ')})`);
+      logger.info(`  Created at: ${state.createdAt}`);
     } else {
-      logger.warn('未初始化，请运行 openflow init');
+      logger.warn('Not initialized — run openflow init');
       return;
     }
 
     if (checkOpenSpecInitialized(cwd)) {
-      logger.success('OpenSpec 项目已初始化');
+      logger.success('OpenSpec project initialized');
     } else {
-      logger.warn('OpenSpec 项目未初始化');
+      logger.warn('OpenSpec project not initialized');
     }
 
     logger.blank();
 
     // Active changes
-    logger.step('活跃变更:');
+    logger.step('Active changes:');
     const changesDir = path.join(cwd, 'openspec', 'changes');
-    const archiveDir = path.join(changesDir, 'archive');
 
     if (!dirExists(changesDir)) {
-      logger.info('  无');
+      logger.info('  None');
       return;
     }
 
@@ -66,7 +65,7 @@ export const statusCommand = new Command('status')
       .filter((d) => d.isDirectory() && d.name !== 'archive');
 
     if (entries.length === 0) {
-      logger.info('  无');
+      logger.info('  None');
       return;
     }
 

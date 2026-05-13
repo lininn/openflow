@@ -1,12 +1,12 @@
 console.log(`
-openflow — OpenSpec + Superpowers 工作流协调器
+openflow — OpenSpec + Superpowers workflow orchestrator
 
-初始化项目:
+Initialize a project:
   openflow init --tools claude
 
-查看状态:
+Check status:
   openflow status
 
-更新 skills:
+Update skills:
   openflow update
 `);

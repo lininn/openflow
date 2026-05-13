@@ -10,27 +10,27 @@ import { exec, dirExists } from '../utils/shell.js';
 const SUPPORTED_TOOLS = Object.keys(TOOL_PATHS);
 
 export const initCommand = new Command('init')
-  .description('在当前项目初始化 openflow skills')
-  .option('-t, --tools <tools>', '目标工具，逗号分隔', 'claude')
+  .description('Initialize openflow skills in the current project')
+  .option('-t, --tools <tools>', 'Target tools, comma-separated', 'claude')
   .action(async (options) => {
     const cwd = process.cwd();
     const tools = options.tools.split(',').map((t: string) => t.trim());
 
     logger.blank();
-    logger.info('openflow init — 初始化工作流协调器');
+    logger.info('openflow init — workflow orchestrator setup');
     logger.blank();
 
     // Step 1: Check OpenSpec
-    logger.step('检测 OpenSpec ...');
+    logger.step('Checking OpenSpec ...');
     let depStatus = checkDependencies();
 
     if (!depStatus.openspec.installed) {
-      logger.warn('OpenSpec CLI 未安装');
+      logger.warn('OpenSpec CLI not installed');
       const { installOpenSpec } = await inquirer.prompt([
         {
           type: 'confirm',
           name: 'installOpenSpec',
-          message: `是否自动安装？(npm install -g ${DEPS.openspec.npmPkg}@latest)`,
+          message: `Auto-install? (npm install -g ${DEPS.openspec.npmPkg}@latest)`,
           default: true,
         },
       ]);
@@ -40,32 +40,32 @@ export const initCommand = new Command('init')
         depStatus = checkDependencies(); // recheck
         if (ok) depStatus.openspec.autoInstalled = true;
       } else {
-        logger.warn('跳过 OpenSpec 安装，spec 阶段将使用手动降级模式');
+        logger.warn('Skipped OpenSpec install — spec phase will use manual fallback');
       }
     } else {
-      logger.success(`OpenSpec CLI 已安装${depStatus.openspec.version ? ` (v${depStatus.openspec.version})` : ''}`);
+      logger.success(`OpenSpec CLI installed${depStatus.openspec.version ? ` (v${depStatus.openspec.version})` : ''}`);
     }
 
     // Step 2: Check Superpowers
-    logger.step('检测 Superpowers ...');
+    logger.step('Checking Superpowers ...');
 
     if (!depStatus.superpowers.installed) {
-      logger.warn('Superpowers 未安装');
+      logger.warn('Superpowers not installed');
       logger.info(DEPS.superpowers.installHint);
-      logger.info('安装后可重新运行 openflow init，或 build 阶段将使用手动降级模式');
+      logger.info('Re-run openflow init after installing, or build phase will use manual fallback');
     } else {
-      logger.success('Superpowers 已安装');
+      logger.success('Superpowers installed');
     }
 
     // Step 3: Check if OpenSpec is initialized in project
-    logger.step('检测项目 OpenSpec 初始化 ...');
+    logger.step('Checking project OpenSpec initialization ...');
     if (!checkOpenSpecInitialized(cwd)) {
       if (depStatus.openspec.installed) {
         const { initOpenSpec } = await inquirer.prompt([
           {
             type: 'confirm',
             name: 'initOpenSpec',
-            message: '项目未初始化 OpenSpec，是否运行 openspec init？',
+            message: 'OpenSpec not initialized in this project. Run openspec init?',
             default: true,
           },
         ]);
@@ -73,17 +73,17 @@ export const initCommand = new Command('init')
         if (initOpenSpec) {
           const toolsFlag = tools.map((t: string) => t).join(',');
           exec(`openspec init --tools ${toolsFlag}`, { stdio: 'inherit' });
-          logger.success('OpenSpec 项目初始化完成');
+          logger.success('OpenSpec project initialized');
         }
       } else {
-        logger.info('项目未初始化 OpenSpec，将在首次使用 /openflow proposal 时自动创建目录');
+        logger.info('OpenSpec not initialized — directories will be auto-created on first /openflow proposal');
       }
     } else {
-      logger.success('OpenSpec 项目已初始化');
+      logger.success('OpenSpec project initialized');
     }
 
     // Step 4: Generate skills
-    logger.step('生成 openflow skills ...');
+    logger.step('Generating openflow skills ...');
     generateSkills({ cwd, tools, depStatus });
 
     // Step 5: Write state
@@ -96,20 +96,20 @@ export const initCommand = new Command('init')
     });
 
     logger.blank();
-    logger.success('openflow 初始化完成！');
+    logger.success('openflow initialized!');
     logger.blank();
 
     if (!depStatus.superpowers.installed) {
-      logger.warn('提示: Superpowers 未安装，/openflow build 将使用手动执行模式');
-      logger.info(`  安装方式: ${DEPS.superpowers.installHint}`);
+      logger.warn('Note: Superpowers not installed — /openflow build will use manual execution mode');
+      logger.info(`  Install with: ${DEPS.superpowers.installHint}`);
       logger.blank();
     }
 
-    logger.info('可用命令:');
-    logger.info('  /openflow proposal      轻量需求捕获');
-    logger.info('  /openflow brainstorming  深度设计探索');
-    logger.info('  /openflow spec           生成规格 + 翻译');
-    logger.info('  /openflow build          执行实现');
-    logger.info('  /openflow close          验证归档');
+    logger.info('Available commands:');
+    logger.info('  /openflow proposal      Quick requirement capture');
+    logger.info('  /openflow brainstorming  Deep design exploration');
+    logger.info('  /openflow spec           Generate specs + translate');
+    logger.info('  /openflow build          Execute implementation');
+    logger.info('  /openflow close          Verify + archive');
     logger.blank();
   });
