@@ -1,6 +1,6 @@
 ---
 name: openflow/spec
-description: 调用 OpenSpec 生成规格文档，确认后自动翻译为 plan-ready.md
+description: Call OpenSpec to generate specs, auto-translate to plan-ready.md after user confirmation
 ---
 
 # Spec: 生成规格并翻译

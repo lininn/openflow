@@ -1,6 +1,6 @@
 ---
 name: openflow/brainstorming
-description: 深度设计 — 多轮探索，确认架构和方案
+description: Deep design — multi-round exploration to confirm architecture and approach
 ---
 
 # Brainstorming: 深度设计

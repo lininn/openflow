@@ -1,6 +1,6 @@
 ---
 name: openflow/close
-description: 验证实现一致性并归档
+description: Verify implementation consistency and archive
 ---
 
 # Close: 验证归档

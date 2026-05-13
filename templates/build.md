@@ -1,6 +1,6 @@
 ---
 name: openflow/build
-description: 调用 Superpowers 执行实现，支持断点恢复
+description: Call Superpowers to execute implementation, supports checkpoint recovery
 ---
 
 # Build: Superpowers 执行

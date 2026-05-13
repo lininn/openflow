@@ -1,6 +1,6 @@
 ---
 name: openflow/proposal
-description: 轻量需求捕获 — 3-5 个问题快速收敛需求
+description: Lightweight requirement capture — 3-5 questions to quickly converge on requirements
 ---
 
 # Proposal: 轻量需求捕获
