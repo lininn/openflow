@@ -1,100 +1,109 @@
 # @lininn/openflow
 
-OpenSpec + Superpowers 工作流协调器，串联需求规格与工程执行，消除格式鸿沟。
+[中文文档](./README.zh-CN.md)
 
-## 安装
+OpenSpec + Superpowers workflow orchestrator — bridging requirements specs and engineering execution, eliminating the format gap.
+
+## Installation
 
 ```bash
 npm install -g @lininn/openflow
 ```
 
-## 使用
+## Usage
 
-### 初始化项目
+### Initialize a project
 
 ```bash
 cd your-project
 openflow init --tools claude
 ```
 
-`init` 会自动：
-1. 检测并引导安装 OpenSpec CLI
-2. 检测 Superpowers 并提示安装方式
-3. 检测项目 OpenSpec 初始化状态
-4. 生成 openflow skills 到项目 `.claude/skills/openflow/`
+`init` will automatically:
+1. Detect and guide OpenSpec CLI installation
+2. Detect Superpowers and show install instructions
+3. Check if OpenSpec is initialized in the project
+4. Generate openflow skills to `.claude/skills/openflow/`
 
-支持的工具：`claude`、`codex`、`cursor`（逗号分隔，如 `--tools claude,codex`）
+Supported tools: `claude`, `codex`, `cursor` (comma-separated, e.g. `--tools claude,codex`)
 
-### 查看状态
+### Check status
 
 ```bash
 openflow status
 ```
 
-显示依赖安装状态和项目中的活跃变更。
+Shows dependency installation status and active changes in the project.
 
-### 更新 skills
+### Update skills
 
 ```bash
 openflow update
 ```
 
-升级 npm 包后运行，重新生成项目内的 skills 文件。
+Re-generates project skills after upgrading the npm package.
 
-## 工作流命令
+## Workflow Commands
 
-| 命令 | 阶段 | 说明 |
-|------|------|------|
-| `/openflow proposal` | proposal | 轻量提问，3-5 问快速收敛需求 |
-| `/openflow brainstorming` | brainstorming | 深度设计，多轮方案探索 |
-| `/openflow spec` | spec | 调用 OpenSpec 生成规格 + 自动翻译 |
-| `/openflow build` | build | 调用 Superpowers 执行实现 |
-| `/openflow close` | close | 验证一致性 + 归档 |
+| Command | Phase | Description |
+|---------|-------|-------------|
+| `/openflow proposal` | proposal | Lightweight capture — 3-5 questions to converge on requirements |
+| `/openflow brainstorming` | brainstorming | Deep design — multi-round tradeoff exploration |
+| `/openflow spec` | spec | Call OpenSpec to generate specs + auto-translate to plan-ready.md |
+| `/openflow build` | build | Call Superpowers to execute implementation |
+| `/openflow close` | close | Verify consistency + archive |
 
-## 依赖策略
+## Dependency Strategy
 
 ```
 Best with: OpenSpec + Superpowers
 Works without them: yes, with manual-file fallback
 ```
 
-| 依赖 | 安装方式 | 缺失时降级 |
-|------|----------|-----------|
-| OpenSpec | `npm install -g @fission-ai/openspec@latest` | 手动创建 `openspec/changes/` 目录和文件 |
-| Superpowers | `/plugin install superpowers@claude-plugins-official` | build 阶段手动拆解 plan-ready.md 步骤执行 |
+| Dependency | Install | Fallback when missing |
+|------------|---------|----------------------|
+| OpenSpec | `npm install -g @fission-ai/openspec@latest` | Manually create `openspec/changes/` directories and files |
+| Superpowers | `/plugin install superpowers@claude-plugins-official` | Manually break down plan-ready.md steps in build phase |
 
-## 架构
+### Dual-layer dependency check
+
+| Layer | Mechanism | When missing |
+|-------|-----------|-------------|
+| **Init time** | Detect OpenSpec → auto-install; Detect Superpowers → show install hint | Non-blocking, skills still generated |
+| **Runtime** | Dependency check injected into SKILL.md | Build phase falls back to manual step-by-step execution |
+
+## Architecture
 
 ```
-用户需求
+User Requirements
    │
-   ├── 轻量 ──→ /openflow proposal ──┐
-   │          3-5问快速收敛          │
-   │                                 ├─→ proposal.md
-   └── 深度 ──→ /openflow brainstorming ─┘ (openspec/changes/<name>/)
-               多轮方案探索
+   ├── Quick ──→ /openflow proposal ──┐
+   │           3-5 questions          │
+   │                                  ├─→ proposal.md
+   └── Deep ───→ /openflow brainstorming ─┘ (openspec/changes/<name>/)
+               Multi-round exploration
                                      │
                           ┌──────────▼───────────┐
                           │  /openflow spec        │
-                          │  OpenSpec 生成规格      │
+                          │  OpenSpec generates     │
                           └──────────┬───────────┘
                                      │
                           ┌──────────▼───────────┐
-                          │   翻译层 (核心)        │
-                          │  需求视角 → 工程视角    │
+                          │   Translation Layer    │
+                          │  Requirements → Eng    │
                           └──────────┬───────────┘
                                      │
                                 plan-ready.md
                                      │
                           ┌──────────▼───────────┐
                           │  /openflow build       │
-                          │  Superpowers 执行      │
-                          │  TDD 铁律 + 断点恢复   │
+                          │  Superpowers execution │
+                          │  TDD + checkpoint      │
                           └──────────┬───────────┘
                                      │
                           ┌──────────▼───────────┐
                           │  /openflow close       │
-                          │  验证一致性 + 归档      │
+                          │  Verify + archive      │
                           └──────────────────────┘
 ```
 
