@@ -107,9 +107,9 @@ export const initCommand = new Command('init')
 
     logger.info('Available commands:');
     logger.info('  /openflow proposal      Quick requirement capture');
-    logger.info('  /openflow:brainstorming  Deep design exploration');
-    logger.info('  /openflow:spec           Generate specs + translate');
+    logger.info('  /openflow brainstorming  Deep design exploration');
+    logger.info('  /openflow spec           Generate specs + translate');
     logger.info('  /openflow build          Execute implementation');
-    logger.info('  /openflow:close          Verify + archive');
+    logger.info('  /openflow close          Verify + archive');
     logger.blank();
   });

@@ -29,7 +29,7 @@ description: Call Superpowers to execute implementation, supports checkpoint rec
 - `openspec/changes/<变更名>/plan-ready.md` 存在
 
 如果不满足，提示：
-> "还没生成 plan-ready.md。请先完成 /openflow:spec。"
+> "还没生成 plan-ready.md。请先完成 /openflow spec。"
 
 ## 流程
 
@@ -49,7 +49,7 @@ description: Call Superpowers to execute implementation, supports checkpoint rec
 
 如果检测到已有计划文件，检查其中 checkbox 状态：
 
-- 全部勾选 → 提示实现已完成，建议 /openflow:close
+- 全部勾选 → 提示实现已完成，建议 /openflow close
 - 部分勾选 → 从未完成的 task 继续执行
 - 无勾选 → 从头开始
 
@@ -80,7 +80,7 @@ docs/superpowers/plans/YYYY-MM-DD-<变更名>.md
 
 所有 task 完成后，提示用户：
 
-> "所有实现任务已完成。接下来可以用 /openflow:close 验证一致性并归档。"
+> "所有实现任务已完成。接下来可以用 /openflow close 验证一致性并归档。"
 
 ## 关键原则
 

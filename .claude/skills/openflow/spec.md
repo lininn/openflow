@@ -21,7 +21,7 @@ description: Call OpenSpec to generate specs, auto-translate to plan-ready.md af
 检查 `openspec/changes/` 下是否有活跃变更（非 archive 子目录）。
 
 如果没有，提示用户：
-> "还没有活跃变更。请先用 /openflow:proposal 或 /openflow:brainstorming 创建需求。"
+> "还没有活跃变更。请先用 /openflow proposal 或 /openflow brainstorming 创建需求。"
 
 如果有多个，列出并让用户选择：
 > "检测到多个活跃变更：[列表]。要对哪个生成规格？"
@@ -97,7 +97,7 @@ openspec propose <变更名>
 
 ### 5. 提示下一步
 
-> "规格已确认，plan-ready.md 已生成。接下来可以用 `/openflow:build` 开始实现。"
+> "规格已确认，plan-ready.md 已生成。接下来可以用 `/openflow build` 开始实现。"
 
 ## 关键原则
 
