@@ -21,7 +21,7 @@ description: Verify implementation consistency and archive
 检查 `docs/superpowers/plans/` 下对应的计划文件，确认所有 checkbox 已勾选。
 
 如果有未完成的 task：
-> "还有 N 个任务未完成。请先用 /openflow build 完成实现。"
+> "还有 N 个任务未完成。请先用 /openflow:build 完成实现。"
 
 ### 2. 验证设计一致性
 

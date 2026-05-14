@@ -1,6 +1,6 @@
 ---
 name: openflow
-description: "OpenSpec + Superpowers workflow orchestrator. Use /openflow proposal for quick capture, /openflow brainstorming for deep design, /openflow spec to generate specs + translate, /openflow build to execute, /openflow close to verify and archive. Bridges requirements specs and engineering execution."
+description: "OpenSpec + Superpowers workflow orchestrator. Use /openflow:proposal for quick capture, /openflow:brainstorming for deep design, /openflow:spec to generate specs + translate, /openflow:build to execute, /openflow:close to verify and archive. Bridges requirements specs and engineering execution."
 ---
 
 # openflow: 工作流协调器
@@ -11,11 +11,11 @@ description: "OpenSpec + Superpowers workflow orchestrator. Use /openflow propos
 
 | 命令 | 阶段 | 说明 |
 |------|------|------|
-| `/openflow proposal` | proposal | 轻量提问，快速收敛需求 |
-| `/openflow brainstorming` | brainstorming | 深度设计，多轮探索 |
-| `/openflow spec` | spec | 调用 OpenSpec 生成规格 + 翻译 |
-| `/openflow build` | build | 调用 Superpowers 执行实现 |
-| `/openflow close` | close | 验证一致性 + 归档 |
+| `/openflow:proposal` | proposal | 轻量提问，快速收敛需求 |
+| `/openflow:brainstorming` | brainstorming | 深度设计，多轮探索 |
+| `/openflow:spec` | spec | 调用 OpenSpec 生成规格 + 翻译 |
+| `/openflow:build` | build | 调用 Superpowers 执行实现 |
+| `/openflow:close` | close | 验证一致性 + 归档 |
 
 ## 状态检测
 
@@ -39,7 +39,7 @@ description: "OpenSpec + Superpowers workflow orchestrator. Use /openflow propos
 
 根据子命令或状态检测结果，读取对应阶段文件并执行：
 
-1. 如果用户指定了子命令（如 `/openflow build`），优先按指定阶段执行，但检查前置条件
+1. 如果用户指定了子命令（如 `/openflow:build`），优先按指定阶段执行，但检查前置条件
 2. 如果用户只输入 `/openflow`，执行状态检测，自动路由到对应阶段
 3. 读取阶段文件：`${CLAUDE_SKILL_DIR}/<阶段>.md`
 4. 按阶段文件中的流程执行
@@ -50,6 +50,6 @@ description: "OpenSpec + Superpowers workflow orchestrator. Use /openflow propos
 |------|----------|-------------|
 | proposal | 无 | — |
 | brainstorming | 无 | — |
-| spec | 需要有活跃变更目录或有用户需求 | "请先用 /openflow proposal 或 /openflow brainstorming 描述需求" |
-| build | 需要存在 plan-ready.md | "请先完成 /openflow spec 生成规格和翻译" |
-| close | 需要实现已完成 | "实现尚未完成，请先用 /openflow build 执行" |
+| spec | 需要有活跃变更目录或有用户需求 | "请先用 /openflow:proposal 或 /openflow:brainstorming 描述需求" |
+| build | 需要存在 plan-ready.md | "请先完成 /openflow:spec 生成规格和翻译" |
+| close | 需要实现已完成 | "实现尚未完成，请先用 /openflow:build 执行" |

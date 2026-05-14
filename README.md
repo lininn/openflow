@@ -47,11 +47,11 @@ Re-generates project skills after upgrading the npm package.
 
 | Command | Phase | Description |
 |---------|-------|-------------|
-| `/openflow proposal` | proposal | Lightweight capture — 3-5 questions to converge on requirements |
-| `/openflow brainstorming` | brainstorming | Deep design — multi-round tradeoff exploration |
-| `/openflow spec` | spec | Call OpenSpec to generate specs + auto-translate to plan-ready.md |
-| `/openflow build` | build | Call Superpowers to execute implementation |
-| `/openflow close` | close | Verify consistency + archive |
+| `/openflow:proposal` | proposal | Lightweight capture — 3-5 questions to converge on requirements |
+| `/openflow:brainstorming` | brainstorming | Deep design — multi-round tradeoff exploration |
+| `/openflow:spec` | spec | Call OpenSpec to generate specs + auto-translate to plan-ready.md |
+| `/openflow:build` | build | Call Superpowers to execute implementation |
+| `/openflow:close` | close | Verify consistency + archive |
 
 ## Dependency Strategy
 
@@ -77,14 +77,14 @@ Works without them: yes, with manual-file fallback
 ```
 User Requirements
    │
-   ├── Quick ──→ /openflow proposal ──┐
+   ├── Quick ──→ /openflow:proposal ──┐
    │           3-5 questions          │
    │                                  ├─→ proposal.md
-   └── Deep ───→ /openflow brainstorming ─┘ (openspec/changes/<name>/)
+   └── Deep ───→ /openflow:brainstorming ─┘ (openspec/changes/<name>/)
                Multi-round exploration
                                      │
                           ┌──────────▼───────────┐
-                          │  /openflow spec        │
+                          │  /openflow:spec         │
                           │  OpenSpec generates     │
                           └──────────┬───────────┘
                                      │
@@ -96,13 +96,13 @@ User Requirements
                                 plan-ready.md
                                      │
                           ┌──────────▼───────────┐
-                          │  /openflow build       │
+                          │  /openflow:build       │
                           │  Superpowers execution │
                           │  TDD + checkpoint      │
                           └──────────┬───────────┘
                                      │
                           ┌──────────▼───────────┐
-                          │  /openflow close       │
+                          │  /openflow:close       │
                           │  Verify + archive      │
                           └──────────────────────┘
 ```

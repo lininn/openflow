@@ -76,11 +76,11 @@ export const statusCommand = new Command('status')
 
       let status = '';
       if (hasPlanReady) {
-        status = '→ ready for /openflow build';
+        status = '→ ready for /openflow:build';
       } else if (hasProposal) {
-        status = '→ needs /openflow spec';
+        status = '→ needs /openflow:spec';
       } else {
-        status = '→ needs /openflow proposal';
+        status = '→ needs /openflow:proposal';
       }
 
       logger.info(`  ${entry.name} ${status}`);

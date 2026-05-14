@@ -47,11 +47,11 @@ openflow update
 
 | 命令 | 阶段 | 说明 |
 |------|------|------|
-| `/openflow proposal` | proposal | 轻量提问，3-5 问快速收敛需求 |
-| `/openflow brainstorming` | brainstorming | 深度设计，多轮方案探索 |
-| `/openflow spec` | spec | 调用 OpenSpec 生成规格 + 自动翻译 |
-| `/openflow build` | build | 调用 Superpowers 执行实现 |
-| `/openflow close` | close | 验证一致性 + 归档 |
+| `/openflow:proposal` | proposal | 轻量提问，3-5 问快速收敛需求 |
+| `/openflow:brainstorming` | brainstorming | 深度设计，多轮方案探索 |
+| `/openflow:spec` | spec | 调用 OpenSpec 生成规格 + 自动翻译 |
+| `/openflow:build` | build | 调用 Superpowers 执行实现 |
+| `/openflow:close` | close | 验证一致性 + 归档 |
 
 ## 依赖策略
 
@@ -77,14 +77,14 @@ Works without them: yes, with manual-file fallback
 ```
 用户需求
    │
-   ├── 轻量 ──→ /openflow proposal ──┐
+   ├── 轻量 ──→ /openflow:proposal ──┐
    │          3-5问快速收敛          │
    │                                 ├─→ proposal.md
-   └── 深度 ──→ /openflow brainstorming ─┘ (openspec/changes/<name>/)
+   └── 深度 ──→ /openflow:brainstorming ─┘ (openspec/changes/<name>/)
                多轮方案探索
                                      │
                           ┌──────────▼───────────┐
-                          │  /openflow spec        │
+                          │  /openflow:spec        │
                           │  OpenSpec 生成规格      │
                           └──────────┬───────────┘
                                      │
@@ -96,13 +96,13 @@ Works without them: yes, with manual-file fallback
                                 plan-ready.md
                                      │
                           ┌──────────▼───────────┐
-                          │  /openflow build       │
+                          │  /openflow:build       │
                           │  Superpowers 执行      │
                           │  TDD 铁律 + 断点恢复   │
                           └──────────┬───────────┘
                                      │
                           ┌──────────▼───────────┐
-                          │  /openflow close       │
+                          │  /openflow:close       │
                           │  验证一致性 + 归档      │
                           └──────────────────────┘
 ```
