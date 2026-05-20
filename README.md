@@ -65,6 +65,7 @@ Re-generates project skills after upgrading the npm package.
 | `/openflow proposal` | proposal | Lightweight capture — 3-5 questions to converge on requirements |
 | `/openflow brainstorming` | brainstorming | Deep design — multi-round tradeoff exploration |
 | `/openflow spec` | spec | Call OpenSpec to generate specs + auto-translate to plan-ready.md |
+| `/openflow amend` | amend | Revise requirements/specs before close and update plan-ready.md |
 | `/openflow build` | build | Call Superpowers to execute implementation |
 | `/openflow close` | close | Verify consistency + archive |
 
@@ -114,6 +115,12 @@ User Requirements
                           │  /openflow build       │
                           │  Superpowers execution │
                           │  TDD + checkpoint      │
+                          └──────────┬───────────┘
+                                     │
+                          ┌──────────▼───────────┐
+                          │  /openflow amend       │
+                          │  Requirement revision  │
+                          │  (only when needed)    │
                           └──────────┬───────────┘
                                      │
                           ┌──────────▼───────────┐

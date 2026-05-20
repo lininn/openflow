@@ -9,7 +9,7 @@ export function run(): void {
   program
     .name('openflow')
     .description('OpenSpec + Superpowers workflow orchestrator')
-    .version('0.1.0');
+    .version('0.1.9');
 
   program.addCommand(initCommand);
   program.addCommand(statusCommand);
