@@ -11,7 +11,9 @@ description: Call Superpowers to execute implementation, supports checkpoint rec
 
 ## 中断续接规则
 
-如果用户在 build 阶段被打断后继续回复、说“继续”、或补充实现细节，保持 build 阶段并从实现计划/checkbox 状态恢复。不要回到 proposal、brainstorming 或 spec，除非用户明确要求修改需求或重新生成规格。
+如果用户在 build 阶段被打断后继续回复、说“继续”、或补充实现细节，保持 build 阶段并从实现计划/checkbox 状态恢复。不要回到 proposal、brainstorming 或 spec。
+
+如果用户明确要求修改需求、补充 spec、改变验收条件、改变功能边界或重新生成规格，停止实现并切到 `/openflow amend`。amend 完成后再回到 `/openflow build`。
 
 ## 前置条件
 
@@ -73,7 +75,7 @@ docs/superpowers/plans/YYYY-MM-DD-<变更名>.md
 
 ## 关键原则
 
-- **不允许在 build 阶段修改规格文档** — 发现问题先记录，留到 close 阶段处理
+- **不允许在 build 阶段修改规格文档** — 发现需求遗漏或规格错误时切到 `/openflow amend`
 - build 是唯一默认允许修改代码或实现文件的阶段；如果上一阶段不是 build，不要因为用户确认范围而自动写代码
 - plan-ready.md 是锁定的设计决策，Superpowers 按计划展开执行，不重新理解需求
 - 断点恢复依赖文件系统状态，不依赖 AI 的会话记忆

@@ -65,6 +65,7 @@ openflow update
 | `/openflow proposal` | proposal | 轻量提问，3-5 问快速收敛需求 |
 | `/openflow brainstorming` | brainstorming | 深度设计，多轮方案探索 |
 | `/openflow spec` | spec | 调用 OpenSpec 生成规格 + 自动翻译 |
+| `/openflow amend` | amend | close 前修订需求/规格并更新 plan-ready.md |
 | `/openflow build` | build | 调用 Superpowers 执行实现 |
 | `/openflow close` | close | 验证一致性 + 归档 |
 
@@ -114,6 +115,12 @@ Works without them: yes, with manual-file fallback
                           │  /openflow build       │
                           │  Superpowers 执行      │
                           │  TDD 铁律 + 断点恢复   │
+                          └──────────┬───────────┘
+                                     │
+                          ┌──────────▼───────────┐
+                          │  /openflow amend      │
+                          │  需求变更修订          │
+                          │  （仅需要时）           │
                           └──────────┬───────────┘
                                      │
                           ┌──────────▼───────────┐
