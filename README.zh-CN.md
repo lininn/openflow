@@ -31,7 +31,7 @@ openflow init --tools claude
 
 ```bash
 openflow init --tools claude -g
-openflow init --tools claude,codex,cursor --global
+openflow init --tools claude,codex,cursor,opencode --global
 ```
 
 加 `-g` / `--global` 后，`openflow` 会把 skills 安装到所选工具的全局目录：

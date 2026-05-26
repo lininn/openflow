@@ -31,7 +31,7 @@ Supported tools: `claude`, `codex`, `cursor`, `opencode` (comma-separated, e.g. 
 
 ```bash
 openflow init --tools claude -g
-openflow init --tools claude,codex,cursor --global
+openflow init --tools claude,codex,cursor,opencode --global
 ```
 
 With `-g` / `--global`, `openflow` installs skills under the selected tools' home directories:
