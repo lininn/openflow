@@ -3,7 +3,7 @@
   "version": "0.3.2",
   "description": "OpenSpec + Superpowers workflow orchestrator for Claude Code",
   "bin": {
-    "openflow": "./bin/openflow.js"
+    "openflow": "bin/openflow.js"
   },
   "type": "module",
   "scripts": {
@@ -23,7 +23,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lininn/openflow.git"
+    "url": "git+https://github.com/lininn/openflow.git"
   },
   "engines": {
     "node": ">=18.0.0"
