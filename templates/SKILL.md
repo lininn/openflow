@@ -1,6 +1,7 @@
 ---
 name: openflow
 description: "OpenSpec + Superpowers workflow orchestrator. Use /openflow proposal for quick capture, /openflow brainstorming for deep design, /openflow spec to generate specs + translate, /openflow amend to revise requirements before close, /openflow build to execute, /openflow close to verify and archive. Bridges requirements specs and engineering execution."
+argument-hint: "proposal | brainstorming | spec | amend | build | close"
 ---
 
 # openflow - 工作流协调器

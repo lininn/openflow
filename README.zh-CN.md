@@ -61,6 +61,11 @@ openflow update
 
 ## 工作流命令
 
+规范调用方式是 `/openflow <阶段>`。为了改善补全体验，Claude Code、
+Codex 和 Cursor 会额外生成可见的阶段别名，例如 `/openflow-spec` 或
+`$openflow-spec`，这样在命令/skill 选择器里输入 `openflow` 时能看到可用阶段。
+OpenCode 保持原生命令树形式，例如 `/openflow/spec`、`/openflow/build`。
+
 | 命令 | 阶段 | 说明 |
 |------|------|------|
 | `/openflow proposal` | proposal | 轻量提问，3-5 问快速收敛需求 |

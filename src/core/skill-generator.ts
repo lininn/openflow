@@ -13,6 +13,17 @@ const __dirname = path.dirname(__filename);
 // Resolve templates dir: from dist/core/ → ../../templates/
 const TEMPLATES_DIR = path.resolve(__dirname, '..', '..', 'templates');
 
+const PHASES = [
+  { name: 'proposal', description: 'Quick requirement capture' },
+  { name: 'brainstorming', description: 'Deep design exploration' },
+  { name: 'spec', description: 'Generate OpenSpec specs and translate to plan-ready.md' },
+  { name: 'amend', description: 'Revise requirements/specs before close' },
+  { name: 'build', description: 'Execute implementation' },
+  { name: 'close', description: 'Verify consistency and archive' },
+] as const;
+
+const PHASE_ALIAS_TOOLS = new Set(['claude', 'codex', 'cursor']);
+
 export interface GenerateOptions {
   cwd: string;
   tools: string[];
@@ -46,9 +57,17 @@ export function generateSkills(options: GenerateOptions): void {
     generateSkillFile(skillsDir, 'SKILL.md', depStatus);
 
     // Generate phase files
-    const phases = ['proposal', 'brainstorming', 'spec', 'amend', 'build', 'close'];
-    for (const phase of phases) {
-      generateSkillFile(skillsDir, `${phase}.md`, depStatus);
+    for (const phase of PHASES) {
+      generateSkillFile(skillsDir, `${phase.name}.md`, depStatus);
+    }
+
+    if (PHASE_ALIAS_TOOLS.has(tool)) {
+      generatePhaseAliasSkills({
+        baseDir,
+        skillsDir: toolPaths.skillsDir,
+        cwd,
+        global,
+      });
     }
 
     logger.success(`${tool} skills generated`);
@@ -80,6 +99,54 @@ function generateSkillFile(skillsDir: string, filename: string, depStatus: DepSt
   const targetPath = path.join(skillsDir, filename);
   fs.writeFileSync(targetPath, content);
   logger.step(`  ${filename}`);
+}
+
+function generatePhaseAliasSkills(options: {
+  baseDir: string;
+  skillsDir: string;
+  cwd: string;
+  global: boolean;
+}): void {
+  const { baseDir, skillsDir, cwd, global } = options;
+
+  for (const phase of PHASES) {
+    const aliasName = `${SKILL_NAME}-${phase.name}`;
+    const aliasDir = path.join(baseDir, skillsDir, aliasName);
+    const displayPath = global
+      ? path.join('~', skillsDir, aliasName, 'SKILL.md')
+      : path.relative(cwd, path.join(aliasDir, 'SKILL.md'));
+
+    if (!fs.existsSync(aliasDir)) {
+      fs.mkdirSync(aliasDir, { recursive: true });
+    }
+
+    fs.writeFileSync(
+      path.join(aliasDir, 'SKILL.md'),
+      getPhaseAliasTemplate(phase.name, phase.description),
+    );
+    logger.step(`  ${displayPath}`);
+  }
+}
+
+function getPhaseAliasTemplate(phase: string, description: string): string {
+  return `---
+name: ${SKILL_NAME}-${phase}
+description: "OpenFlow ${phase}: ${description}. Visibility alias for ${SKILL_NAME} ${phase}."
+argument-hint: "[optional context]"
+---
+
+# ${SKILL_NAME}-${phase}
+
+这是 \`${SKILL_NAME} ${phase}\` 的补全可见别名。
+
+执行时必须按以下方式处理：
+
+1. 将本次调用视为用户调用了 \`/${SKILL_NAME} ${phase} $ARGUMENTS\`
+2. 读取同级 skills 目录中的 \`${SKILL_NAME}/SKILL.md\`
+3. 读取 \`${SKILL_NAME}/${phase}.md\`
+4. 严格遵守主 openflow 工作流、阶段写入边界和当前阶段文件
+5. 如果 \`$ARGUMENTS\` 中有额外需求或上下文，将它作为 ${phase} 阶段输入
+`;
 }
 
 function injectRuntimeDepCheck(content: string, depStatus: DepStatus): string {
@@ -128,6 +195,7 @@ function getInlineTemplate(filename: string, depStatus: DepStatus): string {
     'SKILL.md': `---
 name: openflow
 description: "OpenSpec + Superpowers 工作流协调器。使用 /openflow proposal 轻量提问、/openflow brainstorming 深度设计、/openflow spec 生成规格、/openflow amend 在归档前修订需求、/openflow build 执行实现、/openflow close 验证归档。串联需求规格与工程执行，消除格式鸿沟。"
+argument-hint: "proposal | brainstorming | spec | amend | build | close"
 ---
 
 # openflow - 工作流协调器
