@@ -1,7 +1,11 @@
 import { Command } from 'commander';
+import { createRequire } from 'module';
 import { initCommand } from './init.js';
 import { statusCommand } from './status.js';
 import { updateCommand } from './update.js';
+
+const require = createRequire(import.meta.url);
+const pkg = require('../../package.json') as { version: string };
 
 export function run(): void {
   const program = new Command();
@@ -9,7 +13,7 @@ export function run(): void {
   program
     .name('openflow')
     .description('OpenSpec + Superpowers workflow orchestrator')
-    .version('0.1.9');
+    .version(pkg.version);
 
   program.addCommand(initCommand);
   program.addCommand(statusCommand);

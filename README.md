@@ -61,6 +61,12 @@ Re-generates project skills after upgrading the npm package.
 
 ## Workflow Commands
 
+Canonical usage is `/openflow <phase>`. For Claude Code, Codex, and Cursor,
+`openflow` also generates visible phase aliases such as `/openflow-spec` or
+`$openflow-spec` so typing `openflow` in the command/skill picker surfaces the
+available phases. OpenCode keeps its native command-tree form under
+`/openflow/spec`, `/openflow/build`, and so on.
+
 | Command | Phase | Description |
 |---------|-------|-------------|
 | `/openflow proposal` | proposal | Lightweight capture — 3-5 questions to converge on requirements |

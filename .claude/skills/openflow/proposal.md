@@ -9,6 +9,12 @@ description: Lightweight requirement capture — 3-5 questions to quickly conver
 
 用最少的提问，把用户脑子里的需求变成可执行的变更描述。不做深度设计，不生成代码。
 
+## 中断续接规则
+
+如果用户在本阶段被打断后继续回复、补充范围、回答确认问题、或修正边界，仍然停留在 proposal 阶段。继续更新 `openspec/changes/**/proposal.md`，不要因为用户说“就这样做”“继续”“范围改成 X”而写任何代码或实现文件。
+
+典型错误：proposal 阶段确认“只改企业端？”后，用户回复“运营端也要做回显”。这只是需求范围补充，必须继续更新 proposal，不得直接修改任何代码或实现文件。
+
 ## 流程
 
 ### 1. 提出关键问题
@@ -51,5 +57,6 @@ openspec list
 
 - 不要做技术设计，那是 spec 和 brainstorming 的事
 - 不要写代码
+- 本阶段只允许写 OpenSpec 需求文档，禁止修改任何代码或实现文件
 - 问题要具体，不要泛泛而谈
 - 如果用户的需求很大（跨多个独立子系统），建议拆分

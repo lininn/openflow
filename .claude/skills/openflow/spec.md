@@ -9,6 +9,10 @@ description: Call OpenSpec to generate specs, auto-translate to plan-ready.md af
 
 调用 OpenSpec 生成完整的规格文档（proposal.md, design.md, specs/, tasks.md），用户确认后自动翻译成 Superpowers 可执行的 plan-ready.md。
 
+## 中断续接规则
+
+如果用户在本阶段被打断后继续回复、补充范围、要求调整规格、或确认规格摘要，仍然停留在 spec 阶段。只更新 `openspec/changes/**` 与 `plan-ready.md`，不要修改任何代码或实现文件。
+
 ## 前置条件
 
 - `openspec/changes/` 下存在活跃变更目录（由 proposal 或 brainstorming 阶段创建）
@@ -104,6 +108,7 @@ openspec validate <变更名> --strict
 ## 关键原则
 
 - **一条代码都不许写** — spec 阶段只产出文档
+- 本阶段只允许写 `openspec/changes/**` 与 `plan-ready.md`，禁止修改任何代码或实现文件
 - 翻译必须在用户确认后自动生成，不需要用户手动触发
 - plan-ready.md 的 ## 来源 部分必须写明路径，方便 Superpowers 执行时回溯
 - 按执行依赖排序是翻译的关键步骤：先依赖后依赖方
