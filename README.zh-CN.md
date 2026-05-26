@@ -23,9 +23,9 @@ openflow init --tools claude
 1. 检测并引导安装 OpenSpec CLI
 2. 检测 Superpowers 并提示安装方式
 3. 检测项目 OpenSpec 初始化状态
-4. 生成 openflow skills 到所选工具的项目级 skill 目录，如 `.claude/skills/openflow/`、`.codex/skills/openflow/` 或 `.cursor/skills/openflow/`
+4. 生成 openflow skills 到所选工具的项目级 skill 目录，如 `.claude/skills/openflow/`、`.codex/skills/openflow/`、`.cursor/skills/openflow/` 或 `.opencode/commands/openflow/`
 
-支持的工具：`claude`、`codex`、`cursor`（逗号分隔，如 `--tools claude,codex`）
+支持的工具：`claude`、`codex`、`cursor`、`opencode`（逗号分隔，如 `--tools claude,codex`）
 
 ### 安装到全局 skills
 
@@ -41,6 +41,7 @@ openflow init --tools claude,codex,cursor --global
 | `claude` | `~/.claude/skills/openflow/` |
 | `codex` | `~/.codex/skills/openflow/` |
 | `cursor` | `~/.cursor/skills/openflow/` |
+| `opencode` | `~/.opencode/commands/openflow/` |
 
 ### 查看状态
 

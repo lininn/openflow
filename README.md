@@ -23,9 +23,9 @@ openflow init --tools claude
 1. Detect and guide OpenSpec CLI installation
 2. Detect Superpowers and show install instructions
 3. Check if OpenSpec is initialized in the project
-4. Generate openflow skills to the selected tools' local skill directories, such as `.claude/skills/openflow/`, `.codex/skills/openflow/`, or `.cursor/skills/openflow/`
+4. Generate openflow skills to the selected tools' local skill directories, such as `.claude/skills/openflow/`, `.codex/skills/openflow/`, `.cursor/skills/openflow/`, or `.opencode/commands/openflow/`
 
-Supported tools: `claude`, `codex`, `cursor` (comma-separated, e.g. `--tools claude,codex`)
+Supported tools: `claude`, `codex`, `cursor`, `opencode` (comma-separated, e.g. `--tools claude,codex`)
 
 ### Install skills globally
 
@@ -41,6 +41,7 @@ With `-g` / `--global`, `openflow` installs skills under the selected tools' hom
 | `claude` | `~/.claude/skills/openflow/` |
 | `codex` | `~/.codex/skills/openflow/` |
 | `cursor` | `~/.cursor/skills/openflow/` |
+| `opencode` | `~/.opencode/commands/openflow/` |
 
 ### Check status
 
