@@ -97,6 +97,10 @@ Works without them: yes, with manual-file fallback
 
 ## Architecture
 
+> Detailed diagrams: [Architecture (SVG)](./openflow-architecture.svg) | [Architecture (PNG)](./openflow-architecture.png) | [Workflow (SVG)](./openflow-workflow.svg) | [Workflow (PNG)](./openflow-workflow.png)
+
+![OpenFlow workflow](./openflow-workflow.svg)
+
 ```
 User Requirements
    │

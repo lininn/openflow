@@ -96,6 +96,10 @@ Works without them: yes, with manual-file fallback
 
 ## 架构
 
+> 详细图表：[架构图 (SVG)](./openflow-architecture.svg) | [架构图 (PNG)](./openflow-architecture.png) | [流程图 (SVG)](./openflow-workflow.svg) | [流程图 (PNG)](./openflow-workflow.png)
+
+![OpenFlow 工作流](./openflow-workflow.svg)
+
 ```
 用户需求
    │

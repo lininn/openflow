@@ -1,6 +1,14 @@
 node_modules/
 dist/
+src/**/*.js
+src/**/*.d.ts
 *.tgz
 .DS_Store
 .omx
 .omc
+
+# graphify runtime data
+graphify-out/.graphify_*
+graphify-out/cache/
+graphify-out/memory/
+graphify-out/2026-*/
