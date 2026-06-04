@@ -62,7 +62,16 @@ description: Verify implementation consistency and archive
 openspec validate <变更名> --strict
 ```
 
-校验通过后执行归档：
+校验通过后，先做归档前依赖检查，避免把依赖前置变更的 change 提前归档：
+
+1. 查看 `openspec/changes/<变更名>/specs/*/spec.md` 中的 delta 类型。
+2. 对每个包含 `## MODIFIED Requirements`、`## REMOVED Requirements` 或 `## RENAMED Requirements` 的 capability，确认 `openspec/specs/<capability>/spec.md` 已存在。
+3. 如果目标主规格不存在，检查其他活跃变更是否在 `openspec/changes/*/specs/<capability>/spec.md` 中包含 `## ADDED Requirements`。
+4. 如果找到这样的前置变更，**不要归档当前变更**。将阻塞原因写入 `openspec/changes/<变更名>/close-issues.md`，并明确提示先归档前置变更。例如：
+   > "归档被变更顺序阻塞：当前变更修改 `<capability>`，但主规格尚不存在。请先归档创建该规格的变更 `<前置变更名>`，再重新运行 /openflow close。"
+5. 如果没有找到前置变更，也不要归档；记录为规格结构不一致，提示需要先修正 delta 类型或创建基础规格。
+
+依赖检查通过后执行归档：
 
 ```bash
 openspec archive <变更名> --yes

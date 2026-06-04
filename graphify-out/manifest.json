@@ -1,0 +1,77 @@
+{
+  "/Users/lininn/work/openflow/.claude/openflow-state.json": {
+    "mtime": 1779096114.0338786,
+    "ast_hash": "05a2972781397d6727caa57c55138fc1",
+    "semantic_hash": "05a2972781397d6727caa57c55138fc1"
+  },
+  "/Users/lininn/work/openflow/.openflow/state.json": {
+    "mtime": 1779767069.5755022,
+    "ast_hash": "e1c643657ecbedee639737d15b3022f3",
+    "semantic_hash": "e1c643657ecbedee639737d15b3022f3"
+  },
+  "/Users/lininn/work/openflow/bin/openflow.js": {
+    "mtime": 1779096114.0370026,
+    "ast_hash": "088e7ea6c70f4059aabb746e993323a6",
+    "semantic_hash": "088e7ea6c70f4059aabb746e993323a6"
+  },
+  "/Users/lininn/work/openflow/package.json": {
+    "mtime": 1779767648.4045205,
+    "ast_hash": "4ebb6a9cd9153d92b6794669faf4bed7",
+    "semantic_hash": "4ebb6a9cd9153d92b6794669faf4bed7"
+  },
+  "/Users/lininn/work/openflow/scripts/postinstall.js": {
+    "mtime": 1779096114.0378618,
+    "ast_hash": "cefe57f6b7650e4f69d45ab6783fc334",
+    "semantic_hash": "cefe57f6b7650e4f69d45ab6783fc334"
+  },
+  "/Users/lininn/work/openflow/src/cli/index.ts": {
+    "mtime": 1779766966.6971755,
+    "ast_hash": "cd44a1136c3d288eb62723827e797e4b",
+    "semantic_hash": "cd44a1136c3d288eb62723827e797e4b"
+  },
+  "/Users/lininn/work/openflow/src/cli/init.ts": {
+    "mtime": 1779262192.7726958,
+    "ast_hash": "0f49a23d142e4418bfab8cbd9c9bfe02",
+    "semantic_hash": "0f49a23d142e4418bfab8cbd9c9bfe02"
+  },
+  "/Users/lininn/work/openflow/src/cli/status.ts": {
+    "mtime": 1779262192.8328192,
+    "ast_hash": "0a106f3a76383fbf24155d3a851e5c5d",
+    "semantic_hash": "0a106f3a76383fbf24155d3a851e5c5d"
+  },
+  "/Users/lininn/work/openflow/src/cli/update.ts": {
+    "mtime": 1779098342.121333,
+    "ast_hash": "f285fa210c0433fa2822579e07021c5d",
+    "semantic_hash": "f285fa210c0433fa2822579e07021c5d"
+  },
+  "/Users/lininn/work/openflow/src/core/constants.ts": {
+    "mtime": 1779761894.6002197,
+    "ast_hash": "92ec287905d7aee78ed3ec9243863e4f",
+    "semantic_hash": "92ec287905d7aee78ed3ec9243863e4f"
+  },
+  "/Users/lininn/work/openflow/src/core/dependency-check.ts": {
+    "mtime": 1779098714.4415634,
+    "ast_hash": "62d3848975f141b9589abfd747e4fe81",
+    "semantic_hash": "62d3848975f141b9589abfd747e4fe81"
+  },
+  "/Users/lininn/work/openflow/src/core/skill-generator.ts": {
+    "mtime": 1779766779.3495862,
+    "ast_hash": "403f17f6e1256436b1f57f0134d2d6b8",
+    "semantic_hash": "403f17f6e1256436b1f57f0134d2d6b8"
+  },
+  "/Users/lininn/work/openflow/src/utils/logger.ts": {
+    "mtime": 1779096114.0391085,
+    "ast_hash": "5dde81968b6738fadad2f36d9d3d2717",
+    "semantic_hash": "5dde81968b6738fadad2f36d9d3d2717"
+  },
+  "/Users/lininn/work/openflow/src/utils/shell.ts": {
+    "mtime": 1779096114.039222,
+    "ast_hash": "34ea985fde7fb11023c3b577e910c4a1",
+    "semantic_hash": "34ea985fde7fb11023c3b577e910c4a1"
+  },
+  "/Users/lininn/work/openflow/tsconfig.json": {
+    "mtime": 1779096114.0400481,
+    "ast_hash": "f024903f60945f2e6c224433013f5e2c",
+    "semantic_hash": "f024903f60945f2e6c224433013f5e2c"
+  }
+}

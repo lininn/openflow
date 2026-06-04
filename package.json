@@ -1,6 +1,6 @@
 {
   "name": "@lininn/openflow",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "OpenSpec + Superpowers workflow orchestrator for Claude Code",
   "bin": {
     "openflow": "bin/openflow.js"
@@ -8,7 +8,11 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
+    "check": "npm run lint && npm run build && npm test",
     "dev": "tsc --watch",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepublishOnly": "npm run build",
     "postinstall": "node ./scripts/postinstall.js"
   },
@@ -31,6 +35,10 @@
   "files": [
     "bin",
     "dist",
+    "openflow-architecture.png",
+    "openflow-architecture.svg",
+    "openflow-workflow.png",
+    "openflow-workflow.svg",
     "templates",
     "scripts"
   ],
@@ -44,6 +52,7 @@
   "devDependencies": {
     "@types/inquirer": "^9.0.9",
     "@types/node": "^20.0.0",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "vitest": "^4.1.8"
   }
 }
