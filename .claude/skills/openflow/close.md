@@ -15,17 +15,23 @@ description: Verify implementation consistency and archive
 
 ## 前置条件
 
-- `docs/superpowers/plans/` 下的实现计划全部 checkbox 已勾选
 - `openspec/changes/<变更名>/plan-ready.md` 存在
 
 ## 流程
 
-### 1. 确认实现状态
+### 1. 确认并同步实现状态
 
-检查 `docs/superpowers/plans/` 下对应的计划文件，确认所有 checkbox 已勾选。
+检查 `docs/superpowers/plans/` 下对应的计划文件和 `openspec/changes/<变更名>/tasks.md`：
+
+1. 读取 Superpowers 实现计划、OpenSpec tasks、design/specs、实际代码 diff 和验证输出。
+2. 对每个未勾选的 OpenSpec task，自动比对是否已有对应实现、测试或验证证据。
+3. 能明确确认完成的 task，直接将 `tasks.md` 中对应 checkbox 从 `- [ ]` 更新为 `- [x]`。
+4. 无法确认完成的 task 不勾选；将缺失证据或实现差异记录到 `openspec/changes/<变更名>/close-issues.md`。
 
 如果有未完成的 task：
-> "还有 N 个任务未完成。请先用 /openflow build 完成实现。"
+> "还有 N 个任务无法通过 close 自动比对确认，已记录到 close-issues.md。请先用 /openflow build 补齐实现或验证。"
+
+close 阶段可以同步 `tasks.md` checkbox 状态，但只能基于自动比对得到的明确证据；不能为了通过归档而猜测勾选，也不能改写任务内容或规格要求。
 
 ### 2. 验证设计一致性
 
@@ -62,7 +68,16 @@ description: Verify implementation consistency and archive
 openspec validate <变更名> --strict
 ```
 
-校验通过后执行归档：
+校验通过后，先做归档前依赖检查，避免把依赖前置变更的 change 提前归档：
+
+1. 查看 `openspec/changes/<变更名>/specs/*/spec.md` 中的 delta 类型。
+2. 对每个包含 `## MODIFIED Requirements`、`## REMOVED Requirements` 或 `## RENAMED Requirements` 的 capability，确认 `openspec/specs/<capability>/spec.md` 已存在。
+3. 如果目标主规格不存在，检查其他活跃变更是否在 `openspec/changes/*/specs/<capability>/spec.md` 中包含 `## ADDED Requirements`。
+4. 如果找到这样的前置变更，**不要归档当前变更**。将阻塞原因写入 `openspec/changes/<变更名>/close-issues.md`，并明确提示先归档前置变更。例如：
+   > "归档被变更顺序阻塞：当前变更修改 `<capability>`，但主规格尚不存在。请先归档创建该规格的变更 `<前置变更名>`，再重新运行 /openflow close。"
+5. 如果没有找到前置变更，也不要归档；记录为规格结构不一致，提示需要先修正 delta 类型或创建基础规格。
+
+依赖检查通过后执行归档：
 
 ```bash
 openspec archive <变更名> --yes

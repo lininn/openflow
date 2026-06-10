@@ -71,10 +71,13 @@ available phases. OpenCode keeps its native command-tree form under
 |---------|-------|-------------|
 | `/openflow proposal` | proposal | Lightweight capture — 3-5 questions to converge on requirements |
 | `/openflow brainstorming` | brainstorming | Deep design — multi-round tradeoff exploration |
+| `/openflow grill` | grill | Optional stress-test — challenge proposal assumptions before spec |
 | `/openflow spec` | spec | Call OpenSpec to generate specs + auto-translate to plan-ready.md |
 | `/openflow amend` | amend | Revise requirements/specs before close and update plan-ready.md |
 | `/openflow build` | build | Call Superpowers to execute implementation |
 | `/openflow close` | close | Verify consistency + archive |
+
+`/openflow grill` is optional: skip it when the proposal is already clear, or use it to challenge hidden assumptions before committing to specs. The spec phase now treats `plan-ready.md` as a detailed Superpowers handoff, not a task summary: it must preserve source coverage, file responsibilities, implementation slices, TDD expectations, validation commands, and blockers.
 
 ## Dependency Strategy
 
@@ -109,6 +112,11 @@ User Requirements
    │                                  ├─→ proposal.md
    └── Deep ───→ /openflow brainstorming ─┘ (openspec/changes/<name>/)
                Multi-round exploration
+                                     │
+                          ┌──────────▼───────────┐
+                          │  /openflow grill      │
+                          │  Optional stress-test │
+                          └──────────┬───────────┘
                                      │
                           ┌──────────▼───────────┐
                           │  /openflow spec         │

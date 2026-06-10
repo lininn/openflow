@@ -61,7 +61,7 @@ openspec list
 
 ### 6. 提示下一步
 
-> "需求已记录。接下来可以用 `/openflow spec` 生成完整规格。"
+> "需求已记录。接下来可以用 `/openflow grill` 对方案进行压力测试，或用 `/openflow spec` 生成完整规格。"
 
 ## 注意
 

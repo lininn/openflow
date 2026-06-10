@@ -91,9 +91,12 @@ openspec validate <变更名> --strict
 规则：
 - 保留原 `## 来源`
 - 追加 `## Amendments`，记录本次修订来源和影响
-- 保留已完成实现步骤的历史上下文
-- 追加新的实现步骤，按执行依赖排序
-- 不删除已经完成或正在执行的步骤，除非用户明确要求废弃并说明迁移方式
+- 更新 `## Source Coverage`，确保新增/修改/删除的 requirement、scenario、tasks.md 条目都有对应 slice
+- 更新 `## File Responsibility Map`，标明新增或受影响的代码、测试、文档文件责任
+- 保留已完成 implementation slice 的历史上下文
+- 追加或调整新的 implementation slice，按执行依赖排序
+- 不删除已经完成或正在执行的 slice，除非用户明确要求废弃并说明迁移方式
+- 更新 `## Verification Plan` 和 `## Blockers / Clarifications`
 
 建议追加格式：
 
@@ -105,13 +108,41 @@ openspec validate <变更名> --strict
 - 影响规格：<spec 路径>
 - 影响任务：<tasks.md 条目>
 
-## 追加实现步骤
+## Source Coverage 更新
+| OpenSpec 来源 | 验收点 | 对应 implementation slice |
+|---------------|--------|---------------------------|
+| <新增/修改来源> | <验收行为> | Slice N |
 
-### Task N: <任务名>
-- 目标：<做什么>
-- 改动文件：<哪些文件>
-- 验证方式：<怎么验证>
+## File Responsibility Map 更新
+| 文件 | 操作 | 责任 | 相关 slice |
+|------|------|------|------------|
+| `src/...` | create/modify | <该文件负责什么> | Slice N |
+
+## 追加 Implementation Slices
+
+### Slice N: <可交付切片名>
+- 来源：<OpenSpec task / requirement / scenario 路径>
+- 目标：<做什么，以及为什么>
+- 依赖：<必须先完成的 slice；没有则写“无”>
+- 改动文件：
+  - Modify: `path/to/file`
+  - Test: `path/to/test`
+- TDD 计划：
+  1. <先新增/修改的失败测试>
+  2. <最小实现路径>
+  3. <重构或边界补充>
+- 验证命令：
+  - `<command>` — <预期结果>
+- 完成标准：
+  - <可观察验收标准>
+- 风险/回滚：
+  - <风险和如何撤回>
 ```
+
+更新后做一次自检：
+- 新旧 Source Coverage 是否仍覆盖全部 OpenSpec requirement、scenario 和 tasks.md 条目
+- 是否存在 TBD/TODO/模糊实现步骤
+- 新增 slice 是否包含文件、测试、验证命令和完成标准
 
 ### 6. 同步详细实现计划
 

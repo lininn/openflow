@@ -67,8 +67,8 @@
     <rect x="810" y="120" width="330" height="70" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
     <text x="832" y="149" text-anchor="middle" font-size="18">&#x26A1;</text>
     <text x="852" y="145" class="node-title">AI Tool Skills</text>
-    <text x="852" y="163" class="node-sub">Claude / Codex / Cursor: /openflow spec</text>
-    <text x="852" y="178" class="node-sub">+ 别名 openflow-spec | OpenCode: /openflow/spec</text>
+    <text x="852" y="163" class="node-sub">Claude / Codex / Cursor: /openflow grill/spec</text>
+    <text x="852" y="178" class="node-sub">+ 别名 openflow-grill/spec | OpenCode: /openflow/grill</text>
   </g>
   <g filter="url(#softShadow)">
     <rect x="60" y="265" width="190" height="85" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
@@ -97,7 +97,7 @@
     <rect x="715" y="265" width="215" height="85" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
     <text x="737" y="294" text-anchor="middle" font-size="18">&#x1F516;</text>
     <text x="757" y="293" class="node-title">阶段别名 Skills</text>
-    <text x="757" y="313" class="node-sub">openflow-proposal</text>
+    <text x="757" y="313" class="node-sub">openflow-proposal / grill</text>
     <text x="757" y="328" class="node-sub">openflow-spec / build ...</text>
     <text x="757" y="343" class="node-sub">(Claude, Codex, Cursor)</text>
   </g>
@@ -106,7 +106,7 @@
     <text x="977" y="294" text-anchor="middle" font-size="18">&#x1F333;</text>
     <text x="997" y="293" class="node-title">OpenCode 命令树</text>
     <text x="997" y="313" class="node-sub">/openflow/proposal</text>
-    <text x="997" y="328" class="node-sub">/openflow/spec</text>
+    <text x="997" y="328" class="node-sub">/openflow/grill / spec</text>
     <text x="997" y="343" class="node-sub">/openflow/build ...</text>
   </g>
   <g filter="url(#softShadow)">
@@ -123,7 +123,7 @@
     <text x="372" y="493" class="node-title">skill-generator.ts</text>
     <text x="372" y="513" class="node-sub">读取 templates/*.md</text>
     <text x="372" y="528" class="node-sub">注入运行时依赖提示 (build/spec)</text>
-    <text x="372" y="543" class="node-sub">生成 SKILL + 6 阶段 + 别名文件</text>
+    <text x="372" y="543" class="node-sub">生成 SKILL + 7 阶段 + 别名文件</text>
   </g>
   <g filter="url(#softShadow)">
     <rect x="615" y="465" width="225" height="80" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
@@ -152,8 +152,8 @@
     <path d="M 60,645 L 222,645 L 240,663 L 240,725 L 60,725 Z" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
     <path d="M 222,645 L 222,663 L 240,663" fill="#ffffff" stroke="#c4b5fd" stroke-width="1"/>
     <text x="74" y="678" class="node-title">templates/*.md</text>
-    <text x="74" y="698" class="node-sub">SKILL + 6 phases</text>
-    <text x="74" y="713" class="node-sub">proposal/brainstorming/spec/amend/build/close</text>
+    <text x="74" y="698" class="node-sub">SKILL + 7 phases</text>
+    <text x="74" y="713" class="node-sub">proposal/brainstorming/grill/spec/amend/build/close</text>
   </g>
   <g filter="url(#softShadow)">
     <path d="M 280,645 L 482,645 L 500,663 L 500,725 L 280,725 Z" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>

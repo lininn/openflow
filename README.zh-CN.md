@@ -70,10 +70,13 @@ OpenCode 保持原生命令树形式，例如 `/openflow/spec`、`/openflow/buil
 |------|------|------|
 | `/openflow proposal` | proposal | 轻量提问，3-5 问快速收敛需求 |
 | `/openflow brainstorming` | brainstorming | 深度设计，多轮方案探索 |
+| `/openflow grill` | grill | 可选压力测试，在 spec 前挑战 proposal 假设 |
 | `/openflow spec` | spec | 调用 OpenSpec 生成规格 + 自动翻译 |
 | `/openflow amend` | amend | close 前修订需求/规格并更新 plan-ready.md |
 | `/openflow build` | build | 调用 Superpowers 执行实现 |
 | `/openflow close` | close | 验证一致性 + 归档 |
+
+`/openflow grill` 是可选阶段：proposal 已经足够清晰时可以跳过；需要在进入 spec 前挑战隐藏假设和边界时再使用。spec 阶段现在把 `plan-ready.md` 视为交给 Superpowers 的详细 handoff，而不是任务摘要：必须保留来源覆盖、文件责任、实现切片、TDD 期望、验证命令和阻塞项。
 
 ## 依赖策略
 
@@ -108,6 +111,11 @@ Works without them: yes, with manual-file fallback
    │                                 ├─→ proposal.md
    └── 深度 ──→ /openflow brainstorming ─┘ (openspec/changes/<name>/)
                多轮方案探索
+                                     │
+                          ┌──────────▼───────────┐
+                          │  /openflow grill      │
+                          │  可选压力测试          │
+                          └──────────┬───────────┘
                                      │
                           ┌──────────▼───────────┐
                           │  /openflow spec        │
