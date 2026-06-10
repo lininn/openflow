@@ -30,8 +30,8 @@ argument-hint: "proposal | brainstorming | spec | amend | build | close"
 | brainstorming | `openspec/changes/**/proposal.md` | 任何代码或实现文件 |
 | spec | `openspec/changes/**`、`plan-ready.md` | 任何代码或实现文件 |
 | amend | `openspec/changes/**`、`plan-ready.md`、`docs/superpowers/plans/*.md` | 代码、测试、其他实现文件 |
-| build | 代码、测试、实现计划状态 | 规格文档（除非另开变更） |
-| close | 归档、验证记录、`close-issues.md` | 代码、测试、其他实现文件 |
+| build | 代码、测试、实现计划状态、`openspec/changes/**/tasks.md` checkbox 状态 | 规格文档（除非另开变更）；不得改写任务内容或规格要求 |
+| close | 归档、验证记录、`close-issues.md`、`openspec/changes/**/tasks.md` checkbox 状态 | 代码、测试、其他实现文件；不得改写任务内容或规格要求 |
 
 如果用户在 proposal/brainstorming/spec/amend 阶段提出“就按这个做”“范围改成 X”“继续”等话术，不代表进入 build；必须先完成该阶段文档产物并提示下一步。
 

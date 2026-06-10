@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.4
+
+- Synced OpenSpec `tasks.md` checkbox state during OpenFlow build and close so completed Superpowers plans no longer block archiving.
+- Preserved close-phase archive dependency checks in generated Codex skills.
+- Added regression coverage for generated Codex OpenFlow task-sync instructions.
+
 ## 0.3.3-beta.2
 
 - Added close-phase archive dependency checks for changes that modify specs not yet present in `openspec/specs/`.
