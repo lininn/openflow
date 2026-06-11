@@ -100,9 +100,9 @@ Works without them: yes, with manual-file fallback
 
 ## Architecture
 
-> Detailed diagrams: [Architecture (SVG)](./openflow-architecture.svg) | [Architecture (PNG)](./openflow-architecture.png) | [Workflow (SVG)](./openflow-workflow.svg) | [Workflow (PNG)](./openflow-workflow.png)
+> Detailed diagrams: [Architecture (SVG)](https://unpkg.com/@lininn/openflow@0.4.0-beta.3/openflow-architecture.svg) | [Architecture (PNG)](https://unpkg.com/@lininn/openflow@0.4.0-beta.3/openflow-architecture.png) | [Workflow (SVG)](https://unpkg.com/@lininn/openflow@0.4.0-beta.3/openflow-workflow.svg) | [Workflow (PNG)](https://unpkg.com/@lininn/openflow@0.4.0-beta.3/openflow-workflow.png)
 
-![OpenFlow workflow](./openflow-workflow.svg)
+![OpenFlow workflow](https://unpkg.com/@lininn/openflow@0.4.0-beta.3/openflow-workflow.svg)
 
 ```
 User Requirements

@@ -48,7 +48,7 @@
   <g filter="url(#shadow)">
     <rect x="840" y="116" width="360" height="70" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
     <text x="858" y="144" class="node-title">OpenFlow Phases</text>
-    <text x="858" y="164" class="node-sub">proposal → brainstorming → grill → spec</text>
+    <text x="858" y="164" class="node-sub">proposal → brainstorming → grill-me → spec</text>
     <text x="858" y="179" class="node-sub">translation → build → amend → close</text>
   </g>
   <g filter="url(#shadow)">
@@ -110,7 +110,7 @@
     <rect x="925" y="438" width="250" height="82" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
     <text x="943" y="466" class="node-title">Workflow Guards</text>
     <text x="943" y="486" class="node-sub">phase write boundaries</text>
-    <text x="943" y="501" class="node-sub">grill is optional</text>
+    <text x="943" y="501" class="node-sub">grill-me is optional</text>
     <text x="943" y="516" class="node-sub">tasks checkbox evidence</text>
   </g>
   <path d="M 65,625 L 270,625 L 288,643 L 288,720 L 65,720 Z" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5" filter="url(#shadow)"/>
