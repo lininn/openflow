@@ -16,6 +16,7 @@ const TEMPLATES_DIR = path.resolve(__dirname, '..', '..', 'templates');
 const PHASES = [
   { name: 'proposal', description: 'Quick requirement capture' },
   { name: 'brainstorming', description: 'Deep design exploration' },
+  { name: 'grill', description: 'Optional stress-test before spec' },
   { name: 'spec', description: 'Generate OpenSpec specs and translate to plan-ready.md' },
   { name: 'amend', description: 'Revise requirements/specs before close' },
   { name: 'build', description: 'Execute implementation' },

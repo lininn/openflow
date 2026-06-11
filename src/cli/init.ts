@@ -116,6 +116,7 @@ export const initCommand = new Command('init')
     logger.info('Available commands:');
     logger.info('  /openflow proposal      Quick requirement capture');
     logger.info('  /openflow brainstorming  Deep design exploration');
+    logger.info('  /openflow grill         Optional stress-test before spec');
     logger.info('  /openflow spec           Generate specs + translate');
     logger.info('  /openflow amend          Revise requirements before close');
     logger.info('  /openflow build          Execute implementation');

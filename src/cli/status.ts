@@ -79,7 +79,7 @@ export const statusCommand = new Command('status')
       if (hasPlanReady) {
         status = '→ ready for /openflow build or /openflow amend';
       } else if (hasProposal) {
-        status = '→ needs /openflow spec';
+        status = '→ ready for /openflow grill or /openflow spec';
       } else {
         status = '→ needs /openflow proposal';
       }

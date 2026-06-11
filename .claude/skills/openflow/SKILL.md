@@ -1,7 +1,7 @@
 ---
 name: openflow
-description: "OpenSpec + Superpowers workflow orchestrator. Use /openflow proposal for quick capture, /openflow brainstorming for deep design, /openflow spec to generate specs + translate, /openflow amend to revise requirements before close, /openflow build to execute, /openflow close to verify and archive. Bridges requirements specs and engineering execution."
-argument-hint: "proposal | brainstorming | spec | amend | build | close"
+description: "OpenSpec + Superpowers workflow orchestrator. Use /openflow proposal for quick capture, /openflow brainstorming for deep design, /openflow grill to stress-test the proposal, /openflow spec to generate specs + translate, /openflow amend to revise requirements before close, /openflow build to execute, /openflow close to verify and archive. Bridges requirements specs and engineering execution."
+argument-hint: "proposal | brainstorming | grill | spec | amend | build | close"
 ---
 
 # openflow - 工作流协调器
@@ -13,7 +13,7 @@ argument-hint: "proposal | brainstorming | spec | amend | build | close"
 如果本轮没有显式 `/openflow ...` 子命令，但上一轮已经进入 openflow 任一阶段，并且用户是在补充范围、回答确认问题、说“继续”、修正需求、或说明新增/移除边界：
 
 1. 默认继续上一 openflow 阶段，不把该回复当作普通编码请求
-2. 如果上一阶段是 proposal、brainstorming、spec 或 amend，只能继续产出/更新 OpenSpec 文档和计划文档，不得修改任何代码或实现文件
+2. 如果上一阶段是 proposal、brainstorming、grill、spec 或 amend，只能继续产出/更新 OpenSpec 文档和计划文档，不得修改任何代码或实现文件
 3. 如果上一阶段是 build，但用户补充的是需求、验收条件或规格边界变更，切到 `/openflow amend`，不要直接改代码
 4. 只有用户显式调用 `/openflow build`，或状态检测明确进入 build 阶段后，才允许修改代码或实现文件
 5. 中断后恢复时，先重新读取当前阶段文件和 `openspec/changes/` 状态，再继续执行
@@ -28,12 +28,13 @@ argument-hint: "proposal | brainstorming | spec | amend | build | close"
 |------|----------|----------|
 | proposal | `openspec/changes/**/proposal.md` | 任何代码或实现文件 |
 | brainstorming | `openspec/changes/**/proposal.md` | 任何代码或实现文件 |
+| grill | `openspec/changes/**/proposal.md` | 任何代码或实现文件 |
 | spec | `openspec/changes/**`、`plan-ready.md` | 任何代码或实现文件 |
 | amend | `openspec/changes/**`、`plan-ready.md`、`docs/superpowers/plans/*.md` | 代码、测试、其他实现文件 |
-| build | 代码、测试、实现计划状态 | 规格文档（除非另开变更） |
-| close | 归档、验证记录、`close-issues.md` | 代码、测试、其他实现文件 |
+| build | 代码、测试、实现计划状态、`openspec/changes/**/tasks.md` checkbox 状态 | 规格文档（除非另开变更）；不得改写任务内容或规格要求 |
+| close | 归档、验证记录、`close-issues.md`、`openspec/changes/**/tasks.md` checkbox 状态 | 代码、测试、其他实现文件；不得改写任务内容或规格要求 |
 
-如果用户在 proposal/brainstorming/spec/amend 阶段提出“就按这个做”“范围改成 X”“继续”等话术，不代表进入 build；必须先完成该阶段文档产物并提示下一步。
+如果用户在 proposal/brainstorming/grill/spec/amend 阶段提出“就按这个做”、“范围改成 X”、“继续”等话术，不代表进入 build；必须先完成该阶段文档产物并提示下一步。
 
 ## 子命令
 
@@ -41,6 +42,7 @@ argument-hint: "proposal | brainstorming | spec | amend | build | close"
 |------|------|------|
 | `/openflow proposal` | proposal | 轻量提问，快速收敛需求 |
 | `/openflow brainstorming` | brainstorming | 深度设计，多轮探索 |
+| `/openflow grill` | grill | 可选压力测试，反向追问决策点 |
 | `/openflow spec` | spec | 调用 OpenSpec 生成规格 + 翻译 |
 | `/openflow amend` | amend | build/close 前受控修改需求、规格和计划 |
 | `/openflow build` | build | 调用 Superpowers 执行实现 |
@@ -81,6 +83,7 @@ argument-hint: "proposal | brainstorming | spec | amend | build | close"
 |------|----------|-------------|
 | proposal | 无 | — |
 | brainstorming | 无 | — |
+| grill | 需要有活跃变更目录且有 proposal.md | "请先用 /openflow proposal 或 /openflow brainstorming 创建需求" |
 | spec | 需要有活跃变更目录或有用户需求 | "请先用 /openflow proposal 或 /openflow brainstorming 描述需求" |
 | amend | 需要有活跃变更目录，通常需要 plan-ready.md | "还没有可修订的活跃变更，请先完成 /openflow spec" |
 | build | 需要存在 plan-ready.md | "请先完成 /openflow spec 生成规格和翻译" |

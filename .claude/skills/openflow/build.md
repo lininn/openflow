@@ -84,13 +84,23 @@ docs/superpowers/plans/YYYY-MM-DD-<变更名>.md
 
 ### 5. 执行完成
 
-所有 task 完成后，提示用户：
+所有 Superpowers 实现计划 task 完成后：
+
+1. 重新读取 `openspec/changes/<变更名>/tasks.md`。
+2. 对照已完成的实现计划、实际代码和验证结果，确认每个 OpenSpec task 都已经完成。
+3. 将已完成的 OpenSpec task 从 `- [ ]` 更新为 `- [x]`。
+4. 如果有 OpenSpec task 无法确认完成，不要勾选；记录缺口并继续执行对应实现或验证。
+
+OpenSpec `tasks.md` 是归档前置状态，不能只完成 `docs/superpowers/plans/` 而保持 OpenSpec task 未勾选。
+
+全部完成并同步后，提示用户：
 
 > "所有实现任务已完成。接下来可以用 /openflow close 验证一致性并归档。"
 
 ## 关键原则
 
 - **不允许在 build 阶段修改规格文档** — 发现需求遗漏或规格错误时切到 `/openflow amend`
+- build 阶段可以更新 `openspec/changes/<变更名>/tasks.md` 的 checkbox 状态，但只能反映已验证完成的任务，不能改写任务内容或规格要求
 - build 是唯一默认允许修改代码或实现文件的阶段；如果上一阶段不是 build，不要因为用户确认范围而自动写代码
 - plan-ready.md 是锁定的设计决策，Superpowers 按计划展开执行，不重新理解需求
 - 断点恢复依赖文件系统状态，不依赖 AI 的会话记忆
