@@ -1,261 +1,183 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860" width="1200" height="860">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 860" width="1280" height="860">
   <style>
     text { font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', 'Microsoft JhengHei', 'SimHei', sans-serif; }
     .title { fill:#111827; font-size:24px; font-weight:700; }
     .subtitle { fill:#6b7280; font-size:13px; }
-    .layer-label { fill:#374151; font-size:12px; font-weight:700; letter-spacing:0.06em; }
+    .layer { fill:#374151; font-size:12px; font-weight:700; letter-spacing:0.06em; }
     .node-title { fill:#111827; font-size:14px; font-weight:700; }
     .node-sub { fill:#6b7280; font-size:11px; }
     .small { fill:#6b7280; font-size:10px; }
   </style>
   <defs>
-    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
-    </marker>
-    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
-    </marker>
-    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#ea580c"/>
-    </marker>
-    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
-    </marker>
-    <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
-    </marker>
-    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
-    </marker>
-    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.10"/>
-    </filter>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#16a34a"/></marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#7c3aed"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#ea580c"/></marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6b7280"/></marker>
+    <filter id="shadow" x="-16%" y="-16%" width="132%" height="132%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.10"/></filter>
   </defs>
-  <rect width="1200" height="860" fill="#ffffff"/>
-  <text x="600" y="42" text-anchor="middle" class="title">OpenFlow 项目架构图</text>
-  <text x="600" y="64" text-anchor="middle" class="subtitle">OpenSpec + Superpowers 工作流编排器 — CLI 初始化、技能生成、状态看板与阶段模板 (v0.3.x)</text>
-  <rect x="40" y="90" width="1120" height="115" rx="12" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2" stroke-dasharray="7,5"/>
-  <text x="56" y="114" class="layer-label">用户 / CLI 入口</text>
-  <rect x="40" y="230" width="1120" height="175" rx="12" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" stroke-dasharray="7,5"/>
-  <text x="56" y="254" class="layer-label">CLI 命令层</text>
-  <rect x="40" y="430" width="1120" height="140" rx="12" fill="#fff7ed" stroke="#fdba74" stroke-width="1.2" stroke-dasharray="7,5"/>
-  <text x="56" y="454" class="layer-label">核心编排层</text>
-  <rect x="40" y="610" width="1120" height="165" rx="12" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.2" stroke-dasharray="7,5"/>
-  <text x="56" y="634" class="layer-label">模板、状态与外部工具</text>
-  <g filter="url(#softShadow)">
-    <rect x="70" y="120" width="175" height="70" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
-    <text x="92" y="149" text-anchor="middle" font-size="18">&#x1F464;</text>
-    <text x="112" y="148" class="node-title">开发者 / Agent</text>
-    <text x="112" y="168" class="node-sub">运行 openflow CLI</text>
-    <text x="112" y="183" class="node-sub">调用 /openflow skills</text>
+  <rect width="1280" height="860" fill="#ffffff"/>
+  <text x="640" y="40" text-anchor="middle" class="title">OpenFlow 项目架构图</text>
+  <text x="640" y="63" text-anchor="middle" class="subtitle">CLI 初始化 · 技能生成 · 7 阶段模板 · OpenSpec/Superpowers 编排</text>
+  <rect x="40" y="90" width="1200" height="110" rx="14" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2" stroke-dasharray="7,5"/>
+  <text x="58" y="116" class="layer">用户 / AI 工具入口</text>
+  <rect x="40" y="225" width="1200" height="155" rx="14" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" stroke-dasharray="7,5"/>
+  <text x="58" y="251" class="layer">CLI 命令层</text>
+  <rect x="40" y="405" width="1200" height="150" rx="14" fill="#fff7ed" stroke="#fdba74" stroke-width="1.2" stroke-dasharray="7,5"/>
+  <text x="58" y="431" class="layer">核心编排层</text>
+  <rect x="40" y="590" width="1200" height="170" rx="14" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.2" stroke-dasharray="7,5"/>
+  <text x="58" y="616" class="layer">模板、产物与外部工具</text>
+  <g filter="url(#shadow)">
+    <rect x="70" y="122" width="180" height="58" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+    <text x="88" y="150" class="node-title">开发者 / Agent</text>
+    <text x="88" y="170" class="node-sub">调用 openflow CLI</text>
+    <text x="88" y="185" class="node-sub">使用 /openflow skills</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="305" y="120" width="185" height="70" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
-    <text x="327" y="149" text-anchor="middle" font-size="18">&#x25B6;</text>
-    <text x="347" y="148" class="node-title">bin/openflow.js</text>
-    <text x="347" y="168" class="node-sub">npm bin 入口</text>
-    <text x="347" y="183" class="node-sub">启动 Commander</text>
+  <g filter="url(#shadow)">
+    <rect x="310" y="122" width="190" height="58" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+    <text x="328" y="150" class="node-title">bin/openflow.js</text>
+    <text x="328" y="170" class="node-sub">npm bin 入口</text>
+    <text x="328" y="185" class="node-sub">Commander router</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="550" y="120" width="190" height="70" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
-    <text x="572" y="149" text-anchor="middle" font-size="18">&#x2318;</text>
-    <text x="592" y="148" class="node-title">Commander Router</text>
-    <text x="592" y="168" class="node-sub">注册 init/status/update</text>
-    <text x="592" y="183" class="node-sub">显示版本信息</text>
+  <g filter="url(#shadow)">
+    <rect x="560" y="122" width="220" height="58" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+    <text x="578" y="150" class="node-title">AI Tool Skills</text>
+    <text x="578" y="170" class="node-sub">Claude/Codex/Cursor aliases</text>
+    <text x="578" y="185" class="node-sub">OpenCode command tree</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="810" y="120" width="330" height="70" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
-    <text x="832" y="149" text-anchor="middle" font-size="18">&#x26A1;</text>
-    <text x="852" y="145" class="node-title">AI Tool Skills</text>
-    <text x="852" y="163" class="node-sub">Claude / Codex / Cursor: /openflow grill/spec</text>
-    <text x="852" y="178" class="node-sub">+ 别名 openflow-grill/spec | OpenCode: /openflow/grill</text>
+  <g filter="url(#shadow)">
+    <rect x="840" y="116" width="360" height="70" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+    <text x="858" y="144" class="node-title">OpenFlow Phases</text>
+    <text x="858" y="164" class="node-sub">proposal → brainstorming → grill → spec</text>
+    <text x="858" y="179" class="node-sub">translation → build → amend → close</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="60" y="265" width="190" height="85" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
-    <text x="82" y="294" text-anchor="middle" font-size="18">&#x1F6E0;</text>
-    <text x="102" y="293" class="node-title">initCommand</text>
-    <text x="102" y="313" class="node-sub">检查依赖 (双层检测)</text>
-    <text x="102" y="328" class="node-sub">初始化 OpenSpec</text>
-    <text x="102" y="343" class="node-sub">生成 skills (本地/全局)</text>
+  <g filter="url(#shadow)">
+    <rect x="65" y="260" width="205" height="80" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+    <text x="83" y="288" class="node-title">initCommand</text>
+    <text x="83" y="308" class="node-sub">检测 OpenSpec/Superpowers</text>
+    <text x="83" y="323" class="node-sub">初始化项目</text>
+    <text x="83" y="338" class="node-sub">生成本地/全局 skills</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="275" y="265" width="180" height="85" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
-    <text x="297" y="294" text-anchor="middle" font-size="18">&#x1F504;</text>
-    <text x="317" y="293" class="node-title">updateCommand</text>
-    <text x="317" y="313" class="node-sub">读取 .openflow state</text>
-    <text x="317" y="328" class="node-sub">重新生成 skills</text>
+  <g filter="url(#shadow)">
+    <rect x="305" y="260" width="185" height="80" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+    <text x="323" y="288" class="node-title">updateCommand</text>
+    <text x="323" y="308" class="node-sub">读取 .openflow state</text>
+    <text x="323" y="323" class="node-sub">重新生成 skills</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="480" y="265" width="210" height="85" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
-    <text x="502" y="294" text-anchor="middle" font-size="18">&#x1F4CA;</text>
-    <text x="522" y="293" class="node-title">statusCommand</text>
-    <text x="522" y="313" class="node-sub">依赖状态 (OpenSpec/Superpowers)</text>
-    <text x="522" y="328" class="node-sub">Workflow dashboard</text>
-    <text x="522" y="343" class="node-sub">活跃变更 / 冲突提示</text>
+  <g filter="url(#shadow)">
+    <rect x="525" y="260" width="210" height="80" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+    <text x="543" y="288" class="node-title">statusCommand</text>
+    <text x="543" y="308" class="node-sub">依赖状态</text>
+    <text x="543" y="323" class="node-sub">active change dashboard</text>
+    <text x="543" y="338" class="node-sub">ready for grill/spec</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="715" y="265" width="215" height="85" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
-    <text x="737" y="294" text-anchor="middle" font-size="18">&#x1F516;</text>
-    <text x="757" y="293" class="node-title">阶段别名 Skills</text>
-    <text x="757" y="313" class="node-sub">openflow-proposal / grill</text>
-    <text x="757" y="328" class="node-sub">openflow-spec / build ...</text>
-    <text x="757" y="343" class="node-sub">(Claude, Codex, Cursor)</text>
+  <g filter="url(#shadow)">
+    <rect x="770" y="260" width="220" height="80" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+    <text x="788" y="288" class="node-title">阶段别名 Skills</text>
+    <text x="788" y="308" class="node-sub">openflow-proposal / grill</text>
+    <text x="788" y="323" class="node-sub">openflow-spec / build</text>
+    <text x="788" y="338" class="node-sub">Claude/Codex/Cursor</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="955" y="265" width="185" height="85" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
-    <text x="977" y="294" text-anchor="middle" font-size="18">&#x1F333;</text>
-    <text x="997" y="293" class="node-title">OpenCode 命令树</text>
-    <text x="997" y="313" class="node-sub">/openflow/proposal</text>
-    <text x="997" y="328" class="node-sub">/openflow/grill / spec</text>
-    <text x="997" y="343" class="node-sub">/openflow/build ...</text>
+  <g filter="url(#shadow)">
+    <rect x="1025" y="260" width="175" height="80" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+    <text x="1043" y="288" class="node-title">OpenCode 命令树</text>
+    <text x="1043" y="308" class="node-sub">/openflow/proposal</text>
+    <text x="1043" y="323" class="node-sub">/openflow/grill</text>
+    <text x="1043" y="338" class="node-sub">/openflow/spec ...</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="60" y="465" width="235" height="80" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
-    <text x="82" y="494" text-anchor="middle" font-size="18">&#x1F50D;</text>
-    <text x="102" y="493" class="node-title">dependency-check.ts</text>
-    <text x="102" y="513" class="node-sub">OpenSpec CLI (自动可装)</text>
-    <text x="102" y="528" class="node-sub">Superpowers skills (手动)</text>
-    <text x="102" y="543" class="node-sub">项目 .openflow state</text>
+  <g filter="url(#shadow)">
+    <rect x="65" y="438" width="230" height="82" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
+    <text x="83" y="466" class="node-title">dependency-check.ts</text>
+    <text x="83" y="486" class="node-sub">OpenSpec CLI</text>
+    <text x="83" y="501" class="node-sub">Superpowers skills</text>
+    <text x="83" y="516" class="node-sub">project .openflow state</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="330" y="465" width="250" height="80" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
-    <text x="352" y="494" text-anchor="middle" font-size="18">&#x1F9E9;</text>
-    <text x="372" y="493" class="node-title">skill-generator.ts</text>
-    <text x="372" y="513" class="node-sub">读取 templates/*.md</text>
-    <text x="372" y="528" class="node-sub">注入运行时依赖提示 (build/spec)</text>
-    <text x="372" y="543" class="node-sub">生成 SKILL + 7 阶段 + 别名文件</text>
+  <g filter="url(#shadow)">
+    <rect x="335" y="438" width="260" height="82" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
+    <text x="353" y="466" class="node-title">skill-generator.ts</text>
+    <text x="353" y="486" class="node-sub">PHASES includes grill</text>
+    <text x="353" y="501" class="node-sub">reads templates/*.md</text>
+    <text x="353" y="516" class="node-sub">generates aliases / commands</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="615" y="465" width="225" height="80" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
-    <text x="637" y="494" text-anchor="middle" font-size="18">&#x1F9ED;</text>
-    <text x="657" y="493" class="node-title">workflow-status.ts</text>
-    <text x="657" y="513" class="node-sub">解析 workflow-status.md</text>
-    <text x="657" y="528" class="node-sub">推断阶段 / gates</text>
-    <text x="657" y="543" class="node-sub">渲染 dashboard</text>
+  <g filter="url(#shadow)">
+    <rect x="635" y="438" width="250" height="82" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
+    <text x="653" y="466" class="node-title">Translation Contract</text>
+    <text x="653" y="486" class="node-sub">Source Coverage</text>
+    <text x="653" y="501" class="node-sub">File Responsibility Map</text>
+    <text x="653" y="516" class="node-sub">Implementation Slices + TDD</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="875" y="465" width="155" height="80" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
-    <text x="897" y="494" text-anchor="middle" font-size="18">&#x2699;</text>
-    <text x="917" y="493" class="node-title">utils</text>
-    <text x="917" y="513" class="node-sub">logger.ts</text>
-    <text x="917" y="528" class="node-sub">shell.ts</text>
-    <text x="917" y="543" class="node-sub">constants.ts</text>
+  <g filter="url(#shadow)">
+    <rect x="925" y="438" width="250" height="82" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
+    <text x="943" y="466" class="node-title">Workflow Guards</text>
+    <text x="943" y="486" class="node-sub">phase write boundaries</text>
+    <text x="943" y="501" class="node-sub">grill is optional</text>
+    <text x="943" y="516" class="node-sub">tasks checkbox evidence</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="1060" y="465" width="80" height="80" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
-    <text x="1100" y="493" text-anchor="middle" class="node-title" font-size="11">TOOL</text>
-    <text x="1100" y="508" text-anchor="middle" class="node-title" font-size="11">PATHS</text>
-    <text x="1100" y="528" text-anchor="middle" class="node-sub">4 工具</text>
-    <text x="1100" y="543" text-anchor="middle" class="node-sub">配置映射</text>
+  <path d="M 65,625 L 270,625 L 288,643 L 288,720 L 65,720 Z" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5" filter="url(#shadow)"/>
+  <path d="M 270,625 L 270,643 L 288,643" fill="#ffffff" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="82" y="657" class="node-title">templates/*.md</text>
+  <text x="82" y="677" class="node-sub">SKILL + 7 phases</text>
+  <text x="82" y="694" class="node-sub">includes grill.md</text>
+  <text x="82" y="711" class="node-sub">detailed spec/amend handoff</text>
+  <path d="M 335,625 L 565,625 L 583,643 L 583,720 L 335,720 Z" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5" filter="url(#shadow)"/>
+  <path d="M 565,625 L 565,643 L 583,643" fill="#ffffff" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="352" y="657" class="node-title">Generated outputs</text>
+  <text x="352" y="677" class="node-sub">.claude/skills/openflow/</text>
+  <text x="352" y="694" class="node-sub">.codex/skills/openflow/</text>
+  <text x="352" y="711" class="node-sub">.opencode/commands/openflow/</text>
+  <g filter="url(#shadow)">
+    <ellipse cx="700" cy="632" rx="92" ry="13" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+    <rect x="608" y="632" width="184" height="76" fill="#eff6ff" stroke="none"/>
+    <line x1="608" y1="632" x2="608" y2="708" stroke="#93c5fd" stroke-width="1.5"/>
+    <line x1="792" y1="632" x2="792" y2="708" stroke="#93c5fd" stroke-width="1.5"/>
+    <ellipse cx="700" cy="708" rx="92" ry="13" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
+    <text x="700" y="662" text-anchor="middle" class="node-title">OpenSpec changes</text>
+    <text x="700" y="682" text-anchor="middle" class="node-sub">proposal/design/specs/tasks</text>
+    <text x="700" y="698" text-anchor="middle" class="node-sub">plan-ready.md</text>
   </g>
-  <g filter="url(#softShadow)">
-    <path d="M 60,645 L 222,645 L 240,663 L 240,725 L 60,725 Z" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
-    <path d="M 222,645 L 222,663 L 240,663" fill="#ffffff" stroke="#c4b5fd" stroke-width="1"/>
-    <text x="74" y="678" class="node-title">templates/*.md</text>
-    <text x="74" y="698" class="node-sub">SKILL + 7 phases</text>
-    <text x="74" y="713" class="node-sub">proposal/brainstorming/grill/spec/amend/build/close</text>
+  <g filter="url(#shadow)">
+    <rect x="840" y="625" width="190" height="82" rx="10" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
+    <text x="858" y="653" class="node-title">External tools</text>
+    <text x="858" y="673" class="node-sub">OpenSpec CLI</text>
+    <text x="858" y="688" class="node-sub">Superpowers writing-plans</text>
+    <text x="858" y="703" class="node-sub">manual fallback</text>
   </g>
-  <g filter="url(#softShadow)">
-    <path d="M 280,645 L 482,645 L 500,663 L 500,725 L 280,725 Z" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
-    <path d="M 482,645 L 482,663 L 500,663" fill="#ffffff" stroke="#c4b5fd" stroke-width="1"/>
-    <text x="294" y="675" class="node-title">Skills 输出目录</text>
-    <text x="294" y="693" class="node-sub">.claude/skills/openflow/</text>
-    <text x="294" y="708" class="node-sub">.codex/skills/openflow/</text>
-    <text x="294" y="723" class="node-sub">.cursor/skills/ .opencode/commands/</text>
+  <g filter="url(#shadow)">
+    <rect x="1070" y="625" width="130" height="82" rx="10" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
+    <text x="1088" y="653" class="node-title">dist/</text>
+    <text x="1088" y="673" class="node-sub">tsc output</text>
+    <text x="1088" y="688" class="node-sub">npm publish files</text>
   </g>
-  <g filter="url(#softShadow)">
-    <ellipse cx="600" cy="650" rx="90.0" ry="12" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
-    <rect x="510.0" y="650" width="180" height="75" fill="#eff6ff" stroke="none"/>
-    <line x1="510.0" y1="650" x2="510.0" y2="725" stroke="#93c5fd" stroke-width="1.5"/>
-    <line x1="690.0" y1="650" x2="690.0" y2="725" stroke="#93c5fd" stroke-width="1.5"/>
-    <ellipse cx="600" cy="725" rx="90.0" ry="12" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
-    <text x="600" y="680" text-anchor="middle" class="node-title">OpenSpec changes</text>
-    <text x="600" y="698" text-anchor="middle" class="node-sub">proposal/design/specs/tasks</text>
-    <text x="600" y="712" text-anchor="middle" class="node-sub">workflow-status.md</text>
+  <path d="M 250,151 H 310" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <path d="M 500,151 H 560" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <path d="M 780,151 H 840" fill="none" stroke="#7c3aed" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-purple)"/>
+  <path d="M 160,180 V 260" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <path d="M 405,180 V 260" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <path d="M 660,180 V 260" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <path d="M 860,186 V 260" fill="none" stroke="#7c3aed" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-purple)"/>
+  <path d="M 1040,186 V 260" fill="none" stroke="#7c3aed" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-purple)"/>
+  <path d="M 168,340 V 438" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <path d="M 168,340 C 250,390 360,405 465,438" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <path d="M 398,340 C 415,380 445,402 465,438" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <path d="M 635,340 C 670,380 720,405 760,438" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <path d="M 880,340 C 900,380 965,405 1040,438" fill="none" stroke="#7c3aed" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-purple)"/>
+  <path d="M 465,520 C 380,575 270,600 178,625" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <path d="M 465,520 V 625" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <path d="M 760,520 C 735,560 710,590 700,625" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <path d="M 1040,520 C 1000,565 955,598 935,625" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <path d="M 465,520 C 690,560 980,585 1135,625" fill="none" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
+  <path d="M 935,520 V 625" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <g transform="translate(70,800)">
+    <line x1="0" y1="0" x2="34" y2="0" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <text x="44" y="4" class="small">请求/状态流</text>
+    <line x1="220" y1="0" x2="34" y2="0" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+    <text x="264" y="4" class="small">文件生成</text>
+    <line x1="440" y1="0" x2="34" y2="0" stroke="#7c3aed" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-purple)"/>
+    <text x="484" y="4" class="small">技能/命令可见性</text>
+    <line x1="660" y1="0" x2="34" y2="0" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+    <text x="704" y="4" class="small">依赖/工具调用</text>
+    <line x1="880" y1="0" x2="34" y2="0" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
+    <text x="924" y="4" class="small">构建输出</text>
   </g>
-  <g filter="url(#softShadow)">
-    <rect x="740" y="645" width="175" height="80" rx="10" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
-    <text x="762" y="674" text-anchor="middle" font-size="18">&#x1F50C;</text>
-    <text x="782" y="673" class="node-title">外部工具</text>
-    <text x="782" y="693" class="node-sub">OpenSpec CLI (@fission-ai)</text>
-    <text x="782" y="708" class="node-sub">Superpowers (writing-plans)</text>
-    <text x="782" y="723" class="node-sub">缺失时手动 fallback</text>
-  </g>
-  <g filter="url(#softShadow)">
-    <path d="M 955,645 L 1057,645 L 1075,663 L 1075,725 L 955,725 Z" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
-    <path d="M 1057,645 L 1057,663 L 1075,663" fill="#ffffff" stroke="#c4b5fd" stroke-width="1"/>
-    <text x="969" y="678" class="node-title">dist/</text>
-    <text x="969" y="698" class="node-sub">tsc 输出</text>
-    <text x="969" y="713" class="node-sub">npm publish 文件</text>
-  </g>
-  <path d="M 245,155 L 305,155" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <rect x="240" y="134" width="60" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="270" y="148" text-anchor="middle" class="small">执行</text>
-  <path d="M 490,155 L 550,155" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <rect x="490" y="134" width="60" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="520" y="148" text-anchor="middle" class="small">路由</text>
-  <path d="M 740,155 L 810,155" fill="none" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)" stroke-dasharray="5,4"/>
-  <rect x="735" y="134" width="96" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="783" y="148" text-anchor="middle" class="small">生成可见命令</text>
-  <path d="M 395,190 L 155,265" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <rect x="230" y="210" width="60" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="260" y="224" text-anchor="middle" class="small">init</text>
-  <path d="M 595,190 L 365,265" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <rect x="440" y="210" width="60" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="470" y="224" text-anchor="middle" class="small">update</text>
-  <path d="M 650,190 L 585,265" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <rect x="585" y="210" width="60" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="615" y="224" text-anchor="middle" class="small">status</text>
-  <path d="M 720,190 L 822,265" fill="none" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
-  <rect x="735" y="210" width="60" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="765" y="224" text-anchor="middle" class="small">alias</text>
-  <path d="M 740,170 L 1047,265" fill="none" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)" stroke-dasharray="5,4"/>
-  <rect x="855" y="206" width="80" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="895" y="220" text-anchor="middle" class="small">command-tree</text>
-  <path d="M 155,350 L 177,465" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
-  <rect x="120" y="390" width="70" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="155" y="404" text-anchor="middle" class="small">检查依赖</text>
-  <path d="M 155,350 L 455,465" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <rect x="260" y="390" width="60" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="290" y="404" text-anchor="middle" class="small">生成</text>
-  <path d="M 365,350 L 455,465" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <rect x="370" y="390" width="70" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="405" y="404" text-anchor="middle" class="small">重新生成</text>
-  <path d="M 585,350 L 727,465" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <rect x="615" y="390" width="70" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="650" y="404" text-anchor="middle" class="small">读取状态</text>
-  <path d="M 822,350 L 455,430 L 455,465" fill="none" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)" stroke-dasharray="5,4"/>
-  <rect x="540" y="395" width="80" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="580" y="409" text-anchor="middle" class="small">模板来源</text>
-  <path d="M 455,545 L 150,645" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <rect x="250" y="578" width="70" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="285" y="592" text-anchor="middle" class="small">读取模板</text>
-  <path d="M 455,545 L 390,645" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <rect x="380" y="578" width="80" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="420" y="592" text-anchor="middle" class="small">写入 skills</text>
-  <path d="M 727,545 L 600,645" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <rect x="620" y="578" width="80" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="660" y="592" text-anchor="middle" class="small">读取/推断</text>
-  <path d="M 177,545 L 827,645" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
-  <rect x="460" y="578" width="60" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="490" y="592" text-anchor="middle" class="small">检测</text>
-  <path d="M 455,545 L 1015,645" fill="none" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-gray)" stroke-dasharray="5,4"/>
-  <rect x="690" y="578" width="70" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="725" y="592" text-anchor="middle" class="small">tsc 输出</text>
-  <path d="M 727,545 L 827,645" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
-  <rect x="740" y="578" width="80" height="18" rx="9" fill="#ffffff" opacity="0.95"/>
-  <text x="780" y="592" text-anchor="middle" class="small">调用/检查</text>
-  <g transform="translate(56,795)">
-    <line x1="0" y1="8" x2="34" y2="8" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-    <text x="42" y="12" class="small">CLI / 请求流</text>
-    <line x1="200" y1="8" x2="234" y2="8" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
-    <text x="242" y="12" class="small">文件生成 / 写入</text>
-    <line x1="400" y1="8" x2="434" y2="8" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
-    <text x="442" y="12" class="small">依赖检测 / 工具调用</text>
-    <line x1="610" y1="8" x2="644" y2="8" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
-    <text x="652" y="12" class="small">技能路由 / 代理可见</text>
-    <line x1="830" y1="8" x2="864" y2="8" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-gray)"/>
-    <text x="872" y="12" class="small">构建输出</text>
-  </g>
-  <text x="1140" y="838" text-anchor="end" class="small">@lininn/openflow v0.3.x · architecture overview</text>
+  <text x="1200" y="838" text-anchor="end" class="small">@lininn/openflow · architecture overview</text>
 </svg>
