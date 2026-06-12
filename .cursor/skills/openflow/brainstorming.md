@@ -59,9 +59,15 @@ mkdir -p openspec/changes/<变更名>/specs
 openspec list
 ```
 
-### 6. 提示下一步
+### 6. 询问是否进入可选 grill-me
 
-> "需求已记录。接下来可以用 `/openflow spec` 生成完整规格。"
+proposal.md 写入后，必须询问用户是否进入可选的 grill-me 压力测试节点：
+
+> "需求和设计方向已记录。是否要先进入可选的 grill-me 压力测试？我会逐个追问隐藏假设、边界和风险；你也可以输入“跳过”，直接进入 `/openflow spec` 生成完整规格。"
+
+- 用户选择 grill-me / 压力测试 / 继续追问 → 切到 `/openflow grill`
+- 用户选择跳过 / 不需要 / 直接 spec → 提示下一步为 `/openflow spec`
+- 用户继续补充细节 → 仍停留在 brainstorming 阶段并更新 `proposal.md`
 
 ## 注意
 

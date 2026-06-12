@@ -58,6 +58,28 @@ describe('skill template resolution', () => {
     expect(amendContent).toContain('TDD 计划');
   });
 
+  it('requires proposal and brainstorming to ask before optional grill-me', () => {
+    const proposalContent = resolveSkillTemplateContent(path.resolve('templates'), 'proposal.md');
+    const brainstormingContent = resolveSkillTemplateContent(path.resolve('templates'), 'brainstorming.md');
+
+    for (const content of [proposalContent, brainstormingContent]) {
+      expect(content).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');
+      expect(content).toContain('你也可以输入“跳过”');
+      expect(content).toContain('用户选择 grill-me / 压力测试 / 继续追问 → 切到 `/openflow grill`');
+      expect(content).toContain('用户选择跳过 / 不需要 / 直接 spec → 提示下一步为 `/openflow spec`');
+    }
+  });
+
+  it('does not auto-enter spec before the grill-me decision is handled', () => {
+    const skillContent = resolveSkillTemplateContent(path.resolve('templates'), 'SKILL.md');
+    const specContent = resolveSkillTemplateContent(path.resolve('templates'), 'spec.md');
+
+    expect(skillContent).toContain('有活跃变更且无 plan-ready.md → 先询问是否进入可选 grill-me');
+    expect(skillContent).toContain('不得直接加载 spec');
+    expect(specContent).toContain('进入 spec 前必须先处理可选 grill-me 决策');
+    expect(specContent).toContain('用户选择跳过 / 不需要 / 直接 spec 后才继续本阶段');
+  });
+
   it('generates Codex skills with evidence-based OpenSpec task sync instructions', () => {
     generateSkills({
       cwd: tmpDir,
@@ -70,16 +92,21 @@ describe('skill template resolution', () => {
 
     const skillContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow/SKILL.md'), 'utf-8');
     const grillContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow/grill.md'), 'utf-8');
+    const proposalContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow/proposal.md'), 'utf-8');
+    const brainstormingContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow/brainstorming.md'), 'utf-8');
     const grillAliasContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow-grill/SKILL.md'), 'utf-8');
     const buildContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow/build.md'), 'utf-8');
     const closeContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow/close.md'), 'utf-8');
 
     expect(skillContent).toContain('proposal | brainstorming | grill | spec | amend | build | close');
     expect(skillContent).toContain('/openflow grill');
+    expect(skillContent).toContain('有活跃变更且无 plan-ready.md → 先询问是否进入可选 grill-me');
     expect(skillContent).toContain('proposal、brainstorming、grill、spec 或 amend');
     expect(skillContent).toContain('proposal/brainstorming/grill/spec/amend');
     expect(grillContent).toContain('name: openflow/grill');
     expect(grillContent).toContain('本阶段只允许写 `openspec/changes/**/proposal.md`');
+    expect(proposalContent).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');
+    expect(brainstormingContent).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');
     expect(grillAliasContent).toContain('name: openflow-grill');
     expect(grillAliasContent).toContain('`/openflow grill $ARGUMENTS`');
     expect(skillContent).toContain('代码、测试、实现计划状态、`openspec/changes/**/tasks.md` checkbox 状态');
@@ -105,11 +132,16 @@ describe('skill template resolution', () => {
 
     const skillContent = fs.readFileSync(path.join(tmpDir, '.opencode/commands/openflow/SKILL.md'), 'utf-8');
     const grillContent = fs.readFileSync(path.join(tmpDir, '.opencode/commands/openflow/grill.md'), 'utf-8');
+    const proposalContent = fs.readFileSync(path.join(tmpDir, '.opencode/commands/openflow/proposal.md'), 'utf-8');
+    const brainstormingContent = fs.readFileSync(path.join(tmpDir, '.opencode/commands/openflow/brainstorming.md'), 'utf-8');
     const specContent = fs.readFileSync(path.join(tmpDir, '.opencode/commands/openflow/spec.md'), 'utf-8');
 
     expect(skillContent).toContain('proposal | brainstorming | grill | spec | amend | build | close');
+    expect(skillContent).toContain('有活跃变更且无 plan-ready.md → 先询问是否进入可选 grill-me');
     expect(skillContent).toContain('proposal、brainstorming、grill、spec 或 amend');
     expect(grillContent).toContain('用户随时可以跳过，grill 是可选的辅助，不是强制门禁');
+    expect(proposalContent).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');
+    expect(brainstormingContent).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');
     expect(specContent).toContain('## Source Coverage');
     expect(specContent).toContain('## File Responsibility Map');
     expect(specContent).toContain('## Superpowers Handoff');

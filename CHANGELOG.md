@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.4.0-beta.4
+
+- Added the optional `grill-me` gate to the OpenFlow proposal and brainstorming flow before spec generation.
+- Prevented bare `/openflow` and direct `/openflow spec` from entering spec until the user chooses `grill-me` or explicitly skips it.
+- Added regression coverage for generated OpenFlow skill instructions across supported tool targets.
+
 ## 0.3.4
 
 - Synced OpenSpec `tasks.md` checkbox state during OpenFlow build and close so completed Superpowers plans no longer block archiving.

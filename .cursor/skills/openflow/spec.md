@@ -18,6 +18,8 @@ description: Call OpenSpec to generate specs, auto-translate to plan-ready.md af
 - `openspec/changes/` 下存在活跃变更目录（由 proposal 或 brainstorming 阶段创建）
 - 变更目录下至少有 `proposal.md`
 
+> 进入 spec 前必须先处理可选 grill-me 决策：如果当前对话或 proposal.md 没有明确显示用户已经选择 grill-me、跳过、不需要或直接 spec，先询问用户是否进入可选的 grill-me 压力测试；用户选择 grill-me / 压力测试 / 继续追问时切到 `/openflow grill`，用户选择跳过 / 不需要 / 直接 spec 后才继续本阶段。
+
 ## 流程
 
 ### 1. 确认活跃变更
@@ -67,12 +69,16 @@ openspec validate <变更名> --strict
 
 用户确认后，自动将 OpenSpec 四文件翻译为 Superpowers 可执行的格式。
 
+`plan-ready.md` 是交给 Superpowers `writing-plans` 的 planning brief，不是泛泛的任务摘要。它必须足够具体，使 build 阶段可以在不重新解释需求的情况下生成详细实现计划。
+
 **翻译规则：**
-1. 每个 OpenSpec Task 拆成 2-5 个细粒度步骤（对应 2-5 分钟工作量）
-2. 每个步骤必须指明改哪个文件
-3. 每个步骤必须有验证方式
-4. **按执行依赖排序，不是按功能模块排序**
-5. 记录来源路径，方便回溯
+1. 覆盖 OpenSpec 的每个 requirement、scenario 和 task；不得只转写 tasks.md 标题
+2. 将每个 OpenSpec Task 拆成可独立交付的 implementation slices；每个 slice 后续应能被 `writing-plans` 展开为 2-5 分钟步骤
+3. 每个 slice 必须指明改动文件、测试文件、验证命令、依赖前置、完成标准
+4. 明确 TDD 期望：先写/更新哪些失败测试，再实现，再运行哪些验证
+5. **按执行依赖排序，不是按功能模块排序**
+6. 记录来源路径和 OpenSpec task/requirement/scenario 映射，方便回溯
+7. 如有不确定项，写入 `## Blockers / Clarifications`，不得隐藏为模糊实现步骤
 
 读取以下文件作为翻译输入：
 - `openspec/changes/<变更名>/proposal.md`
@@ -91,15 +97,66 @@ openspec validate <变更名> --strict
 - 规格：openspec/changes/<变更名>/specs/
 - 任务：openspec/changes/<变更名>/tasks.md
 
-## 实现步骤
+## Goal
+<一句话说明本次实现完成后的用户/系统可见结果>
 
-### Task 1: <任务名>
-- 目标：<做什么>
-- 改动文件：<哪些文件>
-- 验证方式：<怎么验证>
+## Non-Goals
+- <明确不做的范围，避免 build 阶段扩张>
 
-### Task 2: ...
+## Source Coverage
+| OpenSpec 来源 | 验收点 | 对应 implementation slice |
+|---------------|--------|---------------------------|
+| `specs/<capability>/spec.md` / Requirement + Scenario | <验收行为> | Slice 1 |
+| `tasks.md` / Task 1.1 | <任务目标> | Slice 1, Slice 2 |
+
+## File Responsibility Map
+| 文件 | 操作 | 责任 | 相关 slice |
+|------|------|------|------------|
+| `src/...` | create/modify | <该文件负责什么> | Slice 1 |
+| `test/...` | create/modify | <验证什么行为> | Slice 1 |
+
+## Implementation Slices
+
+### Slice 1: <可交付切片名>
+- 来源：<OpenSpec task / requirement / scenario 路径>
+- 目标：<做什么，以及为什么>
+- 依赖：<必须先完成的 slice；没有则写“无”>
+- 改动文件：
+  - Modify: `path/to/file`
+  - Test: `path/to/test`
+- TDD 计划：
+  1. <先新增/修改的失败测试>
+  2. <最小实现路径>
+  3. <重构或边界补充>
+- 验证命令：
+  - `npm test -- ...` — <预期通过什么>
+  - `npm run build` — <预期结果>
+- 完成标准：
+  - <可观察验收标准>
+- 风险/回滚：
+  - <风险和如何撤回>
+
+### Slice 2: ...
+
+## Verification Plan
+- 单元/集成验证：<命令和覆盖点>
+- 类型/构建验证：<命令>
+- 手动验证：<如需要，写具体步骤；不需要则写“无”>
+
+## Blockers / Clarifications
+- <若无，写“无”>
+
+## Superpowers Handoff
+- `writing-plans` 必须基于本文件生成 `docs/superpowers/plans/YYYY-MM-DD-<变更名>.md`
+- 详细实现计划必须使用 checkbox，并把每个 slice 展开为 2-5 分钟步骤
+- 详细实现计划不得省略 Source Coverage 中的任何验收点
 ```
+
+生成后做一次自检：
+- Source Coverage 是否覆盖所有 requirement、scenario、tasks.md 条目
+- 是否仍有 TBD/TODO/“适当处理”等占位话术
+- 每个 slice 是否都有文件、测试、验证命令和完成标准
+- build 阶段是否可以不重新理解需求，仅按 handoff 展开详细计划
 
 ### 5. 提示下一步
 
@@ -111,4 +168,5 @@ openspec validate <变更名> --strict
 - 本阶段只允许写 `openspec/changes/**` 与 `plan-ready.md`，禁止修改任何代码或实现文件
 - 翻译必须在用户确认后自动生成，不需要用户手动触发
 - plan-ready.md 的 ## 来源 部分必须写明路径，方便 Superpowers 执行时回溯
+- plan-ready.md 必须包含 Source Coverage 和 File Responsibility Map；缺少这些内容视为未完成翻译
 - 按执行依赖排序是翻译的关键步骤：先依赖后依赖方

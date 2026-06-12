@@ -61,7 +61,7 @@ argument-hint: "proposal | brainstorming | grill | spec | amend | build | close"
 
 判定结果：
 - 无活跃变更 → proposal 阶段
-- 有规格但无 plan-ready.md → spec 阶段（补生成翻译）
+- 有活跃变更且无 plan-ready.md → 先询问是否进入可选 grill-me；用户选择跳过 / 不需要 / 直接 spec 后才进入 spec 阶段
 - 有 plan-ready.md 但实现未开始 → build 阶段
 - 实现进行中 → 继续 build 阶段（断点恢复）
 - 实现已完成 → close 阶段
@@ -73,7 +73,7 @@ argument-hint: "proposal | brainstorming | grill | spec | amend | build | close"
 1. 如果这是上一 openflow 阶段的续接回复，先按“续接与中断恢复”保持阶段
 2. 如果用户在 build 中明确提出需求变更、补充 spec、修改验收条件或重新生成规格，路由到 amend
 3. 如果用户指定了子命令（如 `/openflow build`），优先按指定阶段执行，但检查前置条件
-4. 如果用户只输入 `/openflow`，执行状态检测，自动路由到对应阶段
+4. 如果用户只输入 `/openflow`，执行状态检测；若命中“有活跃变更且无 plan-ready.md”，先询问是否进入可选 grill-me，不得直接加载 spec
 5. 读取当前 openflow skill 目录下的阶段文件：`<阶段>.md`（与本 `SKILL.md` 同目录；不要依赖 Claude 专属环境变量）
 6. 按阶段文件中的流程执行，并遵守阶段写入边界
 
