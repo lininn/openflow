@@ -27,7 +27,7 @@
   <text x="64" y="254" fill="#92400e" font-size="11">4. 实现进行中 → Build 续接</text>
   <text x="64" y="278" fill="#92400e" font-size="11">5. 实现完成 → Close</text>
   <line x1="64" y1="305" x2="274" y2="305" stroke="#fde68a" stroke-width="1"/>
-  <text x="64" y="326" fill="#92400e" font-size="10">Grill 可选：不作为自动门禁</text>
+  <text x="64" y="326" fill="#92400e" font-size="10">grill-me 可选：不作为自动门禁</text>
   <text x="64" y="342" fill="#92400e" font-size="10">Build/Close 发现需求变更 → Amend</text>
   <rect x="905" y="120" width="245" height="210" rx="12" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.2" stroke-dasharray="7,5"/>
   <text x="1028" y="144" text-anchor="middle" fill="#166534" class="side-title">CLI / Skill 入口</text>
@@ -83,7 +83,7 @@
   </g>
   <g filter="url(#softShadow)">
     <rect x="515" y="480" width="220" height="62" rx="12" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="1.6"/>
-    <text x="625" y="507" text-anchor="middle" fill="#be185d" font-size="15" font-weight="700">Grill (Optional)</text>
+    <text x="625" y="507" text-anchor="middle" fill="#be185d" font-size="15" font-weight="700">grill-me (Optional)</text>
     <text x="625" y="526" text-anchor="middle" class="node-sub">压力测试 proposal</text>
     <text x="625" y="542" text-anchor="middle" class="node-sub">隐藏假设 / 边界 / 风险</text>
   </g>

@@ -18,7 +18,7 @@ description: Call OpenSpec to generate specs, auto-translate to plan-ready.md af
 - `openspec/changes/` 下存在活跃变更目录（由 proposal 或 brainstorming 阶段创建）
 - 变更目录下至少有 `proposal.md`
 
-> 提示：如果 proposal 尚未经压力测试，可先用 `/openflow grill` 对方案进行追问挑战，再进入 spec。
+> 进入 spec 前必须先处理可选 grill-me 决策：如果当前对话或 proposal.md 没有明确显示用户已经选择 grill-me、跳过、不需要或直接 spec，先询问用户是否进入可选的 grill-me 压力测试；用户选择 grill-me / 压力测试 / 继续追问时切到 `/openflow grill`，用户选择跳过 / 不需要 / 直接 spec 后才继续本阶段。
 
 ## 流程
 

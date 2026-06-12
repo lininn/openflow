@@ -3,7 +3,7 @@ name: openflow/grill
 description: Optional stress-test — challenge the proposal by relentless questioning before spec
 ---
 
-# Grill: 可选压力测试
+# grill-me: 可选压力测试
 
 ## 目标
 
@@ -55,7 +55,7 @@ description: Optional stress-test — challenge the proposal by relentless quest
 ### 4. 更新 proposal
 
 用户回答后，将决策结论更新到 `openspec/changes/<变更名>/proposal.md`：
-- 在 proposal 末尾追加 `## Grill 决策记录` 章节
+- 在 proposal 末尾追加 `## grill-me 决策记录` 章节
 - 每个决策记录：问题、用户回答、结论
 
 ### 5. 判断是否追问完毕
