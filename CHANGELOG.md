@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## 0.4.0-beta.4
+## 0.4.0
 
 - Added the optional `grill-me` gate to the OpenFlow proposal and brainstorming flow before spec generation.
 - Prevented bare `/openflow` and direct `/openflow spec` from entering spec until the user chooses `grill-me` or explicitly skips it.
