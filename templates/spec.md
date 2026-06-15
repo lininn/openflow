@@ -68,6 +68,12 @@ openspec validate <变更名> --strict
 
 `plan-ready.md` 是交给 Superpowers `writing-plans` 的 planning brief，不是泛泛的任务摘要。它必须足够具体，使 build 阶段可以在不重新解释需求的情况下生成详细实现计划。
 
+**上下文桥接规则：**
+- OpenSpec 当前官方项目上下文入口是 `openspec/config.yaml` 的 `context:` 与 `rules:`，不是 legacy `openspec/project.md`
+- 翻译前必须读取 `openspec/config.yaml`；如果存在 `openspec/project.md`，只把它当作迁移参考，并提示用户把有用内容迁移进 `config.yaml`
+- `plan-ready.md` 必须显式包含 `## Project Context` 与 `## Applicable OpenSpec Rules`，把 OpenSpec 注入给规划阶段的项目规则继续传递给 Superpowers
+- `plan-ready.md` 必须遵循 Superpowers `writing-plans` 的输入预期：计划应让“没有项目上下文的执行者”也能按 TDD、精确文件路径、验证命令和无占位符规则继续展开
+
 **翻译规则：**
 1. 覆盖 OpenSpec 的每个 requirement、scenario 和 task；不得只转写 tasks.md 标题
 2. 将每个 OpenSpec Task 拆成可独立交付的 implementation slices；每个 slice 后续应能被 `writing-plans` 展开为 2-5 分钟步骤
@@ -78,6 +84,8 @@ openspec validate <变更名> --strict
 7. 如有不确定项，写入 `## Blockers / Clarifications`，不得隐藏为模糊实现步骤
 
 读取以下文件作为翻译输入：
+- `openspec/config.yaml` — 项目上下文、schema 和 artifact rules；必须写入 plan-ready 的 Project Context / Applicable OpenSpec Rules
+- `openspec/specs/` — 当前系统行为真相；用于避免新规格与已归档能力冲突
 - `openspec/changes/<变更名>/proposal.md`
 - `openspec/changes/<变更名>/design.md`
 - `openspec/changes/<变更名>/specs/` 目录下所有文件
@@ -89,10 +97,18 @@ openspec validate <变更名> --strict
 # 实现计划：<变更名>
 
 ## 来源
+- 项目配置：openspec/config.yaml
+- 当前规格：openspec/specs/
 - 提案：openspec/changes/<变更名>/proposal.md
 - 设计：openspec/changes/<变更名>/design.md
 - 规格：openspec/changes/<变更名>/specs/
 - 任务：openspec/changes/<变更名>/tasks.md
+
+## Project Context
+<从 openspec/config.yaml 的 context: 提炼。若 context 仍是 TODO/空白，写明“缺少项目上下文”，并在 Blockers / Clarifications 中要求补齐。不要改用通用最佳实践冒充项目规范。>
+
+## Applicable OpenSpec Rules
+<从 openspec/config.yaml 的 rules: 提炼与 specs/design/tasks 相关的规则。若没有规则，写“无显式规则”。>
 
 ## Goal
 <一句话说明本次实现完成后的用户/系统可见结果>
@@ -145,6 +161,9 @@ openspec validate <变更名> --strict
 
 ## Superpowers Handoff
 - `writing-plans` 必须基于本文件生成 `docs/superpowers/plans/YYYY-MM-DD-<变更名>.md`
+- 详细实现计划必须把本文件的 `## Project Context` 与 `## Applicable OpenSpec Rules` 复制/压缩到 plan header 或专门的 Project Rules 章节，使后续 `executing-plans` 不需要重新读取 OpenSpec 也能遵守项目规范
+- 详细实现计划必须使用 Superpowers plan header：Goal、Architecture、Tech Stack，并包含文件结构、2-5 分钟 checkbox 步骤、RED-GREEN-REFACTOR 测试节奏、精确验证命令和 Self-Review
+- 详细实现计划不得出现 TBD/TODO/“适当处理”/“类似上一步”等占位话术
 - 详细实现计划必须使用 checkbox，并把每个 slice 展开为 2-5 分钟步骤
 - 详细实现计划不得省略 Source Coverage 中的任何验收点
 ```

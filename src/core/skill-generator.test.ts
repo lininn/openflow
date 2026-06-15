@@ -44,6 +44,10 @@ describe('skill template resolution', () => {
 
     expect(specContent).toContain('planning brief');
     expect(specContent).toContain('## Source Coverage');
+    expect(specContent).toContain('## Project Context');
+    expect(specContent).toContain('## Applicable OpenSpec Rules');
+    expect(specContent).toContain('openspec/config.yaml');
+    expect(specContent).toContain('Superpowers `writing-plans` 的输入预期');
     expect(specContent).toContain('## File Responsibility Map');
     expect(specContent).toContain('## Implementation Slices');
     expect(specContent).toContain('## Verification Plan');
@@ -111,6 +115,8 @@ describe('skill template resolution', () => {
     expect(grillAliasContent).toContain('`/openflow grill $ARGUMENTS`');
     expect(skillContent).toContain('代码、测试、实现计划状态、`openspec/changes/**/tasks.md` checkbox 状态');
     expect(skillContent).toContain('不得改写任务内容或规格要求');
+    expect(buildContent).toContain('Superpowers 本身不会自动读取 `openspec/config.yaml`');
+    expect(buildContent).toContain('## Project Context');
     expect(buildContent).toContain('OpenSpec `tasks.md` 是归档前置状态');
     expect(buildContent).toContain('只能反映已验证完成的任务，不能改写任务内容或规格要求');
     expect(closeContent).toContain('确认并同步实现状态');
@@ -143,6 +149,9 @@ describe('skill template resolution', () => {
     expect(proposalContent).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');
     expect(brainstormingContent).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');
     expect(specContent).toContain('## Source Coverage');
+    expect(specContent).toContain('## Project Context');
+    expect(specContent).toContain('## Applicable OpenSpec Rules');
+    expect(specContent).toContain('openspec/config.yaml');
     expect(specContent).toContain('## File Responsibility Map');
     expect(specContent).toContain('## Superpowers Handoff');
   });

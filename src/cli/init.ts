@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import { Command } from 'commander';
 import inquirer from 'inquirer';
 import path from 'path';
@@ -86,6 +87,8 @@ export const initCommand = new Command('init')
       } else {
         logger.success('OpenSpec project initialized');
       }
+
+      ensureOpenSpecProjectContext(cwd);
     }
 
     // Step 4: Generate skills
@@ -123,3 +126,79 @@ export const initCommand = new Command('init')
     logger.info('  /openflow close          Verify + archive');
     logger.blank();
   });
+
+export function ensureOpenSpecProjectContext(cwd: string): void {
+  const openspecDir = path.join(cwd, 'openspec');
+  if (!dirExists(openspecDir)) {
+    fs.mkdirSync(openspecDir, { recursive: true });
+  }
+
+  const configPath = path.join(openspecDir, 'config.yaml');
+  const legacyProjectPath = path.join(openspecDir, 'project.md');
+
+  if (!fs.existsSync(configPath)) {
+    fs.writeFileSync(configPath, getDefaultOpenSpecConfig(), 'utf-8');
+    logger.success('Created openspec/config.yaml with OpenFlow context scaffold');
+  } else {
+    const configContent = fs.readFileSync(configPath, 'utf-8');
+    const additions = getMissingConfigScaffold(configContent);
+    if (additions) {
+      fs.appendFileSync(configPath, `\n${additions}`, 'utf-8');
+      logger.success('Added missing context/rules scaffold to openspec/config.yaml');
+    } else {
+      logger.success('OpenSpec project context configured in openspec/config.yaml');
+    }
+  }
+
+  if (fs.existsSync(legacyProjectPath)) {
+    logger.warn('Legacy openspec/project.md detected. OpenSpec now injects project context from openspec/config.yaml. Review project.md, move useful content into config.yaml context/rules, then delete project.md when ready.');
+  }
+}
+
+function getMissingConfigScaffold(content: string): string {
+  const sections: string[] = [];
+
+  if (!hasTopLevelKey(content, 'context')) {
+    sections.push(getContextSection());
+  }
+
+  if (!hasTopLevelKey(content, 'rules')) {
+    sections.push(getRulesSection());
+  }
+
+  return sections.join('\n');
+}
+
+function hasTopLevelKey(content: string, key: string): boolean {
+  return new RegExp(`^${key}:\\s*(\\||>|\\S|$)`, 'm').test(content);
+}
+
+function getDefaultOpenSpecConfig(): string {
+  return `schema: spec-driven
+${getContextSection()}
+${getRulesSection()}`;
+}
+
+function getContextSection(): string {
+  return `
+# Project context is injected into OpenSpec planning artifacts.
+# Keep this concise: Superpowers receives it later through plan-ready.md.
+context: |
+  TODO: Describe the project tech stack, architecture patterns, testing strategy,
+  code style, domain constraints, and external dependencies that AI implementers
+  must follow.
+`;
+}
+
+function getRulesSection(): string {
+  return `
+rules:
+  specs:
+    - Reference existing specs before inventing new behavior.
+    - Every requirement must include concrete scenarios and acceptance checks.
+  design:
+    - Preserve project architecture patterns and explain any new dependency.
+  tasks:
+    - Include exact files, tests, verification commands, and rollback notes.
+`;
+}

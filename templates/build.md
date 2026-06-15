@@ -48,9 +48,17 @@ description: Call Superpowers to execute implementation, supports checkpoint rec
 
 调用 Superpowers 的 `writing-plans` skill，以 `plan-ready.md` 为输入，生成符合 Superpowers 格式的详细实现计划。
 
+调用前必须确认 `plan-ready.md` 包含：
+- `## Project Context` — 来自 `openspec/config.yaml` 的项目上下文；如果缺失或仍是 TODO，停止并要求先补齐 `/openflow spec` 翻译
+- `## Applicable OpenSpec Rules` — 来自 `openspec/config.yaml` 的 artifact rules；如果没有显式规则，必须写明“无显式规则”
+- `## Superpowers Handoff` — 明确要求生成的 Superpowers plan 复制/压缩项目规则，而不是只引用 OpenSpec 文件路径
+
+Superpowers 本身不会自动读取 `openspec/config.yaml`；上下文必须通过 `plan-ready.md` 传递给 `writing-plans`，再写入 `docs/superpowers/plans/YYYY-MM-DD-<变更名>.md`。
+
 每个步骤：
 - 2-5 分钟工作量
 - 包含代码、文件路径、验证命令
+- 遵守 `plan-ready.md` 中的 Project Context / Applicable OpenSpec Rules
 - 使用 checkbox 语法 `- [ ]` 跟踪
 
 将实现计划保存到：
