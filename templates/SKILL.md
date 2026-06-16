@@ -1,24 +1,49 @@
 ---
 name: openflow
-description: "OpenSpec + Superpowers workflow orchestrator. Use /openflow proposal for quick capture, /openflow brainstorming for deep design, /openflow grill to stress-test the proposal, /openflow spec to generate specs + translate, /openflow amend to revise requirements before close, /openflow build to execute, /openflow close to verify and archive. Bridges requirements specs and engineering execution."
-argument-hint: "proposal | brainstorming | grill | spec | amend | build | close"
+description: "OpenSpec + Superpowers workflow orchestrator. Use /openflow init for project context setup, /openflow proposal for quick capture, /openflow brainstorming for deep design, /openflow grill to stress-test the proposal, /openflow spec to generate specs + translate, /openflow amend to revise requirements before close, /openflow build to execute, /openflow close to verify and archive. Bridges requirements specs and engineering execution."
+argument-hint: "proposal | init | brainstorming | grill | spec | amend | build | close"
 ---
 
 # openflow - 工作流协调器
 
 根据用户调用的子命令和项目当前状态，路由到对应阶段。
 
+## `/openflow init`
+
+`/openflow init` 是项目上下文初始化阶段。它负责读取当前项目、询问技术栈和规则、生成 `openspec/config.yaml`，并把行业标准默认值和用户确认规则区分开来。
+
+空项目时，优先问清楚：
+- 想做什么类型的项目
+- 计划使用的技术栈、运行时、包管理器
+- 必须遵守的代码风格、测试命令、目录边界
+- 是否有兼容性、安全、性能、发布约束
+
+如果当前目录已有源码，先基于事实扫描再提问，避免重复询问已知信息。
+
+## 项目初始化守卫
+
+在执行任何阶段前，先在当前工作目录检查项目级 OpenSpec 上下文：
+
+1. Missing `openspec/config.yaml` 是上下文缺失，不是硬阻断
+2. 如果用户不是显式调用 `/openflow init`，先说明当前项目尚未初始化项目上下文，并询问用户是否执行 `/openflow init`
+3. 用户同意时，切到 `/openflow init`，通过交互和代码扫描生成或完善 `openspec/config.yaml`
+4. 用户拒绝或选择跳过则继续原阶段，但必须说明本次没有 `config.yaml` 项目约束，不得把通用最佳实践冒充项目规则
+5. 如果只存在 legacy `openspec/project.md`，提示可以通过 `/openflow init` 迁移和精炼到 `config.yaml`；用户跳过时只把 `project.md` 当参考，不当作当前权威入口
+
+全局安装只负责把可复用 skills 写入用户目录，不代表当前业务项目已经初始化。CLI 级 `{{OPENFLOW_PROJECT_INIT_COMMAND}}` 负责安装/生成本地 skill；AI 工作流级 `/openflow init` 负责交互式生成项目上下文。
+
 ## 续接与中断恢复
 
 如果本轮没有显式 `/openflow ...` 子命令，但上一轮已经进入 openflow 任一阶段，并且用户是在补充范围、回答确认问题、说“继续”、修正需求、或说明新增/移除边界：
 
 1. 默认继续上一 openflow 阶段，不把该回复当作普通编码请求
-2. 如果上一阶段是 proposal、brainstorming、grill、spec 或 amend，只能继续产出/更新 OpenSpec 文档和计划文档，不得修改任何代码或实现文件
+2. 如果上一阶段是 init、proposal、brainstorming、grill、spec 或 amend，只能继续产出/更新项目上下文、OpenSpec 文档和计划文档，不得修改任何代码或实现文件
 3. 如果上一阶段是 build，但用户补充的是需求、验收条件或规格边界变更，切到 `/openflow amend`，不要直接改代码
 4. 只有用户显式调用 `/openflow build`，或状态检测明确进入 build 阶段后，才允许修改代码或实现文件
 5. 中断后恢复时，先重新读取当前阶段文件和 `openspec/changes/` 状态，再继续执行
 
 典型场景：
+- init 阶段询问技术栈和规则后，用户回复“用 React + Vite，必须跑 typecheck”。这仍是项目上下文补充，必须继续更新 `openspec/config.yaml`，不能直接进入代码实现。
 - proposal 阶段整理需求后，用户补充“运营端也要做回显”。这仍是需求范围修正，必须继续 proposal 文档收敛，不能直接进入代码实现。
 - brainstorming 阶段询问“是否只覆盖企业端？”后，用户回复“运营端也要做回显”。这仍是设计范围修正，必须继续 brainstorming/proposal 文档收敛，不能直接进入代码实现。
 
@@ -26,6 +51,7 @@ argument-hint: "proposal | brainstorming | grill | spec | amend | build | close"
 
 | 阶段 | 允许写入 | 禁止写入 |
 |------|----------|----------|
+| init | `openspec/config.yaml`、`.openflow/state.json`（如需记录工具状态） | 任何代码或实现文件；不得创建 change |
 | proposal | `openspec/changes/**/proposal.md` | 任何代码或实现文件 |
 | brainstorming | `openspec/changes/**/proposal.md` | 任何代码或实现文件 |
 | grill | `openspec/changes/**/proposal.md` | 任何代码或实现文件 |
@@ -34,12 +60,13 @@ argument-hint: "proposal | brainstorming | grill | spec | amend | build | close"
 | build | 代码、测试、实现计划状态、`openspec/changes/**/tasks.md` checkbox 状态 | 规格文档（除非另开变更）；不得改写任务内容或规格要求 |
 | close | 归档、验证记录、`close-issues.md`、`openspec/changes/**/tasks.md` checkbox 状态 | 代码、测试、其他实现文件；不得改写任务内容或规格要求 |
 
-如果用户在 proposal/brainstorming/grill/spec/amend 阶段提出“就按这个做”、“范围改成 X”、“继续”等话术，不代表进入 build；必须先完成该阶段文档产物并提示下一步。
+如果用户在 init/proposal/brainstorming/grill/spec/amend 阶段提出“就按这个做”、“范围改成 X”、“继续”等话术，不代表进入 build；必须先完成该阶段文档产物并提示下一步。
 
 ## 子命令
 
 | 命令 | 阶段 | 说明 |
 |------|------|------|
+| `/openflow init` | init | 初始化或精炼 `openspec/config.yaml` 项目上下文和规则 |
 | `/openflow proposal` | proposal | 轻量提问，快速收敛需求 |
 | `/openflow brainstorming` | brainstorming | 深度设计，多轮探索 |
 | `/openflow grill` | grill | 可选压力测试，反向追问决策点 |
@@ -120,8 +147,9 @@ Recommended fix: run /openflow spec to regenerate plan-ready.md or amend the sta
 
 | 阶段 | 前置条件 | 不满足时提示 |
 |------|----------|-------------|
-| proposal | 无 | — |
-| brainstorming | 无 | — |
+| init | 无；可用于空项目或已有项目 | — |
+| proposal | 无；缺少 `openspec/config.yaml` 时询问用户是否执行 `/openflow init`，跳过则继续 | "当前项目尚未初始化项目上下文。是否先执行 /openflow init？也可以跳过并继续无项目约束的需求捕获。" |
+| brainstorming | 无；缺少 `openspec/config.yaml` 时询问用户是否执行 `/openflow init`，跳过则继续 | "当前项目尚未初始化项目上下文。是否先执行 /openflow init？也可以跳过并继续无项目约束的设计探索。" |
 | grill | 需要有活跃变更目录且有 proposal.md | "请先用 /openflow proposal 或 /openflow brainstorming 创建需求" |
 | spec | 需要有活跃变更目录或有用户需求 | "请先用 /openflow proposal 或 /openflow brainstorming 描述需求" |
 | amend | 需要有活跃变更目录，通常需要 plan-ready.md | "还没有可修订的活跃变更，请先完成 /openflow spec" |

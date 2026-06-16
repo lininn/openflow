@@ -62,7 +62,8 @@ export const initCommand = new Command('init')
     }
 
     if (installGlobally) {
-      logger.step('Skipping project OpenSpec initialization for global install');
+      logger.step('Global install only writes reusable skills; project initialization is handled per project');
+      logger.info(`Run openflow init --tools ${tools.join(',')} inside each project, or let /openflow proposal bootstrap it first`);
     } else {
       // Step 3: Check if OpenSpec is initialized in project
       logger.step('Checking project OpenSpec initialization ...');
@@ -86,7 +87,8 @@ export const initCommand = new Command('init')
             shouldEnsureContext = true;
           }
         } else {
-          logger.info('OpenSpec not initialized — directories will be auto-created on first /openflow proposal');
+          logger.info('OpenSpec CLI not available — creating OpenFlow project context scaffold without CLI metadata');
+          shouldEnsureContext = true;
         }
       } else {
         logger.success('OpenSpec project initialized');
@@ -123,6 +125,7 @@ export const initCommand = new Command('init')
     }
 
     logger.info('Available commands:');
+    logger.info('  /openflow init          Initialize project context');
     logger.info('  /openflow proposal      Quick requirement capture');
     logger.info('  /openflow brainstorming  Deep design exploration');
     logger.info('  /openflow grill         Optional stress-test before spec');

@@ -14,6 +14,7 @@ const __dirname = path.dirname(__filename);
 const TEMPLATES_DIR = path.resolve(__dirname, '..', '..', 'templates');
 
 const PHASES = [
+  { name: 'init', description: 'Initialize project context and OpenSpec config' },
   { name: 'proposal', description: 'Quick requirement capture' },
   { name: 'brainstorming', description: 'Deep design exploration' },
   { name: 'grill', description: 'Optional stress-test before spec' },
@@ -55,11 +56,11 @@ export function generateSkills(options: GenerateOptions): void {
     }
 
     // Generate main SKILL.md
-    generateSkillFile(skillsDir, 'SKILL.md', depStatus);
+    generateSkillFile(skillsDir, 'SKILL.md', depStatus, tool);
 
     // Generate phase files
     for (const phase of PHASES) {
-      generateSkillFile(skillsDir, `${phase.name}.md`, depStatus);
+      generateSkillFile(skillsDir, `${phase.name}.md`, depStatus, tool);
     }
 
     if (PHASE_ALIAS_TOOLS.has(tool)) {
@@ -75,8 +76,9 @@ export function generateSkills(options: GenerateOptions): void {
   }
 }
 
-function generateSkillFile(skillsDir: string, filename: string, depStatus: DepStatus): void {
+function generateSkillFile(skillsDir: string, filename: string, depStatus: DepStatus, tool: string): void {
   let content = resolveSkillTemplateContent(TEMPLATES_DIR, filename);
+  content = injectToolContext(content, tool);
 
   // Inject runtime dependency checks into build.md
   if (filename === 'build.md') {
@@ -91,6 +93,10 @@ function generateSkillFile(skillsDir: string, filename: string, depStatus: DepSt
   const targetPath = path.join(skillsDir, filename);
   fs.writeFileSync(targetPath, content);
   logger.step(`  ${filename}`);
+}
+
+function injectToolContext(content: string, tool: string): string {
+  return content.replaceAll('{{OPENFLOW_PROJECT_INIT_COMMAND}}', `openflow init --tools ${tool}`);
 }
 
 function generatePhaseAliasSkills(options: {
