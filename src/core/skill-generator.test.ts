@@ -78,7 +78,7 @@ describe('skill template resolution', () => {
     const skillContent = resolveSkillTemplateContent(path.resolve('templates'), 'SKILL.md');
     const specContent = resolveSkillTemplateContent(path.resolve('templates'), 'spec.md');
 
-    expect(skillContent).toContain('有活跃变更且无 plan-ready.md → 先询问是否进入可选 grill-me');
+    expect(skillContent).toContain('先询问是否进入可选 grill-me');
     expect(skillContent).toContain('不得直接加载 spec');
     expect(specContent).toContain('进入 spec 前必须先处理可选 grill-me 决策');
     expect(specContent).toContain('用户选择跳过 / 不需要 / 直接 spec 后才继续本阶段');
@@ -104,7 +104,7 @@ describe('skill template resolution', () => {
 
     expect(skillContent).toContain('proposal | brainstorming | grill | spec | amend | build | close');
     expect(skillContent).toContain('/openflow grill');
-    expect(skillContent).toContain('有活跃变更且无 plan-ready.md → 先询问是否进入可选 grill-me');
+    expect(skillContent).toContain('先询问是否进入可选 grill-me');
     expect(skillContent).toContain('proposal、brainstorming、grill、spec 或 amend');
     expect(skillContent).toContain('proposal/brainstorming/grill/spec/amend');
     expect(grillContent).toContain('name: openflow/grill');
@@ -124,6 +124,11 @@ describe('skill template resolution', () => {
     expect(closeContent).toContain('直接将 `tasks.md` 中对应 checkbox 从 `- [ ]` 更新为 `- [x]`');
     expect(closeContent).toContain('不能为了通过归档而猜测勾选');
     expect(closeContent).toContain('归档被变更顺序阻塞');
+    // workflow-status.md maintenance
+    expect(skillContent).toContain('workflow-status.md');
+    expect(skillContent).toContain('状态检测与 Dashboard');
+    expect(proposalContent).toContain('workflow-status.md');
+    expect(buildContent).toContain('workflow-status.md');
   });
 
   it('generates OpenCode command tree with grill and detailed translation handoff', () => {
@@ -143,7 +148,7 @@ describe('skill template resolution', () => {
     const specContent = fs.readFileSync(path.join(tmpDir, '.opencode/commands/openflow/spec.md'), 'utf-8');
 
     expect(skillContent).toContain('proposal | brainstorming | grill | spec | amend | build | close');
-    expect(skillContent).toContain('有活跃变更且无 plan-ready.md → 先询问是否进入可选 grill-me');
+    expect(skillContent).toContain('先询问是否进入可选 grill-me');
     expect(skillContent).toContain('proposal、brainstorming、grill、spec 或 amend');
     expect(grillContent).toContain('用户随时可以跳过，grill 是可选的辅助，不是强制门禁');
     expect(proposalContent).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');
@@ -154,5 +159,9 @@ describe('skill template resolution', () => {
     expect(specContent).toContain('openspec/config.yaml');
     expect(specContent).toContain('## File Responsibility Map');
     expect(specContent).toContain('## Superpowers Handoff');
+    expect(skillContent).toContain('workflow-status.md');
+    expect(skillContent).toContain('状态检测与 Dashboard');
+    expect(proposalContent).toContain('workflow-status.md');
+    expect(specContent).toContain('workflow-status.md');
   });
 });

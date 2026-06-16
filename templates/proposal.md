@@ -49,6 +49,46 @@ mkdir -p openspec/changes/<变更名>/specs
 openspec list
 ```
 
+### 3.5 初始化 workflow-status.md
+
+创建或更新 `openspec/changes/<变更名>/workflow-status.md`：
+
+```markdown
+# Workflow Status: <变更名>
+
+## Summary
+
+- Phase: capture
+- Capture Mode: proposal
+- Status: ready_for_next_phase
+- Last Updated: YYYY-MM-DD
+- Next Command: /openflow spec
+- Next Action: Generate OpenSpec specs, tasks, and plan-ready.md.
+
+## Gates
+
+| Gate | Status | Evidence |
+|------|--------|----------|
+| Requirements captured | passed | proposal.md |
+| Specs validated | pending | - |
+| Plan ready | pending | - |
+| Implementation complete | pending | - |
+| Verification complete | pending | - |
+| Archived | pending | - |
+
+## Tasks
+
+| ID | Task | Status | Verification | Blocked By | Notes |
+|----|------|--------|--------------|------------|-------|
+
+## Amendments
+
+| Date | Reason | Affected Specs | Affected Tasks | Status |
+|------|--------|----------------|----------------|--------|
+```
+
+如果已经能从用户需求中明确任务，填入 Tasks 表并把状态设为 `pending`。不要把猜测性任务写入状态表。
+
 ### 4. 询问是否进入可选 grill-me
 
 proposal.md 写入后，必须询问用户是否进入可选的 grill-me 压力测试节点：

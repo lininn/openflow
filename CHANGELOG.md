@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## 0.4.1
+
+- Added workflow-status module: programmatic status tracking, conflict detection, and dashboard rendering for active OpenSpec changes.
+- Replaced simple file-existence status detection in `/openflow status` with a full dashboard showing phase, gates, tasks, blockers, conflicts, and next action.
+- Updated `templates/SKILL.md` with status-first routing: read `workflow-status.md` before recommending next command; infer state from files when status file is missing; detect and warn on conflicts between status claims and actual files.
+- Added `workflow-status.md` maintenance instructions to all 6 phase templates (proposal, brainstorming, spec, build, amend, close).
+- Fixed `ensureOpenSpecProjectContext` being called unconditionally even when user skips OpenSpec initialization.
+- Replaced fragile regex-based YAML key detection (`hasTopLevelKey`) with `yaml.parse()` from the existing `yaml` dependency.
+- Unified `fs.existsSync` calls in `init.ts` to use project's `fileExists`/`dirExists` utilities.
+
 ## 0.4.0
 
 - Added the optional `grill-me` gate to the OpenFlow proposal and brainstorming flow before spec generation.

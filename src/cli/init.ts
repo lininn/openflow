@@ -6,7 +6,8 @@ import { checkDependencies, tryAutoInstall, checkOpenSpecInitialized, writeState
 import { generateSkills } from '../core/skill-generator.js';
 import { TOOL_PATHS, DEPS } from '../core/constants.js';
 import { logger } from '../utils/logger.js';
-import { exec, dirExists } from '../utils/shell.js';
+import { exec, dirExists, fileExists } from '../utils/shell.js';
+import { parse as parseYaml } from 'yaml';
 
 const SUPPORTED_TOOLS = Object.keys(TOOL_PATHS);
 
@@ -65,7 +66,9 @@ export const initCommand = new Command('init')
     } else {
       // Step 3: Check if OpenSpec is initialized in project
       logger.step('Checking project OpenSpec initialization ...');
-      if (!checkOpenSpecInitialized(cwd)) {
+      let shouldEnsureContext = checkOpenSpecInitialized(cwd);
+
+      if (!shouldEnsureContext) {
         if (depStatus.openspec.installed) {
           const { initOpenSpec } = await inquirer.prompt([
             {
@@ -80,6 +83,7 @@ export const initCommand = new Command('init')
             const toolsFlag = tools.map((t: string) => t).join(',');
             exec(`openspec init --tools ${toolsFlag}`, { stdio: 'inherit' });
             logger.success('OpenSpec project initialized');
+            shouldEnsureContext = true;
           }
         } else {
           logger.info('OpenSpec not initialized — directories will be auto-created on first /openflow proposal');
@@ -88,7 +92,9 @@ export const initCommand = new Command('init')
         logger.success('OpenSpec project initialized');
       }
 
-      ensureOpenSpecProjectContext(cwd);
+      if (shouldEnsureContext) {
+        ensureOpenSpecProjectContext(cwd);
+      }
     }
 
     // Step 4: Generate skills
@@ -136,7 +142,7 @@ export function ensureOpenSpecProjectContext(cwd: string): void {
   const configPath = path.join(openspecDir, 'config.yaml');
   const legacyProjectPath = path.join(openspecDir, 'project.md');
 
-  if (!fs.existsSync(configPath)) {
+  if (!fileExists(configPath)) {
     fs.writeFileSync(configPath, getDefaultOpenSpecConfig(), 'utf-8');
     logger.success('Created openspec/config.yaml with OpenFlow context scaffold');
   } else {
@@ -150,7 +156,7 @@ export function ensureOpenSpecProjectContext(cwd: string): void {
     }
   }
 
-  if (fs.existsSync(legacyProjectPath)) {
+  if (fileExists(legacyProjectPath)) {
     logger.warn('Legacy openspec/project.md detected. OpenSpec now injects project context from openspec/config.yaml. Review project.md, move useful content into config.yaml context/rules, then delete project.md when ready.');
   }
 }
@@ -170,7 +176,12 @@ function getMissingConfigScaffold(content: string): string {
 }
 
 function hasTopLevelKey(content: string, key: string): boolean {
-  return new RegExp(`^${key}:\\s*(\\||>|\\S|$)`, 'm').test(content);
+  try {
+    const doc = parseYaml(content);
+    return doc != null && typeof doc === 'object' && key in doc;
+  } catch {
+    return false;
+  }
 }
 
 function getDefaultOpenSpecConfig(): string {

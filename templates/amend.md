@@ -145,6 +145,29 @@ openspec validate <变更名> --strict
 - 是否存在 TBD/TODO/模糊实现步骤
 - 新增 slice 是否包含文件、测试、验证命令和完成标准
 
+### 5.5 更新 workflow-status.md
+
+修订完成后，更新 `openspec/changes/<变更名>/workflow-status.md`：
+
+- Phase 保持不变（通常是 `build` 或回到 `spec`）
+- Status: 如果 amend 增加了新任务 → `in_progress`（需要回到 build 完成新任务）
+- Status: 如果 amend 只修改了规格但不影响已实现功能 → 保持原状态
+- Gates: 不要降级已 passed 的 gate，除非对应的文件确实被删除或失效
+- Tasks: 追加新任务行（来自 amend 新增的 tasks.md 条目），状态设为 `pending`
+- Amendments: 追加本次修订记录
+- Next Command: `/openflow build`
+- Next Action: 按修订后的 plan-ready.md 继续实现
+
+**示例 Amendments 追加**：
+
+```markdown
+## Amendments
+
+| Date | Reason | Affected Specs | Affected Tasks | Status |
+|------|--------|----------------|----------------|--------|
+| YYYY-MM-DD | <amend 原因> | specs/<capability>/spec.md | T3, T4 | in_progress |
+```
+
 ### 6. 同步详细实现计划
 
 如果 `docs/superpowers/plans/YYYY-MM-DD-<变更名>.md` 已存在：

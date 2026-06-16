@@ -174,6 +174,58 @@ openspec validate <变更名> --strict
 - 每个 slice 是否都有文件、测试、验证命令和完成标准
 - build 阶段是否可以不重新理解需求，仅按 handoff 展开详细计划
 
+### 4.5 更新 workflow-status.md
+
+更新 `openspec/changes/<变更名>/workflow-status.md`，反映 spec 阶段完成：
+
+- Phase: `spec`
+- Capture Mode: `none`（已脱离捕获阶段）
+- Status: `ready_for_next_phase`
+- Gates 更新：
+  - `Requirements captured` → `passed`（已有 proposal.md）
+  - `Specs validated` → `passed`（spec 文件已生成并通过校验）
+  - `Plan ready` → `passed`（plan-ready.md 已生成）
+- Tasks: 从 `tasks.md` 同步任务列表到 workflow-status.md，状态设为 `pending`
+- Next Command: `/openflow build`
+- Next Action: 执行实现计划
+
+示例：
+
+```markdown
+# Workflow Status: <变更名>
+
+## Summary
+
+- Phase: spec
+- Capture Mode: none
+- Status: ready_for_next_phase
+- Last Updated: YYYY-MM-DD
+- Next Command: /openflow build
+- Next Action: Execute implementation plan.
+
+## Gates
+
+| Gate | Status | Evidence |
+|------|--------|----------|
+| Requirements captured | passed | proposal.md |
+| Specs validated | passed | specs/*, tasks.md |
+| Plan ready | passed | plan-ready.md |
+| Implementation complete | pending | - |
+| Verification complete | pending | - |
+| Archived | pending | - |
+
+## Tasks
+
+| ID | Task | Status | Verification | Blocked By | Notes |
+|----|------|--------|--------------|------------|-------|
+| T1 | <task from tasks.md> | pending | - | - | - |
+
+## Amendments
+
+| Date | Reason | Affected Specs | Affected Tasks | Status |
+|------|--------|----------------|----------------|--------|
+```
+
 ### 5. 提示下一步
 
 > "规格已确认，plan-ready.md 已生成。接下来可以用 `/openflow build` 开始实现。"

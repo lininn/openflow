@@ -48,23 +48,62 @@ argument-hint: "proposal | brainstorming | grill | spec | amend | build | close"
 | `/openflow build` | build | 调用 Superpowers 执行实现 |
 | `/openflow close` | close | 验证一致性 + 归档 |
 
-## 状态检测
+## 状态检测与 Dashboard
 
-当用户调用 `/openflow` 不带子命令，或调用某个子命令需要确认前置条件时，执行以下状态检测：
+当用户调用 `/openflow` 不带子命令，或调用某个子命令需要确认前置条件时，先读取当前 active change 的 `workflow-status.md`。如果文件不存在，基于文件系统推断状态，并明确标记为 inferred。
 
-| 检查项 | 怎么查 | 结果 |
-|--------|--------|------|
-| 有活跃变更？ | `openspec/changes/` 下是否有非 archive 子目录 | 有→继续 |
-| 有 plan-ready.md？ | 变更目录下是否有 `plan-ready.md` | 有→看实现状态 |
-| 实现已开始？ | `docs/superpowers/plans/` 下是否有计划文件 | 有→看是否完成 |
-| 实现已完成？ | 计划文件全部 checkbox 已勾选 | 是→close 阶段 |
+状态源优先级：
+
+1. `openspec/changes/<change-id>/workflow-status.md` — 流程导航状态
+2. 文件系统扫描 — 校验状态是否真实存在
+3. 会话记忆 — 只能用于续接，不可作为事实来源
+
+Dashboard 必须显示：
+
+- 当前 active change
+- 状态来源：`workflow-status.md` 或 `inferred from files`
+- Phase：`capture | spec | build | close | archived`
+- Capture Mode：`proposal | brainstorming | none`
+- Overall Status：`pending | in_progress | blocked | ready_for_next_phase | completed`
+- Gates：需求、规格、计划、实现、验证、归档
+- Tasks：按 `pending/in_progress/blocked/implemented/verified/done/failed/superseded` 统计
+- Conflicts：状态文件和实际文件不一致时必须列出
+- Next Command / Next Action
+
+如果只有一个 active change，直接展示该 change 的 dashboard。如果有多个 active changes，先列出所有 dashboard，然后询问用户要操作哪一个。
+
+### 缺失 workflow-status.md 的处理
+
+如果 active change 没有 `workflow-status.md`：
+
+| 文件状态 | 推断 Phase | 推断 Status | Next |
+|----------|------------|-------------|------|
+| 有 `proposal.md`，无 `plan-ready.md` | capture | ready_for_next_phase | `/openflow spec` |
+| 有 `plan-ready.md`，无实现计划 | spec | ready_for_next_phase | `/openflow build` |
+| 有实现计划且 checkbox 未完成 | build | in_progress | `/openflow build` |
+| 有实现计划且 checkbox 全完成 | build | ready_for_next_phase | `/openflow close` |
+
+推断 dashboard 必须写明 `Source: inferred from files`，不得伪装成权威状态。
+
+### 冲突处理
+
+如果 `workflow-status.md` 与文件系统冲突，必须显示冲突并推荐修复动作，不得静默覆盖。
+
+示例：
+
+```text
+Warning: workflow-status.md says Plan ready = passed, but plan-ready.md is missing.
+Recommended fix: run /openflow spec to regenerate plan-ready.md or amend the status.
+```
 
 判定结果：
-- 无活跃变更 → proposal 阶段
-- 有活跃变更且无 plan-ready.md → 先询问是否进入可选 grill-me；用户选择跳过 / 不需要 / 直接 spec 后才进入 spec 阶段
-- 有 plan-ready.md 但实现未开始 → build 阶段
-- 实现进行中 → 继续 build 阶段（断点恢复）
-- 实现已完成 → close 阶段
+- 无 active change → 提示从 `/openflow proposal` 或 `/openflow brainstorming` 开始
+- Phase = capture 且 ready_for_next_phase → 推荐 `/openflow spec`
+- Phase = spec 且 ready_for_next_phase → 推荐 `/openflow build`
+- Phase = build 且 in_progress → 继续 `/openflow build`
+- Phase = build 且 ready_for_next_phase → 推荐 `/openflow close`
+- Phase = close 且 blocked → 推荐 `/openflow amend`
+- Phase = archived 且 completed → 提示变更已完成，可以开始新 change
 
 ## 路由
 

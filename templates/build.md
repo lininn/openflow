@@ -75,6 +75,26 @@ docs/superpowers/plans/YYYY-MM-DD-<变更名>.md
 3. 多任务可派子代理并行（参见 subagent-driven-development skill）
 4. 编译/测试不通过不让提交
 
+### 4.5 执行过程中维护 workflow-status.md
+
+在 build 阶段，每次完成一个实现 slice 或 task 后，更新 `openspec/changes/<变更名>/workflow-status.md`：
+
+- Phase: `build`
+- Status: 根据实际情况更新
+  - 有 task 正在执行 → `in_progress`
+  - 所有 task 完成 → `ready_for_next_phase`
+  - 被 blocker 阻塞 → `blocked`
+- Gates: 不要提前标记 `Implementation complete` 或 `Verification complete` 为 passed，除非对应文件/验证确实存在
+- Tasks: 按 task 完成情况更新状态
+  - 开始实现 → `in_progress`
+  - 实现完成待验证 → `implemented`
+  - 验证通过 → `verified` / `done`
+  - 被 blocker 阻塞 → `blocked`（并在 Notes 写明原因）
+  - 实现失败需重做 → `failed`
+- Next Command / Next Action: 反映当前真实状态
+
+**冲突检测**：如果 workflow-status.md 声称某个 gate 已 passed 但实际文件不存在（如声称 `Plan ready = passed` 但 `plan-ready.md` 缺失），必须将冲突写入 workflow-status.md 的 Conflicts 部分，并推荐修复动作，不得静默覆盖。
+
 ### 5. 执行完成
 
 所有 Superpowers 实现计划 task 完成后：
