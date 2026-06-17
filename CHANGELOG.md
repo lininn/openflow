@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.4.2
+
+- Clarified `/openflow init` documentation as project introduction, rules, and implementation constraints capture instead of a config-file operation.
+- Reworked the OpenFlow workflow diagram layout so state routing, init, capture, handoff, amend, build, and close nodes no longer overlap.
+- Regenerated the workflow PNG from the updated SVG.
+
 ## 0.4.1
 
 - Added workflow-status module: programmatic status tracking, conflict detection, and dashboard rendering for active OpenSpec changes.

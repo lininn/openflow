@@ -80,7 +80,7 @@ OpenCode 保持原生命令树形式，例如 `/openflow/spec`、`/openflow/buil
 
 | 命令 | 阶段 | 说明 |
 |------|------|------|
-| `/openflow init` | init | 初始化或精炼 `openspec/config.yaml` 项目上下文 |
+| `/openflow init` | init | 梳理项目介绍、规则限制和实现约束 |
 | `/openflow proposal` | proposal | 轻量提问，3-5 问快速收敛需求 |
 | `/openflow brainstorming` | brainstorming | 深度设计，多轮方案探索 |
 | `/openflow grill` | grill | 可选压力测试，在 spec 前挑战 proposal 假设 |
@@ -89,7 +89,7 @@ OpenCode 保持原生命令树形式，例如 `/openflow/spec`、`/openflow/buil
 | `/openflow build` | build | 调用 Superpowers 执行实现 |
 | `/openflow close` | close | 验证一致性 + 归档 |
 
-`/openflow init` 是项目上下文阶段。它扫描仓库，只追问缺失的实现约束，并写入 `openspec/config.yaml`，让后续 proposal、spec 和 build 都带着项目级规则执行。
+`/openflow init` 是项目上下文阶段。它扫描仓库，梳理项目用途、编码规则、架构边界和实现限制，并写入 `openspec/config.yaml`，让后续 proposal、spec 和 build 都带着项目级指导执行。
 
 `/openflow grill` 是可选阶段：proposal 已经足够清晰时可以跳过；需要在进入 spec 前挑战隐藏假设和边界时再使用。spec 阶段把 `plan-ready.md` 视为交给 Superpowers 的详细 handoff，而不是任务摘要：必须保留来源覆盖、文件责任、实现切片、TDD 期望、验证命令和阻塞项。
 
