@@ -81,7 +81,7 @@ available phases. OpenCode keeps its native command-tree form under
 
 | Command | Phase | Description |
 |---------|-------|-------------|
-| `/openflow init` | init | Initialize or refine `openspec/config.yaml` project context |
+| `/openflow init` | init | Capture project introduction, rules, and implementation constraints |
 | `/openflow proposal` | proposal | Lightweight capture — 3-5 questions to converge on requirements |
 | `/openflow brainstorming` | brainstorming | Deep design — multi-round tradeoff exploration |
 | `/openflow grill` | grill | Optional stress-test — challenge proposal assumptions before spec |
@@ -90,7 +90,7 @@ available phases. OpenCode keeps its native command-tree form under
 | `/openflow build` | build | Call Superpowers to execute implementation |
 | `/openflow close` | close | Verify consistency + archive |
 
-`/openflow init` is the project-context phase. It scans the repository, asks only for missing implementation constraints, and writes `openspec/config.yaml` so future proposal, spec, and build work has project-specific rules.
+`/openflow init` is the project-context phase. It scans the repository, captures the project's purpose, coding rules, architectural boundaries, and implementation constraints, then writes them to `openspec/config.yaml` so future proposal, spec, and build work has project-specific guidance.
 
 `/openflow grill` is optional: skip it when the proposal is already clear, or use it to challenge hidden assumptions before committing to specs. The spec phase treats `plan-ready.md` as a detailed Superpowers handoff, not a task summary: it must preserve source coverage, file responsibilities, implementation slices, TDD expectations, validation commands, and blockers.
 

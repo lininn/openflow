@@ -1,12 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 980" width="1200" height="980">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1060" width="1200" height="1060">
   <style>
     text { font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', 'Microsoft JhengHei', 'SimHei', sans-serif; }
     .title { fill:#111827; font-size:24px; font-weight:700; }
-    .subtitle { fill:#6b7280; font-size:13px; }
+    .subtitle { fill:#4b5563; font-size:13px; }
     .node-title { fill:#111827; font-size:15px; font-weight:700; }
     .node-sub { fill:#6b7280; font-size:11px; }
-    .note { fill:#374151; font-size:10px; }
     .side-title { font-size:12px; font-weight:700; }
+    .side-copy { font-size:11px; }
+    .caption { fill:#6b7280; font-size:10px; }
   </style>
   <defs>
     <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
@@ -14,21 +15,24 @@
     <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#ea580c"/></marker>
     <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#16a34a"/></marker>
     <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6b7280"/></marker>
-    <filter id="softShadow" x="-16%" y="-16%" width="132%" height="132%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.10"/></filter>
+    <filter id="softShadow" x="-18%" y="-18%" width="136%" height="136%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.10"/></filter>
   </defs>
-  <rect width="1200" height="980" fill="#ffffff"/>
+
+  <rect width="1200" height="1060" fill="#ffffff"/>
   <text x="600" y="36" text-anchor="middle" class="title">OpenFlow 项目流程图</text>
-  <text x="600" y="58" text-anchor="middle" class="subtitle">OpenSpec + Superpowers 工作流编排器 · project context + status-first routing</text>
+  <text x="600" y="58" text-anchor="middle" class="subtitle">OpenSpec + Superpowers 工作流编排器 · 项目上下文 + status-first routing</text>
+
   <rect x="44" y="130" width="250" height="220" rx="12" fill="#fefce8" stroke="#fde68a" stroke-width="1.2" stroke-dasharray="7,5"/>
   <text x="169" y="154" text-anchor="middle" fill="#854d0e" class="side-title">状态路由规则</text>
-  <text x="64" y="182" fill="#92400e" font-size="11">1. 先读 workflow-status.md</text>
-  <text x="64" y="206" fill="#92400e" font-size="11">2. 缺失时按文件推断状态</text>
-  <text x="64" y="230" fill="#92400e" font-size="11">3. 状态冲突 → 显示 Warning</text>
-  <text x="64" y="254" fill="#92400e" font-size="11">4. 无项目上下文 → Init</text>
-  <text x="64" y="278" fill="#92400e" font-size="11">5. 根据 gate 推荐下一阶段</text>
+  <text x="64" y="182" fill="#92400e" class="side-copy">1. 先读 workflow-status.md</text>
+  <text x="64" y="206" fill="#92400e" class="side-copy">2. 缺失时按文件推断状态</text>
+  <text x="64" y="230" fill="#92400e" class="side-copy">3. 状态冲突 → 显示 Warning</text>
+  <text x="64" y="254" fill="#92400e" class="side-copy">4. 缺项目上下文 → Init</text>
+  <text x="64" y="278" fill="#92400e" class="side-copy">5. 根据 gate 推荐下一阶段</text>
   <line x1="64" y1="305" x2="274" y2="305" stroke="#fde68a" stroke-width="1"/>
   <text x="64" y="326" fill="#92400e" font-size="10">grill-me 可选：不作为自动门禁</text>
   <text x="64" y="342" fill="#92400e" font-size="10">Build/Close 发现需求变更 → Amend</text>
+
   <rect x="905" y="120" width="245" height="210" rx="12" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.2" stroke-dasharray="7,5"/>
   <text x="1028" y="144" text-anchor="middle" fill="#166534" class="side-title">CLI / Skill 入口</text>
   <rect x="940" y="155" width="175" height="25" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
@@ -42,123 +46,144 @@
   <rect x="940" y="259" width="175" height="25" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
   <text x="1028" y="276" text-anchor="middle" fill="#166534" font-size="11" font-weight="600">/openflow build / close</text>
   <text x="1028" y="310" text-anchor="middle" fill="#6b7280" font-size="10">OpenCode: /openflow/grill</text>
-  <rect x="905" y="585" width="245" height="210" rx="12" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.2" stroke-dasharray="7,5"/>
-  <text x="1028" y="609" text-anchor="middle" fill="#1e40af" class="side-title">plan-ready.md handoff</text>
-  <text x="928" y="638" fill="#1e40af" font-size="11">• Source Coverage</text>
-  <text x="928" y="662" fill="#1e40af" font-size="11">• File Responsibility Map</text>
-  <text x="928" y="686" fill="#1e40af" font-size="11">• Implementation Slices</text>
-  <text x="928" y="710" fill="#1e40af" font-size="11">• TDD expectations</text>
-  <text x="928" y="734" fill="#1e40af" font-size="11">• Validation commands</text>
-  <text x="928" y="758" fill="#1e40af" font-size="11">• Blockers / Clarifications</text>
-  <text x="1028" y="782" text-anchor="middle" fill="#6b7280" font-size="10">不是摘要，是可执行 planning brief</text>
-  <rect x="54" y="685" width="220" height="170" rx="12" fill="#f0fdfa" stroke="#ccfbf1" stroke-width="1.2" stroke-dasharray="7,5"/>
-  <text x="164" y="710" text-anchor="middle" fill="#115e59" class="side-title">外部依赖</text>
-  <rect x="78" y="714" width="172" height="46" rx="8" fill="#ffffff" stroke="#5eead4" stroke-width="1"/>
-  <text x="164" y="734" text-anchor="middle" fill="#115e59" font-size="12" font-weight="700">OpenSpec</text>
-  <text x="164" y="751" text-anchor="middle" fill="#6b7280" font-size="10">生成/校验/归档</text>
-  <rect x="78" y="774" width="172" height="46" rx="8" fill="#ffffff" stroke="#5eead4" stroke-width="1"/>
-  <text x="164" y="794" text-anchor="middle" fill="#115e59" font-size="12" font-weight="700">Superpowers</text>
-  <text x="164" y="811" text-anchor="middle" fill="#6b7280" font-size="10">writing-plans + TDD</text>
+
+  <rect x="905" y="650" width="245" height="210" rx="12" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.2" stroke-dasharray="7,5"/>
+  <text x="1028" y="674" text-anchor="middle" fill="#1e40af" class="side-title">plan-ready.md handoff</text>
+  <text x="928" y="703" fill="#1e40af" class="side-copy">• Source Coverage</text>
+  <text x="928" y="727" fill="#1e40af" class="side-copy">• File Responsibility Map</text>
+  <text x="928" y="751" fill="#1e40af" class="side-copy">• Implementation Slices</text>
+  <text x="928" y="775" fill="#1e40af" class="side-copy">• TDD expectations</text>
+  <text x="928" y="799" fill="#1e40af" class="side-copy">• Validation commands</text>
+  <text x="928" y="823" fill="#1e40af" class="side-copy">• Blockers / Clarifications</text>
+  <text x="1028" y="847" text-anchor="middle" fill="#6b7280" font-size="10">不是摘要，是可执行 planning brief</text>
+
+  <rect x="54" y="790" width="220" height="170" rx="12" fill="#f0fdfa" stroke="#ccfbf1" stroke-width="1.2" stroke-dasharray="7,5"/>
+  <text x="164" y="815" text-anchor="middle" fill="#115e59" class="side-title">外部依赖</text>
+  <rect x="78" y="829" width="172" height="46" rx="8" fill="#ffffff" stroke="#5eead4" stroke-width="1"/>
+  <text x="164" y="849" text-anchor="middle" fill="#115e59" font-size="12" font-weight="700">OpenSpec</text>
+  <text x="164" y="866" text-anchor="middle" fill="#6b7280" font-size="10">生成/校验/归档</text>
+  <rect x="78" y="889" width="172" height="46" rx="8" fill="#ffffff" stroke="#5eead4" stroke-width="1"/>
+  <text x="164" y="909" text-anchor="middle" fill="#115e59" font-size="12" font-weight="700">Superpowers</text>
+  <text x="164" y="926" text-anchor="middle" fill="#6b7280" font-size="10">writing-plans + TDD</text>
+
+  <g id="connectors" fill="none">
+    <line x1="600" y1="130" x2="600" y2="165" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <line x1="600" y1="213" x2="600" y2="250" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <line x1="600" y1="340" x2="600" y2="375" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+    <path d="M 600,443 V 468 H 455 V 490" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <path d="M 600,468 H 745 V 490" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <path d="M 455,552 V 575 H 600" stroke="#2563eb" stroke-width="2"/>
+    <path d="M 745,552 V 575 H 600" stroke="#2563eb" stroke-width="2"/>
+    <line x1="600" y1="575" x2="600" y2="595" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <line x1="600" y1="657" x2="600" y2="680" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <line x1="600" y1="742" x2="600" y2="765" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <line x1="600" y1="835" x2="600" y2="865" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <line x1="600" y1="927" x2="600" y2="955" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <path d="M 294,295 H 500" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
+    <path d="M 700,295 H 905" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
+    <path d="M 765,800 H 905" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
+    <path d="M 490,800 H 465" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
+    <path d="M 490,896 H 475" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+    <path d="M 395,865 C 395,805 455,730 490,711" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)"/>
+    <path d="M 710,896 C 830,896 830,805 765,805" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  </g>
+
   <circle cx="600" cy="108" r="22" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
   <text x="600" y="114" text-anchor="middle" fill="#2563eb" font-size="16" font-weight="700">U</text>
   <text x="600" y="143" text-anchor="middle" class="node-sub">用户</text>
+
   <g filter="url(#softShadow)">
     <rect x="500" y="165" width="200" height="48" rx="12" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.6"/>
     <text x="600" y="192" text-anchor="middle" fill="#1e40af" font-size="15" font-weight="700">/openflow</text>
   </g>
-  <polygon points="600,245 690,288 600,331 510,288" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.6" filter="url(#softShadow)"/>
-  <text x="600" y="285" text-anchor="middle" fill="#92400e" font-size="14" font-weight="700">状态路由</text>
-  <text x="600" y="303" text-anchor="middle" fill="#92400e" font-size="10">State Detection</text>
+
+  <polygon points="600,250 700,295 600,340 500,295" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.6" filter="url(#softShadow)"/>
+  <text x="600" y="292" text-anchor="middle" fill="#92400e" font-size="14" font-weight="700">状态路由</text>
+  <text x="600" y="310" text-anchor="middle" fill="#92400e" font-size="10">status + context gate</text>
+
   <g filter="url(#softShadow)">
-    <rect x="515" y="345" width="220" height="58" rx="12" fill="#ecfeff" stroke="#67e8f9" stroke-width="1.6"/>
-    <text x="625" y="370" text-anchor="middle" fill="#155e75" font-size="15" font-weight="700">Init</text>
-    <text x="625" y="389" text-anchor="middle" class="node-sub">openspec/config.yaml</text>
-    <text x="625" y="405" text-anchor="middle" class="node-sub">项目上下文和规则</text>
+    <rect x="490" y="375" width="220" height="68" rx="12" fill="#ecfeff" stroke="#67e8f9" stroke-width="1.6"/>
+    <text x="600" y="402" text-anchor="middle" fill="#155e75" font-size="15" font-weight="700">Init</text>
+    <text x="600" y="421" text-anchor="middle" class="node-sub">项目介绍 / 规则限制</text>
+    <text x="600" y="437" text-anchor="middle" class="node-sub">写入 openspec/config.yaml</text>
   </g>
+
   <g filter="url(#softShadow)">
-    <rect x="390" y="380" width="210" height="62" rx="12" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.6"/>
-    <text x="495" y="407" text-anchor="middle" fill="#1e40af" font-size="15" font-weight="700">Proposal</text>
-    <text x="495" y="426" text-anchor="middle" class="node-sub">轻量需求捕获</text>
-    <text x="495" y="442" text-anchor="middle" class="node-sub">3–5 个关键问题</text>
+    <rect x="350" y="490" width="210" height="62" rx="12" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.6"/>
+    <text x="455" y="517" text-anchor="middle" fill="#1e40af" font-size="15" font-weight="700">Proposal</text>
+    <text x="455" y="536" text-anchor="middle" class="node-sub">轻量需求捕获</text>
+    <text x="455" y="552" text-anchor="middle" class="node-sub">3–5 个关键问题</text>
   </g>
+
   <g filter="url(#softShadow)">
-    <rect x="640" y="380" width="210" height="62" rx="12" fill="#faf5ff" stroke="#ede9fe" stroke-width="1.6"/>
-    <text x="745" y="407" text-anchor="middle" fill="#6b21a8" font-size="15" font-weight="700">Brainstorming</text>
-    <text x="745" y="426" text-anchor="middle" class="node-sub">深度设计探索</text>
-    <text x="745" y="442" text-anchor="middle" class="node-sub">多轮取舍讨论</text>
+    <rect x="640" y="490" width="210" height="62" rx="12" fill="#faf5ff" stroke="#ede9fe" stroke-width="1.6"/>
+    <text x="745" y="517" text-anchor="middle" fill="#6b21a8" font-size="15" font-weight="700">Brainstorming</text>
+    <text x="745" y="536" text-anchor="middle" class="node-sub">深度设计探索</text>
+    <text x="745" y="552" text-anchor="middle" class="node-sub">多轮取舍讨论</text>
   </g>
+
   <g filter="url(#softShadow)">
-    <rect x="515" y="480" width="220" height="62" rx="12" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="1.6"/>
-    <text x="625" y="507" text-anchor="middle" fill="#be185d" font-size="15" font-weight="700">grill-me (Optional)</text>
-    <text x="625" y="526" text-anchor="middle" class="node-sub">压力测试 proposal</text>
-    <text x="625" y="542" text-anchor="middle" class="node-sub">隐藏假设 / 边界 / 风险</text>
+    <rect x="490" y="595" width="220" height="62" rx="12" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="1.6"/>
+    <text x="600" y="622" text-anchor="middle" fill="#be185d" font-size="15" font-weight="700">grill-me (Optional)</text>
+    <text x="600" y="641" text-anchor="middle" class="node-sub">压力测试 proposal</text>
+    <text x="600" y="657" text-anchor="middle" class="node-sub">隐藏假设 / 边界 / 风险</text>
   </g>
+  <text x="724" y="630" fill="#9333ea" font-size="11" font-weight="600">可跳过</text>
+
   <g filter="url(#softShadow)">
-    <rect x="515" y="575" width="220" height="62" rx="12" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.6"/>
-    <text x="625" y="602" text-anchor="middle" fill="#166534" font-size="15" font-weight="700">Spec</text>
-    <text x="625" y="621" text-anchor="middle" class="node-sub">OpenSpec 生成规格</text>
-    <text x="625" y="637" text-anchor="middle" class="node-sub">proposal / design / specs / tasks</text>
+    <rect x="490" y="680" width="220" height="62" rx="12" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.6"/>
+    <text x="600" y="707" text-anchor="middle" fill="#166534" font-size="15" font-weight="700">Spec</text>
+    <text x="600" y="726" text-anchor="middle" class="node-sub">OpenSpec 生成规格</text>
+    <text x="600" y="742" text-anchor="middle" class="node-sub">proposal / design / specs / tasks</text>
   </g>
+
   <g filter="url(#softShadow)">
-    <rect x="485" y="670" width="280" height="70" rx="12" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.6"/>
-    <text x="625" y="697" text-anchor="middle" fill="#3730a3" font-size="15" font-weight="700">Translation Layer</text>
-    <text x="625" y="716" text-anchor="middle" class="node-sub">需求视角 → 工程视角</text>
-    <text x="625" y="732" text-anchor="middle" class="node-sub">详细 plan-ready.md handoff</text>
+    <rect x="490" y="765" width="275" height="70" rx="12" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.6"/>
+    <text x="628" y="792" text-anchor="middle" fill="#3730a3" font-size="15" font-weight="700">Translation Layer</text>
+    <text x="628" y="811" text-anchor="middle" class="node-sub">需求视角 → 工程视角</text>
+    <text x="628" y="827" text-anchor="middle" class="node-sub">详细 plan-ready.md handoff</text>
   </g>
+
   <g filter="url(#softShadow)">
-    <rect x="315" y="670" width="150" height="70" rx="12" fill="#fefce8" stroke="#fde68a" stroke-width="1.6"/>
-    <text x="390" y="696" text-anchor="middle" fill="#854d0e" font-size="14" font-weight="700">Workflow Status</text>
-    <text x="390" y="716" text-anchor="middle" class="node-sub">gates / tasks</text>
-    <text x="390" y="732" text-anchor="middle" class="node-sub">conflicts / next</text>
+    <rect x="315" y="765" width="150" height="70" rx="12" fill="#fefce8" stroke="#fde68a" stroke-width="1.6"/>
+    <text x="390" y="791" text-anchor="middle" fill="#854d0e" font-size="14" font-weight="700">Workflow Status</text>
+    <text x="390" y="811" text-anchor="middle" class="node-sub">gates / tasks</text>
+    <text x="390" y="827" text-anchor="middle" class="node-sub">conflicts / next</text>
   </g>
+
   <g filter="url(#softShadow)">
-    <rect x="515" y="775" width="220" height="62" rx="12" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.6"/>
-    <text x="625" y="802" text-anchor="middle" fill="#1e40af" font-size="15" font-weight="700">Build</text>
-    <text x="625" y="821" text-anchor="middle" class="node-sub">Superpowers 执行</text>
-    <text x="625" y="837" text-anchor="middle" class="node-sub">TDD + checkpoint</text>
+    <rect x="490" y="865" width="220" height="62" rx="12" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.6"/>
+    <text x="600" y="892" text-anchor="middle" fill="#1e40af" font-size="15" font-weight="700">Build</text>
+    <text x="600" y="911" text-anchor="middle" class="node-sub">Superpowers 执行</text>
+    <text x="600" y="927" text-anchor="middle" class="node-sub">TDD + checkpoint</text>
   </g>
+
   <g filter="url(#softShadow)">
-    <rect x="515" y="875" width="220" height="62" rx="12" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.6"/>
-    <text x="625" y="902" text-anchor="middle" fill="#166534" font-size="15" font-weight="700">Close</text>
-    <text x="625" y="921" text-anchor="middle" class="node-sub">验证一致性 + 归档</text>
-    <text x="625" y="937" text-anchor="middle" class="node-sub">同步 tasks checkbox</text>
+    <rect x="315" y="865" width="160" height="62" rx="12" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.6"/>
+    <text x="395" y="892" text-anchor="middle" fill="#9a3412" font-size="15" font-weight="700">Amend</text>
+    <text x="395" y="911" text-anchor="middle" class="node-sub">需求变更修订</text>
+    <text x="395" y="927" text-anchor="middle" class="node-sub">只改规格/计划</text>
   </g>
+  <text x="415" y="850" text-anchor="middle" fill="#9333ea" font-size="11" font-weight="600">修订后回 Spec</text>
+  <text x="842" y="852" text-anchor="middle" fill="#ea580c" font-size="11" font-weight="600">需求变更</text>
+
   <g filter="url(#softShadow)">
-    <rect x="315" y="775" width="160" height="62" rx="12" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.6"/>
-    <text x="395" y="802" text-anchor="middle" fill="#9a3412" font-size="15" font-weight="700">Amend</text>
-    <text x="395" y="821" text-anchor="middle" class="node-sub">需求变更修订</text>
-    <text x="395" y="837" text-anchor="middle" class="node-sub">只改规格/计划</text>
+    <rect x="490" y="955" width="220" height="62" rx="12" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.6"/>
+    <text x="600" y="982" text-anchor="middle" fill="#166534" font-size="15" font-weight="700">Close</text>
+    <text x="600" y="1001" text-anchor="middle" class="node-sub">验证一致性 + 归档</text>
+    <text x="600" y="1017" text-anchor="middle" class="node-sub">同步 tasks checkbox</text>
   </g>
-  <line x1="600" y1="130" x2="600" y2="165" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <line x1="600" y1="213" x2="600" y2="245" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <line x1="600" y1="331" x2="625" y2="345" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <path d="M 510,288 H 495 V 380" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <path d="M 690,288 H 745 V 380" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <path d="M 495,442 V 462 H 625 V 480" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <path d="M 745,442 V 462 H 625" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <line x1="625" y1="542" x2="625" y2="575" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <line x1="625" y1="637" x2="625" y2="670" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <path d="M 515,705 H 465" fill="none" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
-  <line x1="625" y1="740" x2="625" y2="775" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <line x1="625" y1="837" x2="625" y2="875" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
-  <path d="M 735,511 H 795 V 606 H 735" fill="none" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)"/>
-  <text x="822" y="562" text-anchor="middle" fill="#9333ea" font-size="11" font-weight="600">可跳过</text>
-  <path d="M 515,806 H 475" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
-  <path d="M 395,775 C 395,690 500,610 515,606" fill="none" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)"/>
-  <text x="405" y="708" text-anchor="middle" fill="#9333ea" font-size="11" font-weight="600">修订后回 Spec</text>
-  <path d="M 735,806 C 830,806 830,710 765,710" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
-  <text x="846" y="760" text-anchor="middle" fill="#ea580c" font-size="11" font-weight="600">需求变更</text>
-  <path d="M 294,240 H 510" fill="none" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
-  <path d="M 690,288 H 905" fill="none" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
-  <path d="M 765,705 H 905" fill="none" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
-  <g transform="translate(380,950)">
+
+  <g transform="translate(305,1040)">
     <line x1="0" y1="0" x2="34" y2="0" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
     <text x="44" y="4" fill="#6b7280" font-size="11">主流程</text>
-    <line x1="180" y1="0" x2="34" y2="0" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)"/>
-    <text x="224" y="4" fill="#6b7280" font-size="11">可选/修订回路</text>
-    <line x1="360" y1="0" x2="34" y2="0" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
-    <text x="404" y="4" fill="#6b7280" font-size="11">需求变更</text>
-    <line x1="540" y1="0" x2="34" y2="0" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
-    <text x="584" y="4" fill="#6b7280" font-size="11">路由/说明</text>
+    <line x1="150" y1="0" x2="184" y2="0" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+    <text x="194" y="4" fill="#6b7280" font-size="11">上下文初始化</text>
+    <line x1="330" y1="0" x2="364" y2="0" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)"/>
+    <text x="374" y="4" fill="#6b7280" font-size="11">可选/修订回路</text>
+    <line x1="535" y1="0" x2="569" y2="0" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+    <text x="579" y="4" fill="#6b7280" font-size="11">需求变更</text>
+    <line x1="700" y1="0" x2="734" y2="0" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
+    <text x="744" y="4" fill="#6b7280" font-size="11">路由/说明</text>
   </g>
 </svg>
