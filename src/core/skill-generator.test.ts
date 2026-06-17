@@ -115,6 +115,7 @@ describe('skill template resolution', () => {
     const grillContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow/grill.md'), 'utf-8');
     const proposalContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow/proposal.md'), 'utf-8');
     const brainstormingContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow/brainstorming.md'), 'utf-8');
+    const proposalAliasContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow-proposal/SKILL.md'), 'utf-8');
     const grillAliasContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow-grill/SKILL.md'), 'utf-8');
     const initAliasContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow-init/SKILL.md'), 'utf-8');
     const buildContent = fs.readFileSync(path.join(tmpDir, '.codex/skills/openflow/build.md'), 'utf-8');
@@ -129,12 +130,19 @@ describe('skill template resolution', () => {
     expect(initContent).toContain('读取用户项目的代码风格');
     expect(initContent).toContain('空项目');
     expect(initAliasContent).toContain('name: openflow-init');
+    expect(initAliasContent).toContain('项目初始化守卫');
+    expect(initAliasContent).toContain('在任何项目扫描、需求分析、创建 change 之前');
     expect(skillContent).toContain('先询问是否进入可选 grill-me');
     expect(skillContent).toContain('proposal、brainstorming、grill、spec 或 amend');
     expect(skillContent).toContain('proposal/brainstorming/grill/spec/amend');
     expect(grillContent).toContain('name: openflow/grill');
     expect(grillContent).toContain('本阶段只允许写 `openspec/changes/**/proposal.md`');
+    expect(proposalAliasContent).toContain('项目初始化守卫');
+    expect(proposalAliasContent).toContain('在任何项目扫描、需求分析、创建 change 之前');
+    expect(proposalAliasContent).toContain('如果 `openspec/config.yaml` 已存在，不要提示 init');
     expect(proposalContent).toContain('## 0. 项目初始化检测');
+    expect(proposalContent).toContain('在任何项目扫描、需求分析、创建 change 之前');
+    expect(proposalContent).toContain('如果 `openspec/config.yaml` 已存在，不要提示 init');
     expect(proposalContent).toContain('openflow init --tools codex');
     expect(proposalContent).toContain('生成 `openspec/config.yaml`');
     expect(proposalContent).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');
@@ -185,6 +193,8 @@ describe('skill template resolution', () => {
     expect(skillContent).toContain('proposal、brainstorming、grill、spec 或 amend');
     expect(grillContent).toContain('用户随时可以跳过，grill 是可选的辅助，不是强制门禁');
     expect(proposalContent).toContain('## 0. 项目初始化检测');
+    expect(proposalContent).toContain('在任何项目扫描、需求分析、创建 change 之前');
+    expect(proposalContent).toContain('如果 `openspec/config.yaml` 已存在，不要提示 init');
     expect(proposalContent).toContain('openflow init --tools opencode');
     expect(proposalContent).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');
     expect(brainstormingContent).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');

@@ -143,7 +143,10 @@ argument-hint: "[optional context]"
 2. 读取同级 skills 目录中的 \`${SKILL_NAME}/SKILL.md\`
 3. 读取 \`${SKILL_NAME}/${phase}.md\`
 4. 严格遵守主 openflow 工作流、阶段写入边界和当前阶段文件
-5. 如果 \`$ARGUMENTS\` 中有额外需求或上下文，将它作为 ${phase} 阶段输入
+5. 先执行主工作流中的项目初始化守卫：在任何项目扫描、需求分析、创建 change 之前检查 \`openspec/config.yaml\`
+6. 如果 \`openspec/config.yaml\` 已存在，不要提示 init，直接继续 ${phase} 阶段
+7. 如果缺失，先询问用户是否执行 \`/openflow init\`；用户跳过时继续 ${phase} 阶段并说明没有项目级 config 约束
+8. 如果 \`$ARGUMENTS\` 中有额外需求或上下文，将它作为 ${phase} 阶段输入
 `;
 }
 

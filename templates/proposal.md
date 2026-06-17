@@ -19,13 +19,14 @@ description: Lightweight requirement capture — 3-5 questions to quickly conver
 
 ## 0. 项目初始化检测
 
-在提出需求问题前，必须先检查当前工作目录是否已经完成项目级 OpenSpec 初始化：
+这是本阶段的第一步。在任何项目扫描、需求分析、创建 change 之前，必须先检查当前工作目录是否已经完成项目级 OpenSpec 初始化。不得先读取 `package.json`、不得先 `rg`/`ls` 分析项目、不得先创建 `openspec/changes/**`。
 
 1. 检查 `openspec/config.yaml` 是否存在
-2. 如果不存在，提示当前项目尚未初始化项目上下文，并询问用户是否先执行 `/openflow init`
-3. 如果用户同意，切到 `/openflow init`，通过交互和项目扫描生成 `openspec/config.yaml`，完成后再回到 proposal 阶段
-4. 如果用户拒绝或选择跳过，继续本阶段，但明确说明本次没有 `config.yaml` 项目约束；后续问题只能基于用户输入和已扫描事实，不得编造项目规则
-5. 如果只存在 legacy `openspec/project.md`，提示 `/openflow init` 可以迁移并精炼为 `config.yaml`；用户跳过时只把 `project.md` 当参考
+2. 如果 `openspec/config.yaml` 已存在，不要提示 init，直接继续后续需求捕获
+3. 如果不存在，提示当前项目尚未初始化项目上下文，并询问用户是否先执行 `/openflow init`
+4. 如果用户同意，切到 `/openflow init`，通过交互和项目扫描生成 `openspec/config.yaml`，完成后再回到 proposal 阶段
+5. 如果用户拒绝或选择跳过，继续本阶段，但明确说明本次没有 `config.yaml` 项目约束；后续问题只能基于用户输入和已扫描事实，不得编造项目规则
+6. 如果只存在 legacy `openspec/project.md`，提示 `/openflow init` 可以迁移并精炼为 `config.yaml`；用户跳过时只把 `project.md` 当参考
 
 不要把全局 skill 安装视为项目已初始化。`openflow init --global` 只安装全局入口，不会也不应该替某个业务项目写入 `openspec/`。CLI 命令 `{{OPENFLOW_PROJECT_INIT_COMMAND}}` 只负责安装/生成本地 skill；工作流命令 `/openflow init` 才负责交互式项目上下文初始化。
 

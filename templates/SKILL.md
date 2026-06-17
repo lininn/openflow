@@ -24,11 +24,13 @@ argument-hint: "proposal | init | brainstorming | grill | spec | amend | build |
 
 在执行任何阶段前，先在当前工作目录检查项目级 OpenSpec 上下文：
 
-1. Missing `openspec/config.yaml` 是上下文缺失，不是硬阻断
-2. 如果用户不是显式调用 `/openflow init`，先说明当前项目尚未初始化项目上下文，并询问用户是否执行 `/openflow init`
-3. 用户同意时，切到 `/openflow init`，通过交互和代码扫描生成或完善 `openspec/config.yaml`
-4. 用户拒绝或选择跳过则继续原阶段，但必须说明本次没有 `config.yaml` 项目约束，不得把通用最佳实践冒充项目规则
-5. 如果只存在 legacy `openspec/project.md`，提示可以通过 `/openflow init` 迁移和精炼到 `config.yaml`；用户跳过时只把 `project.md` 当参考，不当作当前权威入口
+1. 在任何项目扫描、需求分析、创建 change 之前，先检查 `openspec/config.yaml` 是否存在
+2. 如果 `openspec/config.yaml` 已存在，不要提示 init，直接继续用户请求的阶段
+3. Missing `openspec/config.yaml` 是上下文缺失，不是硬阻断
+4. 如果用户不是显式调用 `/openflow init`，先说明当前项目尚未初始化项目上下文，并询问用户是否执行 `/openflow init`
+5. 用户同意时，切到 `/openflow init`，通过交互和代码扫描生成或完善 `openspec/config.yaml`
+6. 用户拒绝或选择跳过则继续原阶段，但必须说明本次没有 `config.yaml` 项目约束，不得把通用最佳实践冒充项目规则
+7. 如果只存在 legacy `openspec/project.md`，提示可以通过 `/openflow init` 迁移和精炼到 `config.yaml`；用户跳过时只把 `project.md` 当参考，不当作当前权威入口
 
 全局安装只负责把可复用 skills 写入用户目录，不代表当前业务项目已经初始化。CLI 级 `{{OPENFLOW_PROJECT_INIT_COMMAND}}` 负责安装/生成本地 skill；AI 工作流级 `/openflow init` 负责交互式生成项目上下文。
 
