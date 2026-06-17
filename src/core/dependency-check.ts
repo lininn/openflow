@@ -74,7 +74,11 @@ export function tryAutoInstall(pkg: string): boolean {
 }
 
 export function checkOpenSpecInitialized(cwd: string): boolean {
-  return dirExists(path.join(cwd, 'openspec'));
+  const openspecDir = path.join(cwd, 'openspec');
+  return (
+    dirExists(openspecDir) &&
+    (fileExists(path.join(openspecDir, 'config.yaml')) || fileExists(path.join(openspecDir, 'project.md')))
+  );
 }
 
 export interface InitState {

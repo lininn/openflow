@@ -2,7 +2,9 @@
 
 [中文文档](./README.zh-CN.md)
 
-OpenSpec + Superpowers workflow orchestrator — bridging requirements specs and engineering execution, eliminating the format gap.
+OpenSpec + Superpowers workflow orchestrator for agentic development.
+
+OpenFlow gives AI coding tools one spec-driven path from project context to requirements, implementation, verification, and archive. It initializes reusable skills for Claude Code, Codex, Cursor, and OpenCode; keeps OpenSpec change state visible; and translates requirements artifacts into executable Superpowers handoffs.
 
 ## Installation
 
@@ -19,11 +21,12 @@ cd your-project
 openflow init --tools claude
 ```
 
-`init` will automatically:
+CLI `init` will automatically:
 1. Detect and guide OpenSpec CLI installation
 2. Detect Superpowers and show install instructions
 3. Check if OpenSpec is initialized in the project
-4. Generate openflow skills to the selected tools' local skill directories, such as `.claude/skills/openflow/`, `.codex/skills/openflow/`, `.cursor/skills/openflow/`, or `.opencode/commands/openflow/`
+4. Create or refine the OpenSpec project context scaffold in `openspec/config.yaml`
+5. Generate openflow skills to the selected tools' local skill directories, such as `.claude/skills/openflow/`, `.codex/skills/openflow/`, `.cursor/skills/openflow/`, or `.opencode/commands/openflow/`
 
 Supported tools: `claude`, `codex`, `cursor`, `opencode` (comma-separated, e.g. `--tools claude,codex`)
 
@@ -43,6 +46,8 @@ With `-g` / `--global`, `openflow` installs skills under the selected tools' hom
 | `cursor` | `~/.cursor/skills/openflow/` |
 | `opencode` | `~/.opencode/commands/openflow/` |
 
+Global install only writes reusable skills. Project context is still initialized per repository with local `openflow init` or through the AI workflow command `/openflow init`.
+
 ### Check status
 
 ```bash
@@ -50,6 +55,13 @@ openflow status
 ```
 
 Shows dependency installation status and active changes in the project.
+
+Status now renders an OpenFlow dashboard for each active OpenSpec change:
+
+- current phase and capture mode
+- source of truth, either `workflow-status.md` or inferred from files
+- phase gates such as requirements captured, specs validated, plan ready, implementation complete, verification complete, and archived
+- task counts, blockers, conflicts, and the recommended next command
 
 ### Update skills
 
@@ -69,6 +81,7 @@ available phases. OpenCode keeps its native command-tree form under
 
 | Command | Phase | Description |
 |---------|-------|-------------|
+| `/openflow init` | init | Initialize or refine `openspec/config.yaml` project context |
 | `/openflow proposal` | proposal | Lightweight capture — 3-5 questions to converge on requirements |
 | `/openflow brainstorming` | brainstorming | Deep design — multi-round tradeoff exploration |
 | `/openflow grill` | grill | Optional stress-test — challenge proposal assumptions before spec |
@@ -77,7 +90,11 @@ available phases. OpenCode keeps its native command-tree form under
 | `/openflow build` | build | Call Superpowers to execute implementation |
 | `/openflow close` | close | Verify consistency + archive |
 
-`/openflow grill` is optional: skip it when the proposal is already clear, or use it to challenge hidden assumptions before committing to specs. The spec phase now treats `plan-ready.md` as a detailed Superpowers handoff, not a task summary: it must preserve source coverage, file responsibilities, implementation slices, TDD expectations, validation commands, and blockers.
+`/openflow init` is the project-context phase. It scans the repository, asks only for missing implementation constraints, and writes `openspec/config.yaml` so future proposal, spec, and build work has project-specific rules.
+
+`/openflow grill` is optional: skip it when the proposal is already clear, or use it to challenge hidden assumptions before committing to specs. The spec phase treats `plan-ready.md` as a detailed Superpowers handoff, not a task summary: it must preserve source coverage, file responsibilities, implementation slices, TDD expectations, validation commands, and blockers.
+
+Each workflow phase maintains `openspec/changes/<change-id>/workflow-status.md`. Bare `/openflow` and phase commands read that status first, fall back to file-based inference when it is missing, and warn when status claims conflict with actual artifacts.
 
 ## Dependency Strategy
 
@@ -95,17 +112,19 @@ Works without them: yes, with manual-file fallback
 
 | Layer | Mechanism | When missing |
 |-------|-----------|-------------|
-| **Init time** | Detect OpenSpec CLI from `PATH`; detect project OpenSpec in `./openspec/`; detect Superpowers in the selected tools' local/global skill dirs | Non-blocking, skills still generated |
+| **Init time** | Detect OpenSpec CLI from `PATH`; detect project OpenSpec in `./openspec/`; scaffold `openspec/config.yaml`; detect Superpowers in the selected tools' local/global skill dirs | Non-blocking, skills still generated |
 | **Runtime** | Dependency check injected into SKILL.md | Build phase falls back to manual step-by-step execution |
 
 ## Architecture
 
-> Detailed diagrams: [Architecture (SVG)](https://unpkg.com/@lininn/openflow@0.4.0-beta.3/openflow-architecture.svg) | [Architecture (PNG)](https://unpkg.com/@lininn/openflow@0.4.0-beta.3/openflow-architecture.png) | [Workflow (SVG)](https://unpkg.com/@lininn/openflow@0.4.0-beta.3/openflow-workflow.svg) | [Workflow (PNG)](https://unpkg.com/@lininn/openflow@0.4.0-beta.3/openflow-workflow.png)
+> Detailed diagrams: [Architecture (SVG)](https://unpkg.com/@lininn/openflow@0.4.1/openflow-architecture.svg) | [Architecture (PNG)](https://unpkg.com/@lininn/openflow@0.4.1/openflow-architecture.png) | [Workflow (SVG)](https://unpkg.com/@lininn/openflow@0.4.1/openflow-workflow.svg) | [Workflow (PNG)](https://unpkg.com/@lininn/openflow@0.4.1/openflow-workflow.png)
 
-![OpenFlow workflow](https://unpkg.com/@lininn/openflow@0.4.0-beta.3/openflow-workflow.svg)
+![OpenFlow workflow](https://unpkg.com/@lininn/openflow@0.4.1/openflow-workflow.svg)
 
 ```
 User Requirements
+   │
+   ├── Project context ──→ /openflow init ──→ openspec/config.yaml
    │
    ├── Quick ──→ /openflow proposal ──┐
    │           3-5 questions          │
@@ -129,6 +148,9 @@ User Requirements
                           └──────────┬───────────┘
                                      │
                                 plan-ready.md
+                                     │
+                             workflow-status.md
+                        phase gates, tasks, blockers
                                      │
                           ┌──────────▼───────────┐
                           │  /openflow build       │

@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import { Command } from 'commander';
 import inquirer from 'inquirer';
 import path from 'path';
@@ -5,7 +6,8 @@ import { checkDependencies, tryAutoInstall, checkOpenSpecInitialized, writeState
 import { generateSkills } from '../core/skill-generator.js';
 import { TOOL_PATHS, DEPS } from '../core/constants.js';
 import { logger } from '../utils/logger.js';
-import { exec, dirExists } from '../utils/shell.js';
+import { exec, dirExists, fileExists } from '../utils/shell.js';
+import { parse as parseYaml } from 'yaml';
 
 const SUPPORTED_TOOLS = Object.keys(TOOL_PATHS);
 
@@ -60,11 +62,14 @@ export const initCommand = new Command('init')
     }
 
     if (installGlobally) {
-      logger.step('Skipping project OpenSpec initialization for global install');
+      logger.step('Global install only writes reusable skills; project initialization is handled per project');
+      logger.info(`Run openflow init --tools ${tools.join(',')} inside each project, or let /openflow proposal bootstrap it first`);
     } else {
       // Step 3: Check if OpenSpec is initialized in project
       logger.step('Checking project OpenSpec initialization ...');
-      if (!checkOpenSpecInitialized(cwd)) {
+      let shouldEnsureContext = checkOpenSpecInitialized(cwd);
+
+      if (!shouldEnsureContext) {
         if (depStatus.openspec.installed) {
           const { initOpenSpec } = await inquirer.prompt([
             {
@@ -79,12 +84,18 @@ export const initCommand = new Command('init')
             const toolsFlag = tools.map((t: string) => t).join(',');
             exec(`openspec init --tools ${toolsFlag}`, { stdio: 'inherit' });
             logger.success('OpenSpec project initialized');
+            shouldEnsureContext = true;
           }
         } else {
-          logger.info('OpenSpec not initialized — directories will be auto-created on first /openflow proposal');
+          logger.info('OpenSpec CLI not available — creating OpenFlow project context scaffold without CLI metadata');
+          shouldEnsureContext = true;
         }
       } else {
         logger.success('OpenSpec project initialized');
+      }
+
+      if (shouldEnsureContext) {
+        ensureOpenSpecProjectContext(cwd);
       }
     }
 
@@ -114,6 +125,7 @@ export const initCommand = new Command('init')
     }
 
     logger.info('Available commands:');
+    logger.info('  /openflow init          Initialize project context');
     logger.info('  /openflow proposal      Quick requirement capture');
     logger.info('  /openflow brainstorming  Deep design exploration');
     logger.info('  /openflow grill         Optional stress-test before spec');
@@ -123,3 +135,84 @@ export const initCommand = new Command('init')
     logger.info('  /openflow close          Verify + archive');
     logger.blank();
   });
+
+export function ensureOpenSpecProjectContext(cwd: string): void {
+  const openspecDir = path.join(cwd, 'openspec');
+  if (!dirExists(openspecDir)) {
+    fs.mkdirSync(openspecDir, { recursive: true });
+  }
+
+  const configPath = path.join(openspecDir, 'config.yaml');
+  const legacyProjectPath = path.join(openspecDir, 'project.md');
+
+  if (!fileExists(configPath)) {
+    fs.writeFileSync(configPath, getDefaultOpenSpecConfig(), 'utf-8');
+    logger.success('Created openspec/config.yaml with OpenFlow context scaffold');
+  } else {
+    const configContent = fs.readFileSync(configPath, 'utf-8');
+    const additions = getMissingConfigScaffold(configContent);
+    if (additions) {
+      fs.appendFileSync(configPath, `\n${additions}`, 'utf-8');
+      logger.success('Added missing context/rules scaffold to openspec/config.yaml');
+    } else {
+      logger.success('OpenSpec project context configured in openspec/config.yaml');
+    }
+  }
+
+  if (fileExists(legacyProjectPath)) {
+    logger.warn('Legacy openspec/project.md detected. OpenSpec now injects project context from openspec/config.yaml. Review project.md, move useful content into config.yaml context/rules, then delete project.md when ready.');
+  }
+}
+
+function getMissingConfigScaffold(content: string): string {
+  const sections: string[] = [];
+
+  if (!hasTopLevelKey(content, 'context')) {
+    sections.push(getContextSection());
+  }
+
+  if (!hasTopLevelKey(content, 'rules')) {
+    sections.push(getRulesSection());
+  }
+
+  return sections.join('\n');
+}
+
+function hasTopLevelKey(content: string, key: string): boolean {
+  try {
+    const doc = parseYaml(content);
+    return doc != null && typeof doc === 'object' && key in doc;
+  } catch {
+    return false;
+  }
+}
+
+function getDefaultOpenSpecConfig(): string {
+  return `schema: spec-driven
+${getContextSection()}
+${getRulesSection()}`;
+}
+
+function getContextSection(): string {
+  return `
+# Project context is injected into OpenSpec planning artifacts.
+# Keep this concise: Superpowers receives it later through plan-ready.md.
+context: |
+  TODO: Describe the project tech stack, architecture patterns, testing strategy,
+  code style, domain constraints, and external dependencies that AI implementers
+  must follow.
+`;
+}
+
+function getRulesSection(): string {
+  return `
+rules:
+  specs:
+    - Reference existing specs before inventing new behavior.
+    - Every requirement must include concrete scenarios and acceptance checks.
+  design:
+    - Preserve project architecture patterns and explain any new dependency.
+  tasks:
+    - Include exact files, tests, verification commands, and rollback notes.
+`;
+}

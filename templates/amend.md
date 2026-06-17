@@ -89,7 +89,8 @@ openspec validate <变更名> --strict
 根据修订后的 OpenSpec 文档更新 `plan-ready.md`。
 
 规则：
-- 保留原 `## 来源`
+- 保留并刷新原 `## 来源`，其中必须包含 `openspec/config.yaml` 和 `openspec/specs/`
+- 重新读取 `openspec/config.yaml`，同步更新 `## Project Context` 与 `## Applicable OpenSpec Rules`；Superpowers 不会自动读取 config.yaml，必须通过 plan-ready 继续传递
 - 追加 `## Amendments`，记录本次修订来源和影响
 - 更新 `## Source Coverage`，确保新增/修改/删除的 requirement、scenario、tasks.md 条目都有对应 slice
 - 更新 `## File Responsibility Map`，标明新增或受影响的代码、测试、文档文件责任
@@ -144,12 +145,36 @@ openspec validate <变更名> --strict
 - 是否存在 TBD/TODO/模糊实现步骤
 - 新增 slice 是否包含文件、测试、验证命令和完成标准
 
+### 5.5 更新 workflow-status.md
+
+修订完成后，更新 `openspec/changes/<变更名>/workflow-status.md`：
+
+- Phase 保持不变（通常是 `build` 或回到 `spec`）
+- Status: 如果 amend 增加了新任务 → `in_progress`（需要回到 build 完成新任务）
+- Status: 如果 amend 只修改了规格但不影响已实现功能 → 保持原状态
+- Gates: 不要降级已 passed 的 gate，除非对应的文件确实被删除或失效
+- Tasks: 追加新任务行（来自 amend 新增的 tasks.md 条目），状态设为 `pending`
+- Amendments: 追加本次修订记录
+- Next Command: `/openflow build`
+- Next Action: 按修订后的 plan-ready.md 继续实现
+
+**示例 Amendments 追加**：
+
+```markdown
+## Amendments
+
+| Date | Reason | Affected Specs | Affected Tasks | Status |
+|------|--------|----------------|----------------|--------|
+| YYYY-MM-DD | <amend 原因> | specs/<capability>/spec.md | T3, T4 | in_progress |
+```
+
 ### 6. 同步详细实现计划
 
 如果 `docs/superpowers/plans/YYYY-MM-DD-<变更名>.md` 已存在：
 - 已勾选任务不动
 - 未完成任务可按新需求调整
 - 追加新 task，保留 checkbox
+- 同步 `Project Context` / `Applicable OpenSpec Rules` 到详细实现计划，避免后续 executing-plans 脱离项目规范
 - 记录本次 amend 来源路径
 
 如果详细实现计划还不存在：

@@ -1,9 +1,7 @@
 import { Command } from 'commander';
-import path from 'path';
-import fs from 'fs';
 import { checkDependencies, readState, checkOpenSpecInitialized } from '../core/dependency-check.js';
+import { detectWorkflowConflicts, findActiveChanges, loadWorkflowStatus, renderWorkflowDashboard } from '../core/workflow-status.js';
 import { logger } from '../utils/logger.js';
-import { dirExists } from '../utils/shell.js';
 
 export const statusCommand = new Command('status')
   .description('Show dependency status and active changes')
@@ -16,7 +14,6 @@ export const statusCommand = new Command('status')
 
     const state = readState(cwd);
 
-    // Dependencies
     logger.step('Dependencies:');
     const depStatus = checkDependencies({ cwd, tools: state?.tools });
 
@@ -33,8 +30,6 @@ export const statusCommand = new Command('status')
     }
 
     logger.blank();
-
-    // Project state
     logger.step('Project:');
 
     if (state) {
@@ -52,40 +47,20 @@ export const statusCommand = new Command('status')
     }
 
     logger.blank();
+    logger.step('Workflow:');
 
-    // Active changes
-    logger.step('Active changes:');
-    const changesDir = path.join(cwd, 'openspec', 'changes');
-
-    if (!dirExists(changesDir)) {
-      logger.info('  None');
+    const changes = findActiveChanges(cwd);
+    if (changes.length === 0) {
+      logger.info('  No active changes');
+      logger.info('  Next: run /openflow proposal or /openflow brainstorming');
+      logger.blank();
       return;
     }
 
-    const entries = fs.readdirSync(changesDir, { withFileTypes: true })
-      .filter((d) => d.isDirectory() && d.name !== 'archive');
-
-    if (entries.length === 0) {
-      logger.info('  None');
-      return;
+    for (const changeId of changes) {
+      const status = loadWorkflowStatus(cwd, changeId);
+      const conflicts = detectWorkflowConflicts(cwd, status);
+      logger.info(renderWorkflowDashboard(status, conflicts));
+      logger.blank();
     }
-
-    for (const entry of entries) {
-      const changeDir = path.join(changesDir, entry.name);
-      const hasPlanReady = fs.existsSync(path.join(changeDir, 'plan-ready.md'));
-      const hasProposal = fs.existsSync(path.join(changeDir, 'proposal.md'));
-
-      let status = '';
-      if (hasPlanReady) {
-        status = '→ ready for /openflow build or /openflow amend';
-      } else if (hasProposal) {
-        status = '→ ready for /openflow grill or /openflow spec';
-      } else {
-        status = '→ needs /openflow proposal';
-      }
-
-      logger.info(`  ${entry.name} ${status}`);
-    }
-
-    logger.blank();
   });

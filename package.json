@@ -1,7 +1,7 @@
 {
   "name": "@lininn/openflow",
-  "version": "0.4.0",
-  "description": "OpenSpec + Superpowers workflow orchestrator for Claude Code",
+  "version": "0.4.1",
+  "description": "OpenSpec + Superpowers workflow orchestrator for agentic development",
   "bin": {
     "openflow": "bin/openflow.js"
   },
