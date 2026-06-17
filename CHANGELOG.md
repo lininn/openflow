@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.4.3
+
+- Fixed README diagram links to use repository-local assets instead of pinned unpkg 0.4.1 URLs, so GitHub renders the current workflow diagram.
+
 ## 0.4.2
 
 - Clarified `/openflow init` documentation as project introduction, rules, and implementation constraints capture instead of a config-file operation.
