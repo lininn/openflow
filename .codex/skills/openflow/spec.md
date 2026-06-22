@@ -41,6 +41,14 @@ description: Call OpenSpec to generate specs, auto-translate to plan-ready.md af
 - `openspec/changes/<变更名>/specs/` — 具体规格变更（标记新增/修改/删除）
 - `openspec/changes/<变更名>/tasks.md` — 实现任务清单
 
+生成后先做 delta 结构自检，避免把不可归档的规格传到后续阶段：
+
+1. 对每个 `openspec/changes/<变更名>/specs/<capability>/spec.md`，检查 `openspec/specs/<capability>/spec.md` 是否已存在。
+2. 如果主规格不存在，该 capability 是新建规格，当前 delta **只能**使用 `## ADDED Requirements`；不得包含 `## MODIFIED Requirements`、`## REMOVED Requirements` 或 `## RENAMED Requirements`。
+3. 如果新 capability 需要描述“保留已有实现/兼容旧数据/保存时不破坏旧规则”，也把它写成 `ADDED Requirements` 下的一条新 requirement，不要写成 `MODIFIED Requirements`。
+4. 只有目标主规格已经存在时，才允许用 `MODIFIED`、`REMOVED` 或 `RENAMED` 修改已有 requirement。
+5. 如果检查失败，先修正 delta 结构，再运行 OpenSpec 校验、展示摘要或生成 `plan-ready.md`。
+
 如果 OpenSpec CLI 可用，生成后运行校验：
 
 ```bash
@@ -154,6 +162,7 @@ openspec validate <变更名> --strict
 
 生成后做一次自检：
 - Source Coverage 是否覆盖所有 requirement、scenario、tasks.md 条目
+- 新 capability 的 spec delta 是否只包含 `ADDED Requirements`
 - 是否仍有 TBD/TODO/“适当处理”等占位话术
 - 每个 slice 是否都有文件、测试、验证命令和完成标准
 - build 阶段是否可以不重新理解需求，仅按 handoff 展开详细计划

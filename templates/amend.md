@@ -72,6 +72,10 @@ description: Revise active OpenSpec requirements during build, regenerate plan-r
 要求：
 - 每个新增或修改的 requirement 必须至少有一个 `#### Scenario:`
 - `MODIFIED Requirements` 必须包含完整的新 requirement 文本，不只写差异片段
+- 对每个 `specs/<capability>/spec.md`，先检查 `openspec/specs/<capability>/spec.md` 是否已存在；如果主规格不存在，该 capability 仍是新建规格，delta **只能**使用 `ADDED Requirements`
+- 主规格不存在时，不得在同一个 delta 中混入 `MODIFIED`、`REMOVED` 或 `RENAMED Requirements`，即使该文件同时包含 `ADDED Requirements`
+- 如果需要补充“兼容旧数据”“保存时保留旧规则”“新增字段不破坏既有行为”等约束，把它们作为 `ADDED Requirements` 下的新 requirement 表达
+- 只有目标主规格已经存在时，才允许用 `MODIFIED`、`REMOVED` 或 `RENAMED` 修改已有 requirement
 - 已完成任务保留原 checkbox 状态
 
 ### 4. 校验 OpenSpec
@@ -142,6 +146,7 @@ openspec validate <变更名> --strict
 
 更新后做一次自检：
 - 新旧 Source Coverage 是否仍覆盖全部 OpenSpec requirement、scenario 和 tasks.md 条目
+- 新 capability 的 spec delta 是否只包含 `ADDED Requirements`
 - 是否存在 TBD/TODO/模糊实现步骤
 - 新增 slice 是否包含文件、测试、验证命令和完成标准
 
