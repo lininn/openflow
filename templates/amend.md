@@ -95,6 +95,7 @@ openspec validate <变更名> --strict
 规则：
 - 保留并刷新原 `## 来源`，其中必须包含 `openspec/config.yaml` 和 `openspec/specs/`
 - 重新读取 `openspec/config.yaml`，同步更新 `## Project Context` 与 `## Applicable OpenSpec Rules`；Superpowers 不会自动读取 config.yaml，必须通过 plan-ready 继续传递
+- 继续遵守 `openspec/config.yaml` 的 `language.artifacts`；若为 `zh-CN`，新增计划、节点、验收说明和摘要使用中文，但 OpenSpec schema 标题、CLI 命令、代码标识符和协议关键字保持原文
 - 追加 `## Amendments`，记录本次修订来源和影响
 - 更新 `## Source Coverage`，确保新增/修改/删除的 requirement、scenario、tasks.md 条目都有对应 slice
 - 更新 `## File Responsibility Map`，标明新增或受影响的代码、测试、文档文件责任

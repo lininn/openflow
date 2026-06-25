@@ -85,6 +85,10 @@ describe('skill template resolution', () => {
     expect(skillContent).toContain('跳过则继续');
     expect(initContent).toContain('## 目标');
     expect(initContent).toContain('读取用户项目的代码风格');
+    expect(initContent).toContain('项目文档和生成产物语言');
+    expect(initContent).toContain('language:');
+    expect(initContent).toContain('artifacts: zh-CN');
+    expect(initContent).toContain('Parser-required OpenSpec headings');
     expect(initContent).toContain('行业标准');
     expect(initContent).toContain('空项目');
     expect(initContent).toContain('写入 `openspec/config.yaml`');
@@ -145,6 +149,8 @@ describe('skill template resolution', () => {
     expect(proposalContent).toContain('如果 `openspec/config.yaml` 已存在，不要提示 init');
     expect(proposalContent).toContain('openflow init --tools codex');
     expect(proposalContent).toContain('生成 `openspec/config.yaml`');
+    expect(initContent).toContain('项目文档和生成产物语言');
+    expect(initContent).toContain('Parser-required OpenSpec headings');
     expect(proposalContent).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');
     expect(brainstormingContent).toContain('必须询问用户是否进入可选的 grill-me 压力测试节点');
     expect(grillAliasContent).toContain('name: openflow-grill');
@@ -189,6 +195,8 @@ describe('skill template resolution', () => {
     expect(skillContent).toContain('openflow init --tools opencode');
     expect(initContent).toContain('读取用户项目的代码风格');
     expect(initContent).toContain('行业标准');
+    expect(initContent).toContain('项目文档和生成产物语言');
+    expect(initContent).toContain('artifacts: zh-CN');
     expect(skillContent).toContain('先询问是否进入可选 grill-me');
     expect(skillContent).toContain('proposal、brainstorming、grill、spec 或 amend');
     expect(grillContent).toContain('用户随时可以跳过，grill 是可选的辅助，不是强制门禁');

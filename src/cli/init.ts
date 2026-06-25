@@ -167,6 +167,10 @@ export function ensureOpenSpecProjectContext(cwd: string): void {
 function getMissingConfigScaffold(content: string): string {
   const sections: string[] = [];
 
+  if (!hasTopLevelKey(content, 'language')) {
+    sections.push(getLanguageSection());
+  }
+
   if (!hasTopLevelKey(content, 'context')) {
     sections.push(getContextSection());
   }
@@ -189,8 +193,25 @@ function hasTopLevelKey(content: string, key: string): boolean {
 
 function getDefaultOpenSpecConfig(): string {
   return `schema: spec-driven
+${getLanguageSection()}
 ${getContextSection()}
 ${getRulesSection()}`;
+}
+
+function getLanguageSection(): string {
+  return `
+# Language preference for human-facing OpenFlow artifacts.
+# During /openflow init, replace this default with inferred or user-confirmed project language.
+language:
+  artifacts: en-US
+  detection: defaulted
+  appliesTo:
+    - proposal
+    - tasks
+    - plan-ready
+    - workflow-status
+    - human-facing summaries
+`;
 }
 
 function getContextSection(): string {
@@ -214,5 +235,8 @@ rules:
     - Preserve project architecture patterns and explain any new dependency.
   tasks:
     - Include exact files, tests, verification commands, and rollback notes.
+  artifacts:
+    - Follow language.artifacts for human-facing OpenFlow outputs.
+    - Parser-required OpenSpec headings, CLI commands, code identifiers, and protocol keywords must remain in their required original form.
 `;
 }
