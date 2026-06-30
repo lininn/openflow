@@ -20,17 +20,18 @@ argument-hint: "proposal | init | brainstorming | grill | spec | amend | build |
 
 如果当前目录已有源码，先基于事实扫描再提问，避免重复询问已知信息。
 
-## 项目初始化守卫
+## OpenSpec 初始化入口门禁
 
-在执行任何阶段前，先在当前工作目录检查项目级 OpenSpec 上下文：
+本门禁只适用于 `proposal` 和 `brainstorming` 两个入口阶段。执行 `/openflow proposal`、`/openflow brainstorming`，或裸 `/openflow` 经状态检测判定要进入 `proposal` / `brainstorming` 阶段时，必须先检查项目级 OpenSpec 上下文：
 
 1. 在任何项目扫描、需求分析、创建 change 之前，先检查 `openspec/config.yaml` 是否存在
-2. 如果 `openspec/config.yaml` 已存在，不要提示 init，直接继续用户请求的阶段
-3. Missing `openspec/config.yaml` 是上下文缺失，不是硬阻断
-4. 如果用户不是显式调用 `/openflow init`，先说明当前项目尚未初始化项目上下文，并询问用户是否执行 `/openflow init`
-5. 用户同意时，切到 `/openflow init`，通过交互和代码扫描生成或完善 `openspec/config.yaml`
-6. 用户拒绝或选择跳过则继续原阶段，但必须说明本次没有 `config.yaml` 项目约束，不得把通用最佳实践冒充项目规则
+2. 如果 `openspec/config.yaml` 已存在，不要提示 init，直接继续 `proposal` 或 `brainstorming` 阶段
+3. Missing `openspec/config.yaml` 是上下文缺失，不是硬阻断，但必须先询问用户是否执行 `/openflow init`
+4. 用户同意时，切到 `/openflow init`，通过交互和代码扫描生成或完善 `openspec/config.yaml`，完成后回到原入口阶段
+5. 只有用户明确表示跳过、不初始化、暂不 init、继续但不 init 等同义意图后，才允许继续 `proposal` 或 `brainstorming` 阶段
+6. 用户明确跳过时，必须说明本次没有 `config.yaml` 项目约束，不得把通用最佳实践冒充项目规则
 7. 如果只存在 legacy `openspec/project.md`，提示可以通过 `/openflow init` 迁移和精炼到 `config.yaml`；用户跳过时只把 `project.md` 当参考，不当作当前权威入口
+8. `grill`、`spec`、`amend`、`build`、`close` 阶段不得触发本初始化询问；如果前置入口阶段已经由用户明确跳过 init，后续阶段沿用该结果继续执行
 
 全局安装只负责把可复用 skills 写入用户目录，不代表当前业务项目已经初始化。CLI 级 `{{OPENFLOW_PROJECT_INIT_COMMAND}}` 负责安装/生成本地 skill；AI 工作流级 `/openflow init` 负责交互式生成项目上下文。
 
@@ -107,7 +108,8 @@ Dashboard 必须显示：
 
 | 文件状态 | 推断 Phase | 推断 Status | Next |
 |----------|------------|-------------|------|
-| 有 `proposal.md`，无 `plan-ready.md` | capture | ready_for_next_phase | `/openflow spec` |
+| 有 `proposal.md`，无 `plan-ready.md`，且无 grill 决策记录 | capture | blocked | 询问是否进入可选 grill-me |
+| 有 `proposal.md`，无 `plan-ready.md`，且已明确跳过 grill-me 或 grill 已完成 | capture | ready_for_next_phase | `/openflow spec` |
 | 有 `plan-ready.md`，无实现计划 | spec | ready_for_next_phase | `/openflow build` |
 | 有实现计划且 checkbox 未完成 | build | in_progress | `/openflow build` |
 | 有实现计划且 checkbox 全完成 | build | ready_for_next_phase | `/openflow close` |
@@ -127,6 +129,7 @@ Recommended fix: run /openflow spec to regenerate plan-ready.md or amend the sta
 
 判定结果：
 - 无 active change → 提示从 `/openflow proposal` 或 `/openflow brainstorming` 开始
+- Phase = capture 且 blocked，缺少 grill 决策 → 询问是否进入可选 grill-me；用户选择跳过 / 不需要 / 直接 spec 后，更新状态为 ready_for_next_phase 并推荐 `/openflow spec`
 - Phase = capture 且 ready_for_next_phase → 推荐 `/openflow spec`
 - Phase = spec 且 ready_for_next_phase → 推荐 `/openflow build`
 - Phase = build 且 in_progress → 继续 `/openflow build`

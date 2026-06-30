@@ -25,7 +25,7 @@ const PHASES = [
 ] as const;
 
 const PHASE_ALIAS_TOOLS = new Set(['claude', 'codex', 'cursor']);
-const PROJECT_INIT_GUARD_ALIAS_PHASES = new Set(['init', 'proposal', 'brainstorming']);
+const PROJECT_INIT_GUARD_ALIAS_PHASES = new Set(['proposal', 'brainstorming']);
 
 export interface GenerateOptions {
   cwd: string;
@@ -130,9 +130,9 @@ function generatePhaseAliasSkills(options: {
 function getPhaseAliasTemplate(phase: string, description: string): string {
   const projectInitGuard = PROJECT_INIT_GUARD_ALIAS_PHASES.has(phase)
     ? `
-5. 先执行主工作流中的项目初始化守卫：在任何项目扫描、需求分析、创建 change 之前检查 \`openspec/config.yaml\`
+5. 先执行主工作流中的 OpenSpec 初始化入口门禁：在任何项目扫描、需求分析、创建 change 之前检查 \`openspec/config.yaml\`
 6. 如果 \`openspec/config.yaml\` 已存在，不要提示 init，直接继续 ${phase} 阶段
-7. 如果缺失，先询问用户是否执行 \`/openflow init\`；用户跳过时继续 ${phase} 阶段并说明没有项目级 config 约束
+7. 如果缺失，必须先询问用户是否执行 \`/openflow init\`；只有用户明确跳过后，才允许继续 ${phase} 阶段并说明没有项目级 config 约束
 8. 如果 \`$ARGUMENTS\` 中有额外需求或上下文，将它作为 ${phase} 阶段输入`
     : `
 5. 如果 \`$ARGUMENTS\` 中有额外需求或上下文，将它作为 ${phase} 阶段输入`;

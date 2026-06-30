@@ -41,7 +41,7 @@ describe('findActiveChanges', () => {
 });
 
 describe('synthesizeWorkflowStatus', () => {
-  it('infers capture state when proposal exists and plan-ready is missing', () => {
+  it('blocks capture state for grill-me decision when proposal exists and plan-ready is missing', () => {
     writeFile('openspec/changes/refactor-arch-optimize/proposal.md', '## Why\nImprove workflow.\n');
     writeFile('openspec/changes/refactor-arch-optimize/tasks.md', '## 1. Work\n- [ ] 1.1 Add status dashboard\n- [ ] 1.2 Update templates\n');
 
@@ -50,9 +50,14 @@ describe('synthesizeWorkflowStatus', () => {
     expect(status.changeId).toBe('refactor-arch-optimize');
     expect(status.phase).toBe('capture');
     expect(status.captureMode).toBe('proposal');
-    expect(status.overallStatus).toBe('ready_for_next_phase');
-    expect(status.nextCommand).toBe('/openflow spec');
+    expect(status.overallStatus).toBe('blocked');
+    expect(status.nextCommand).toBe('/openflow grill');
+    expect(status.nextAction).toContain('optional grill-me pressure testing');
     expect(status.gates.find((gate) => gate.name === 'Requirements captured')?.status).toBe('passed');
+    expect(status.gates.find((gate) => gate.name === 'Grill decision')).toMatchObject({
+      status: 'pending',
+      evidence: 'Ask user whether to run optional grill-me',
+    });
     expect(status.tasks).toHaveLength(2);
     expect(status.tasks[0]).toMatchObject({ id: '1.1', status: 'pending' });
   });
@@ -66,6 +71,7 @@ describe('synthesizeWorkflowStatus', () => {
     expect(status.phase).toBe('spec');
     expect(status.overallStatus).toBe('ready_for_next_phase');
     expect(status.nextCommand).toBe('/openflow build');
+    expect(status.gates.find((gate) => gate.name === 'Grill decision')?.status).toBe('passed');
     expect(status.gates.find((gate) => gate.name === 'Plan ready')?.status).toBe('passed');
   });
 
@@ -102,6 +108,7 @@ describe('synthesizeWorkflowStatus', () => {
     expect(status.captureMode).toBe('none');
     expect(status.overallStatus).toBe('pending');
     expect(status.nextCommand).toBe('/openflow proposal');
+    expect(status.gates.find((gate) => gate.name === 'Grill decision')?.status).toBe('not_applicable');
   });
 });
 
@@ -213,9 +220,10 @@ describe('renderWorkflowDashboard', () => {
     expect(dashboard).toContain('Change: refactor-arch-optimize');
     expect(dashboard).toContain('Source: inferred from files');
     expect(dashboard).toContain('Requirements captured');
+    expect(dashboard).toContain('Grill decision');
     expect(dashboard).toContain('pending        1');
     expect(dashboard).toContain('Warning: example conflict');
-    expect(dashboard).toContain('Run /openflow spec');
+    expect(dashboard).toContain('Run /openflow grill');
   });
 
   it('renders authoritative status from workflow-status.md', () => {

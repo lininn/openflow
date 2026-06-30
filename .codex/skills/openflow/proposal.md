@@ -15,6 +15,10 @@ description: Lightweight requirement capture — 3-5 questions to quickly conver
 
 典型错误：proposal 阶段确认“只改企业端？”后，用户回复“运营端也要做回显”。这只是需求范围补充，必须继续更新 proposal，不得直接修改任何代码或实现文件。
 
+## 执行前门禁
+
+执行本阶段前，必须遵守主 `openflow/SKILL.md` 的 “OpenSpec 初始化入口门禁”：如果缺少 `openspec/config.yaml`，必须先询问用户是否 init；只有用户明确跳过后才允许继续本阶段。
+
 ## 流程
 
 ### 1. 提出关键问题

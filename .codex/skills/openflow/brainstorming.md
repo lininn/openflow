@@ -15,6 +15,10 @@ description: Deep design — multi-round exploration to confirm architecture and
 
 典型错误：在确认“只改企业端？”后，用户回复“运营端也要做回显”，这只是范围修正，必须继续记录需求和方案，不得直接修改任何代码或实现文件。
 
+## 执行前门禁
+
+执行本阶段前，必须遵守主 `openflow/SKILL.md` 的 “OpenSpec 初始化入口门禁”：如果缺少 `openspec/config.yaml`，必须先询问用户是否 init；只有用户明确跳过后才允许继续本阶段。
+
 ## 流程
 
 ### 1. 理解背景

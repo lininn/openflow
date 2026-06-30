@@ -48,6 +48,23 @@ argument-hint: "proposal | brainstorming | grill | spec | amend | build | close"
 | `/openflow build` | build | 调用 Superpowers 执行实现 |
 | `/openflow close` | close | 验证一致性 + 归档 |
 
+## OpenSpec 初始化入口门禁
+
+本门禁只适用于 `proposal` 和 `brainstorming` 两个入口阶段。执行 `/openflow proposal`、`/openflow brainstorming`，或裸 `/openflow` 经状态检测判定要进入 `proposal` / `brainstorming` 阶段时，必须先检查项目是否已初始化 OpenSpec：
+
+```bash
+test -f openspec/config.yaml
+```
+
+处理规则：
+
+1. 如果 `openspec/config.yaml` 存在，说明 OpenSpec 已初始化，直接跳过本门禁，不询问用户。
+2. 如果 `openspec/config.yaml` 不存在，必须先询问用户是否初始化 OpenSpec；在用户回答前，不得继续执行 `proposal` 或 `brainstorming` 阶段，也不得创建/修改 `openspec/changes/**`。
+3. 只有用户明确表示跳过、不初始化、暂不 init、继续但不 init 等同义意图后，才允许跳过初始化门禁并继续当前 `proposal` 或 `brainstorming` 阶段。
+4. 如果用户同意初始化，切到 `/openflow init`，通过交互和代码扫描生成或完善 `openspec/config.yaml`，完成后回到原本的 `proposal` 或 `brainstorming` 阶段。
+5. 如果用户回答含糊，继续追问是否初始化，不得把沉默、话题转移或普通需求补充当作“跳过 init”。
+6. `grill`、`spec`、`amend`、`build`、`close` 阶段不得触发本初始化询问；如果前置入口阶段已经由用户明确跳过 init，后续阶段沿用该结果继续执行。
+
 ## 状态检测
 
 当用户调用 `/openflow` 不带子命令，或调用某个子命令需要确认前置条件时，执行以下状态检测：
