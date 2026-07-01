@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.4.5
+
+- Added GLM-5.2 sponsor section to English and Chinese READMEs with a clickable link to the iFlytek MaaS platform.
+- Republished 0.4.4 changes (close-phase guard, init language persistence, grill-me capture block, skill template updates, regression coverage) to npm — 0.4.4 was not republishable due to a version collision.
+
 ## 0.4.4
 
 - Prevented close phase from inheriting proposal-only guards, fixing an issue where archiving would incorrectly block on proposal-time constraints.
