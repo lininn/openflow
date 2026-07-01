@@ -6,8 +6,26 @@ The generated OpenFlow workflow SHALL provide `/openflow init` as a project-cont
 - **WHEN** the user invokes `/openflow init` in a project
 - **THEN** the workflow SHALL inspect existing project files when present
 - **AND** it SHALL ask targeted questions about project purpose, tech stack, code style, test commands, architectural boundaries, compatibility requirements, and AI implementation rules
-- **AND** it SHALL write or update `openspec/config.yaml` with concise `context:` and `rules:` entries
+- **AND** it SHALL ask or infer the project artifact language preference for proposals, task nodes, plans, workflow status, and human-facing summaries
+- **AND** it SHALL write or update `openspec/config.yaml` with concise `language:`, `context:`, and `rules:` entries
 - **AND** it SHALL NOT modify implementation source files.
+
+#### Scenario: Project artifact language is detected
+- **WHEN** `/openflow init` can infer that project documentation is primarily Chinese
+- **THEN** it SHALL write `language.artifacts: zh-CN` in `openspec/config.yaml`
+- **AND** it SHALL mark the language preference as inferred unless the user explicitly confirms it
+- **AND** later OpenFlow-generated human-facing artifacts SHALL follow that language preference.
+
+#### Scenario: Project artifact language is unclear
+- **WHEN** `/openflow init` cannot infer the project documentation language with confidence
+- **THEN** it SHALL ask the user once for the artifact language preference
+- **AND** it SHALL persist the answer in `openspec/config.yaml`
+- **AND** it SHALL default to English only when no project preference exists.
+
+#### Scenario: Schema markers remain valid
+- **WHEN** a non-English artifact language is configured
+- **THEN** parser-required OpenSpec headings, CLI commands, code identifiers, and protocol keywords SHALL remain in their required original form
+- **AND** only human-facing descriptions, summaries, plans, task nodes, and acceptance notes SHALL follow the configured artifact language.
 
 #### Scenario: Empty project initialization
 - **WHEN** the user invokes `/openflow init` in a project with no meaningful source files

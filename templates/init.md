@@ -29,8 +29,16 @@ description: Interactive project-context setup for openspec/config.yaml
 - 常见项目入口和目录结构，如 `src/`、`app/`、`pages/`、`components/`、`server/`、`tests/`
 - 已有规范文件，如 `README*`、`CONTRIBUTING*`、`AGENTS.md`、`.editorconfig`、lint/format 配置
 - 已有 `openspec/config.yaml` 或 legacy `openspec/project.md`
+- 项目文档和生成产物语言：优先判断 README/docs/OpenSpec 文档的主要语言，不要只按当前对话语言判断
 
 如果项目有源码，基于事实总结项目类型、技术栈、代码风格、测试命令和边界。不要凭通用经验替代实际扫描结果。
+
+语言偏好判断：
+- 如果项目文档明显以中文为主，后续 proposal、tasks、plan-ready、workflow-status、节点说明和面向用户摘要应使用中文，写入 `language.artifacts: zh-CN`，`detection: inferred`
+- 如果项目文档明显以英文为主，写入 `language.artifacts: en-US`，`detection: inferred`
+- 如果无法判断，必须在 init 阶段问用户一次，并把选择写入 `language.artifacts`，`detection: user-confirmed`
+- 如果没有项目偏好且用户也未提供，才默认 `en-US`，`detection: defaulted`
+- Parser-required OpenSpec headings、CLI commands、code identifiers、protocol keywords 必须保持其要求的原始形式，不随生成产物语言翻译
 
 ### 2. 空项目分支
 
@@ -55,7 +63,8 @@ description: Interactive project-context setup for openspec/config.yaml
 3. 必须遵守的代码风格、目录边界、架构模式是什么？
 4. 常用验证命令是什么？例如 lint、typecheck、test、build、e2e。
 5. AI 实现限制是什么？例如不要新增依赖、不要改 API、不要碰某些目录、需要兼容的浏览器/Node 版本。
-6. 是否有安全、性能、合规、发布流程等硬约束？
+6. 如果项目文档语言无法判断，生成计划、节点和面向用户摘要应使用中文还是英文？
+7. 是否有安全、性能、合规、发布流程等硬约束？
 
 已有事实不要重复询问；只问无法从仓库判断、且会影响后续实现质量的问题。
 
@@ -65,6 +74,15 @@ description: Interactive project-context setup for openspec/config.yaml
 
 ```yaml
 schema: spec-driven
+language:
+  artifacts: zh-CN
+  detection: inferred
+  appliesTo:
+    - proposal
+    - tasks
+    - plan-ready
+    - workflow-status
+    - human-facing summaries
 context: |
   Purpose:
     ...
@@ -87,9 +105,14 @@ rules:
     - ...
   implementation:
     - ...
+  artifacts:
+    - Follow language.artifacts for human-facing OpenFlow outputs.
+    - Parser-required OpenSpec headings, CLI commands, code identifiers, and protocol keywords must remain in their required original form.
 ```
 
 要求：
+- `language.artifacts` 是后续所有 OpenFlow 人类可读产物的默认语言；计划、任务节点、workflow-status、摘要必须遵守
+- `language.detection` 必须说明来源：`inferred`、`user-confirmed` 或 `defaulted`
 - `context:` 简洁、具体、可执行，不写空泛口号
 - `rules:` 使用短句，明确后续 AI 必须遵守的限制
 - 如果来自扫描，写成事实；如果来自用户选择，写成约定；如果是行业标准默认，标记为 recommended default

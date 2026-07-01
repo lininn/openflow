@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 0.4.4
+
+- Prevented close phase from inheriting proposal-only guards, fixing an issue where archiving would incorrectly block on proposal-time constraints.
+- Persisted artifact language for project initialization — `openspec init` now records the chosen language in `config.yaml` and reuses it on subsequent runs.
+- Blocked capture phase for grill-me decision after brainstorming/proposal, preventing premature state transitions.
+- Updated generated skill instructions (Codex, Claude, Cursor) with init-phase routing and close-phase guard awareness.
+- Added regression coverage for init language scaffolding, skill generator guard propagation, and workflow status guard checks.
+
 ## 0.4.3
 
 - Fixed README diagram links to use repository-local assets instead of pinned unpkg 0.4.1 URLs, so GitHub renders the current workflow diagram.

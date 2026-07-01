@@ -20,6 +20,9 @@ describe('OpenSpec project context initialization', () => {
 
     const config = fs.readFileSync(path.join(tmpDir, 'openspec/config.yaml'), 'utf-8');
     expect(config).toContain('schema: spec-driven');
+    expect(config).toContain('language:');
+    expect(config).toContain('artifacts: en-US');
+    expect(config).toContain('detection: defaulted');
     expect(config).toContain('context: |');
     expect(config).toContain('rules:');
   });
@@ -31,6 +34,9 @@ describe('OpenSpec project context initialization', () => {
 
     const config = fs.readFileSync(path.join(tmpDir, 'openspec/config.yaml'), 'utf-8');
     expect(config).toContain('schema: spec-driven');
+    expect(config).toContain('language:');
+    expect(config).toContain('artifacts: en-US');
+    expect(config).toContain('human-facing OpenFlow artifacts');
     expect(config).toContain('context: |');
     expect(config).toContain('Superpowers receives it later through plan-ready.md');
     expect(config).toContain('rules:');
@@ -45,8 +51,26 @@ describe('OpenSpec project context initialization', () => {
 
     const config = fs.readFileSync(path.join(tmpDir, 'openspec/config.yaml'), 'utf-8');
     expect(config).toContain('schema: spec-driven');
+    expect(config).toContain('language:');
     expect(config).toContain('context: |');
     expect(config).toContain('rules:');
+  });
+
+  it('appends language scaffold to config.yaml without language preference', () => {
+    fs.mkdirSync(path.join(tmpDir, 'openspec'), { recursive: true });
+    fs.writeFileSync(
+      path.join(tmpDir, 'openspec/config.yaml'),
+      'schema: spec-driven\ncontext: |\n  Tech stack: TypeScript\nrules:\n  specs:\n    - Keep existing rule\n',
+      'utf-8',
+    );
+
+    ensureOpenSpecProjectContext(tmpDir);
+
+    const config = fs.readFileSync(path.join(tmpDir, 'openspec/config.yaml'), 'utf-8');
+    expect(config).toContain('language:');
+    expect(config).toContain('artifacts: en-US');
+    expect(config).toContain('Keep existing rule');
+    expect(config.match(/^rules:/gm)).toHaveLength(1);
   });
 
   it('appends only context when config.yaml already has rules', () => {
@@ -61,13 +85,14 @@ describe('OpenSpec project context initialization', () => {
 
     const config = fs.readFileSync(path.join(tmpDir, 'openspec/config.yaml'), 'utf-8');
     expect(config).toContain('context: |');
+    expect(config).toContain('language:');
     expect(config.match(/^rules:/gm)).toHaveLength(1);
     expect(config).toContain('Keep existing rule');
   });
 
-  it('does not rewrite config.yaml that already has context and rules', () => {
+  it('does not rewrite config.yaml that already has context, language, and rules', () => {
     fs.mkdirSync(path.join(tmpDir, 'openspec'), { recursive: true });
-    const original = 'schema: spec-driven\ncontext: |\n  Tech stack: TypeScript\nrules:\n  specs:\n    - Keep existing rule\n';
+    const original = 'schema: spec-driven\nlanguage:\n  artifacts: zh-CN\n  detection: user-confirmed\ncontext: |\n  Tech stack: TypeScript\nrules:\n  specs:\n    - Keep existing rule\n';
     fs.writeFileSync(path.join(tmpDir, 'openspec/config.yaml'), original, 'utf-8');
 
     ensureOpenSpecProjectContext(tmpDir);

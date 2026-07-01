@@ -80,6 +80,7 @@ openspec validate <变更名> --strict
 - OpenSpec 当前官方项目上下文入口是 `openspec/config.yaml` 的 `context:` 与 `rules:`，不是 legacy `openspec/project.md`
 - 翻译前必须读取 `openspec/config.yaml`；如果存在 `openspec/project.md`，只把它当作迁移参考，并提示用户把有用内容迁移进 `config.yaml`
 - `plan-ready.md` 必须显式包含 `## Project Context` 与 `## Applicable OpenSpec Rules`，把 OpenSpec 注入给规划阶段的项目规则继续传递给 Superpowers
+- `plan-ready.md` 的人类可读内容必须遵循 `openspec/config.yaml` 的 `language.artifacts`；若为 `zh-CN`，计划、节点、验收说明和摘要使用中文，但 OpenSpec schema 标题、CLI 命令、代码标识符和协议关键字保持原文
 - `plan-ready.md` 必须遵循 Superpowers `writing-plans` 的输入预期：计划应让“没有项目上下文的执行者”也能按 TDD、精确文件路径、验证命令和无占位符规则继续展开
 
 **翻译规则：**
@@ -92,7 +93,7 @@ openspec validate <变更名> --strict
 7. 如有不确定项，写入 `## Blockers / Clarifications`，不得隐藏为模糊实现步骤
 
 读取以下文件作为翻译输入：
-- `openspec/config.yaml` — 项目上下文、schema 和 artifact rules；必须写入 plan-ready 的 Project Context / Applicable OpenSpec Rules
+- `openspec/config.yaml` — 项目上下文、schema、language 和 artifact rules；必须写入 plan-ready 的 Project Context / Applicable OpenSpec Rules，并遵守 `language.artifacts`
 - `openspec/specs/` — 当前系统行为真相；用于避免新规格与已归档能力冲突
 - `openspec/changes/<变更名>/proposal.md`
 - `openspec/changes/<变更名>/design.md`

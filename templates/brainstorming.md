@@ -17,6 +17,18 @@ description: Deep design — multi-round exploration to confirm architecture and
 
 ## 流程
 
+## 0. 项目初始化检测
+
+这是本阶段的第一步。在任何项目扫描、需求分析、创建 change 之前，必须先检查当前工作目录是否已经完成项目级 OpenSpec 初始化。不得先读取 `package.json`、不得先 `rg`/`ls` 分析项目、不得先创建 `openspec/changes/**`。
+
+1. 检查 `openspec/config.yaml` 是否存在
+2. 如果 `openspec/config.yaml` 已存在，不要提示 init，直接继续后续设计探索
+3. 如果不存在，提示当前项目尚未初始化项目上下文，并询问用户是否先执行 `/openflow init`
+4. 如果用户同意，切到 `/openflow init`，通过交互和项目扫描生成 `openspec/config.yaml`，完成后再回到 brainstorming 阶段
+5. 只有用户明确表示跳过、不初始化、暂不 init、继续但不 init 等同义意图后，才允许继续本阶段
+6. 如果用户明确跳过，继续本阶段，但明确说明本次没有 `config.yaml` 项目约束；后续设计探索只能基于用户输入和已扫描事实，不得编造项目规则
+7. 如果只存在 legacy `openspec/project.md`，提示 `/openflow init` 可以迁移并精炼为 `config.yaml`；用户跳过时只把 `project.md` 当参考
+
 ### 1. 理解背景
 
 先快速检查项目上下文：
@@ -70,16 +82,17 @@ openspec list
 
 - Phase: capture
 - Capture Mode: brainstorming
-- Status: ready_for_next_phase
+- Status: blocked
 - Last Updated: YYYY-MM-DD
-- Next Command: /openflow spec
-- Next Action: Generate OpenSpec specs, tasks, and plan-ready.md.
+- Next Command: /openflow grill
+- Next Action: Ask whether to run optional grill-me pressure testing; only move to /openflow spec after the user explicitly skips grill-me or grill completes.
 
 ## Gates
 
 | Gate | Status | Evidence |
 |------|--------|----------|
 | Requirements captured | passed | proposal.md |
+| Grill decision | pending | Ask user whether to run optional grill-me |
 | Specs validated | pending | - |
 | Plan ready | pending | - |
 | Implementation complete | pending | - |

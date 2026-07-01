@@ -37,6 +37,7 @@ export interface WorkflowStatus {
 
 const DEFAULT_GATES = [
   'Requirements captured',
+  'Grill decision',
   'Specs validated',
   'Plan ready',
   'Implementation complete',
@@ -109,9 +110,9 @@ export function synthesizeWorkflowStatus(cwd: string, changeId: string): Workflo
     nextAction = 'Execute the implementation plan.';
   } else if (hasProposal) {
     phase = 'capture';
-    overallStatus = 'ready_for_next_phase';
-    nextCommand = '/openflow spec';
-    nextAction = 'Generate OpenSpec specs, tasks, and plan-ready.md.';
+    overallStatus = 'blocked';
+    nextCommand = '/openflow grill';
+    nextAction = 'Ask whether to run optional grill-me pressure testing; only move to /openflow spec after the user explicitly skips grill-me or grill completes.';
   }
 
   return {
@@ -125,6 +126,7 @@ export function synthesizeWorkflowStatus(cwd: string, changeId: string): Workflo
     nextAction,
     gates: DEFAULT_GATES.map((name) => {
       if (name === 'Requirements captured') return { name, status: hasProposal ? 'passed' as const : 'pending' as const, evidence: hasProposal ? 'proposal.md' : '-' };
+      if (name === 'Grill decision') return { name, status: hasPlanReady ? 'passed' as const : hasProposal ? 'pending' as const : 'not_applicable' as const, evidence: hasPlanReady ? 'plan-ready.md' : hasProposal ? 'Ask user whether to run optional grill-me' : '-' };
       if (name === 'Specs validated') return { name, status: hasSpecs ? 'passed' as const : 'pending' as const, evidence: hasSpecs ? 'specs/' : '-' };
       if (name === 'Plan ready') return { name, status: hasPlanReady ? 'passed' as const : 'pending' as const, evidence: hasPlanReady ? 'plan-ready.md' : '-' };
       if (name === 'Implementation complete') return { name, status: implementationComplete ? 'passed' as const : 'pending' as const, evidence: implementationComplete ? 'docs/superpowers/plans/' : '-' };
