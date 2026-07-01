@@ -169,6 +169,10 @@ Works without them: yes, with manual-file fallback
                           └──────────────────────┘
 ```
 
+## 赞助
+
+🚀 **[GLM-5.2 — 免费使用！](https://maas.xfyun.cn/packageSubscription?inviteCode=MAAS-E4248A94)** — 在讯飞 MaaS 平台体验最新 GLM-5.2 模型，点击立即使用。
+
 ## 致谢
 
 openflow 编排了以下两个开源项目：

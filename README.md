@@ -170,6 +170,10 @@ User Requirements
                           └──────────────────────┘
 ```
 
+## Sponsored by
+
+🚀 **[GLM-5.2 — Free to use!](https://maas.xfyun.cn/packageSubscription?inviteCode=MAAS-E4248A94)** — Experience the latest GLM-5.2 model on iFlytek MaaS platform. Click to start using it now.
+
 ## Acknowledgments
 
 openflow orchestrates two open-source projects:
