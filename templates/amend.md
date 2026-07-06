@@ -181,6 +181,7 @@ openspec validate <变更名> --strict
 - 未完成任务可按新需求调整
 - 追加新 task，保留 checkbox
 - 同步 `Project Context` / `Applicable OpenSpec Rules` 到详细实现计划，避免后续 executing-plans 脱离项目规范
+- 同步 `openspec/config.yaml` 的 `language.artifacts` 语言契约；中文项目只保留代码标识符、路径、命令、事件名、OpenSpec schema 标题和协议关键字原文，详细实现计划的自然语言骨架必须中文化
 - 记录本次 amend 来源路径
 
 如果详细实现计划还不存在：

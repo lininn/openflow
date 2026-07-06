@@ -14,10 +14,12 @@ export interface DepStatus {
 export interface CheckDependencyOptions {
   cwd?: string;
   tools?: string[];
+  /** Overridable home directory. Defaults to os.homedir(); primarily for tests. */
+  home?: string;
 }
 
 export function checkDependencies(options: CheckDependencyOptions = {}): DepStatus {
-  const home = os.homedir();
+  const home = options.home ?? os.homedir();
   const cwd = options.cwd ?? process.cwd();
   const tools = options.tools?.length ? options.tools : Object.keys(TOOL_PATHS);
 
@@ -58,7 +60,107 @@ function getSuperpowersSkillPaths(cwd: string, home: string, tools: string[]): s
     candidates.add(path.join(home, toolPaths.skillsDir, DEPS.superpowers.checkPath));
   }
 
+  // Superpowers is usually installed as a Claude Code *plugin*, not into
+  // ~/.claude/skills/. Include plugin install locations so that a
+  // plugin-based install is detected correctly.
+  if (tools.includes('claude')) {
+    for (const pluginPath of getClaudePluginSuperpowersPaths(cwd, home)) {
+      candidates.add(pluginPath);
+    }
+  }
+
   return [...candidates];
+}
+
+/**
+ * Resolve possible `writing-plans/SKILL.md` locations for Superpowers when
+ * installed as a Claude Code plugin.
+ *
+ * Strategy:
+ * 1. Read `.claude/plugins/installed_plugins.json` (authoritative source that
+ *    records each plugin's `installPath`) and use the recorded install paths.
+ * 2. Fall back to scanning `.claude/plugins/cache` for any versioned plugin
+ *    directory containing the skill, in case the registry is missing.
+ */
+function getClaudePluginSuperpowersPaths(cwd: string, home: string): string[] {
+  const results = new Set<string>();
+  const pluginSkillPath = DEPS.superpowers.pluginSkillPath;
+
+  for (const root of [home, cwd]) {
+    // 1. Registry-based resolution.
+    const registryFile = path.join(root, DEPS.superpowers.claudePluginRegistry);
+    for (const installPath of readSuperpowersInstallPaths(registryFile)) {
+      results.add(path.join(installPath, pluginSkillPath));
+    }
+
+    // 2. Cache-directory scan fallback.
+    const cacheDir = path.join(root, DEPS.superpowers.claudePluginCacheDir);
+    for (const skillPath of scanPluginCacheForSuperpowers(cacheDir, pluginSkillPath)) {
+      results.add(skillPath);
+    }
+  }
+
+  return [...results];
+}
+
+function readSuperpowersInstallPaths(registryFile: string): string[] {
+  if (!fs.existsSync(registryFile)) return [];
+
+  let registry: unknown;
+  try {
+    registry = JSON.parse(fs.readFileSync(registryFile, 'utf-8'));
+  } catch {
+    return [];
+  }
+
+  const plugins = (registry as { plugins?: Record<string, unknown> })?.plugins;
+  if (!plugins || typeof plugins !== 'object') return [];
+
+  const paths: string[] = [];
+  for (const [key, entries] of Object.entries(plugins)) {
+    // Match "superpowers@<marketplace>" but not "superpowers-chrome@...".
+    const pluginName = key.split('@')[0];
+    if (pluginName !== 'superpowers') continue;
+
+    for (const entry of Array.isArray(entries) ? entries : []) {
+      const installPath = (entry as { installPath?: string })?.installPath;
+      if (typeof installPath === 'string' && installPath) {
+        paths.push(installPath);
+      }
+    }
+  }
+  return paths;
+}
+
+function scanPluginCacheForSuperpowers(cacheDir: string, pluginSkillPath: string): string[] {
+  if (!fs.existsSync(cacheDir)) return [];
+
+  const results: string[] = [];
+  let marketplaces: fs.Dirent[];
+  try {
+    marketplaces = fs.readdirSync(cacheDir, { withFileTypes: true });
+  } catch {
+    return [];
+  }
+
+  for (const marketplace of marketplaces) {
+    if (!marketplace.isDirectory()) continue;
+    const pluginDir = path.join(cacheDir, marketplace.name, 'superpowers');
+    if (!fs.existsSync(pluginDir)) continue;
+
+    let versions: fs.Dirent[];
+    try {
+      versions = fs.readdirSync(pluginDir, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+
+    for (const version of versions) {
+      if (!version.isDirectory()) continue;
+      results.push(path.join(pluginDir, version.name, pluginSkillPath));
+    }
+  }
+  return results;
 }
 
 export function tryAutoInstall(pkg: string): boolean {
