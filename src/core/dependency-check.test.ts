@@ -147,4 +147,72 @@ describe('checkDependencies Superpowers plugin detection', () => {
     const status = checkDependencies({ cwd: tmpDir, home: fakeHome, tools: ['codex'] });
     expect(status.superpowers.installed).toBe(false);
   });
+
+  it('detects Superpowers in the OpenCode package cache (nested git-URL layout)', () => {
+    // Mirrors the real OpenCode git install layout from issue #19:
+    //   ~/.cache/opencode/packages/superpowers@git+https:/github.com/obra/superpowers.git/
+    //     node_modules/superpowers/skills/writing-plans/SKILL.md
+    const skillFile = path.join(
+      fakeHome,
+      '.cache',
+      'opencode',
+      'packages',
+      'superpowers@git+https:',
+      'github.com',
+      'obra',
+      'superpowers.git',
+      'node_modules',
+      'superpowers',
+      'skills',
+      'writing-plans',
+      'SKILL.md',
+    );
+    fs.mkdirSync(path.dirname(skillFile), { recursive: true });
+    fs.writeFileSync(skillFile, '# writing-plans\n', 'utf-8');
+
+    const status = checkDependencies({ cwd: tmpDir, home: fakeHome, tools: ['opencode'] });
+    expect(status.superpowers.installed).toBe(true);
+    expect(status.superpowers.path).toBe(skillFile);
+  });
+
+  it('detects Superpowers in the OpenCode package cache (flat npm layout)', () => {
+    const skillFile = path.join(
+      fakeHome,
+      '.cache',
+      'opencode',
+      'packages',
+      'superpowers@1.2.3',
+      'node_modules',
+      'superpowers',
+      'skills',
+      'writing-plans',
+      'SKILL.md',
+    );
+    fs.mkdirSync(path.dirname(skillFile), { recursive: true });
+    fs.writeFileSync(skillFile, '# writing-plans\n', 'utf-8');
+
+    const status = checkDependencies({ cwd: tmpDir, home: fakeHome, tools: ['opencode'] });
+    expect(status.superpowers.installed).toBe(true);
+    expect(status.superpowers.path).toBe(skillFile);
+  });
+
+  it('ignores the OpenCode package cache when opencode is not among the selected tools', () => {
+    const skillFile = path.join(
+      fakeHome,
+      '.cache',
+      'opencode',
+      'packages',
+      'superpowers@1.2.3',
+      'node_modules',
+      'superpowers',
+      'skills',
+      'writing-plans',
+      'SKILL.md',
+    );
+    fs.mkdirSync(path.dirname(skillFile), { recursive: true });
+    fs.writeFileSync(skillFile, '# writing-plans\n', 'utf-8');
+
+    const status = checkDependencies({ cwd: tmpDir, home: fakeHome, tools: ['codex'] });
+    expect(status.superpowers.installed).toBe(false);
+  });
 });
