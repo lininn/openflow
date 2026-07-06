@@ -31,6 +31,6 @@ export const TOOL_PATHS: Record<string, { skillsDir: string; commandsDir?: strin
     skillsDir: '.cursor/skills',
   },
   opencode: {
-    skillsDir: '.opencode/commands',
+    skillsDir: '.opencode/skills',
   },
 };

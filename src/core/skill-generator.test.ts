@@ -193,12 +193,12 @@ describe('skill template resolution', () => {
       },
     });
 
-    const skillContent = fs.readFileSync(path.join(tmpDir, '.opencode/commands/openflow/SKILL.md'), 'utf-8');
-    const initContent = fs.readFileSync(path.join(tmpDir, '.opencode/commands/openflow/init.md'), 'utf-8');
-    const grillContent = fs.readFileSync(path.join(tmpDir, '.opencode/commands/openflow/grill.md'), 'utf-8');
-    const proposalContent = fs.readFileSync(path.join(tmpDir, '.opencode/commands/openflow/proposal.md'), 'utf-8');
-    const brainstormingContent = fs.readFileSync(path.join(tmpDir, '.opencode/commands/openflow/brainstorming.md'), 'utf-8');
-    const specContent = fs.readFileSync(path.join(tmpDir, '.opencode/commands/openflow/spec.md'), 'utf-8');
+    const skillContent = fs.readFileSync(path.join(tmpDir, '.opencode/skills/openflow/SKILL.md'), 'utf-8');
+    const initContent = fs.readFileSync(path.join(tmpDir, '.opencode/skills/openflow/init.md'), 'utf-8');
+    const grillContent = fs.readFileSync(path.join(tmpDir, '.opencode/skills/openflow/grill.md'), 'utf-8');
+    const proposalContent = fs.readFileSync(path.join(tmpDir, '.opencode/skills/openflow/proposal.md'), 'utf-8');
+    const brainstormingContent = fs.readFileSync(path.join(tmpDir, '.opencode/skills/openflow/brainstorming.md'), 'utf-8');
+    const specContent = fs.readFileSync(path.join(tmpDir, '.opencode/skills/openflow/spec.md'), 'utf-8');
 
     expect(skillContent).toContain('proposal | init | brainstorming | grill | spec | amend | build | close');
     expect(skillContent).toContain('OpenSpec 初始化入口门禁');
