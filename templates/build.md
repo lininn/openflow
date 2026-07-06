@@ -52,8 +52,15 @@ description: Call Superpowers to execute implementation, supports checkpoint rec
 - `## Project Context` — 来自 `openspec/config.yaml` 的项目上下文；如果缺失或仍是 TODO，停止并要求先补齐 `/openflow spec` 翻译
 - `## Applicable OpenSpec Rules` — 来自 `openspec/config.yaml` 的 artifact rules；如果没有显式规则，必须写明“无显式规则”
 - `## Superpowers Handoff` — 明确要求生成的 Superpowers plan 复制/压缩项目规则，而不是只引用 OpenSpec 文件路径
+- 详细实现计划语言契约 — 明确要求 Superpowers plan 的自然语言标题、段落、任务名和步骤说明遵循 `language.artifacts`；中文项目必须把模板骨架中文化
 
 Superpowers 本身不会自动读取 `openspec/config.yaml`；上下文必须通过 `plan-ready.md` 传递给 `writing-plans`，再写入 `docs/superpowers/plans/YYYY-MM-DD-<变更名>.md`。
+
+调用 `writing-plans` 时必须显式重申语言契约：
+
+- 先读取 `openspec/config.yaml` 的 `language.artifacts`
+- 如果 `language.artifacts: zh-CN`，生成的详细实现计划中除代码标识符、文件路径、命令、事件名、OpenSpec schema 标题和协议关键字外，所有人类可读文案都必须使用中文
+- 中文项目中不得保留 Superpowers 英文模板骨架；应使用 `目标`、`架构`、`技术栈`、`项目规则`、`文件结构`、`任务`、`步骤`、`自检` 等中文标题
 
 每个步骤：
 - 2-5 分钟工作量
@@ -65,6 +72,12 @@ Superpowers 本身不会自动读取 `openspec/config.yaml`；上下文必须通
 ```
 docs/superpowers/plans/YYYY-MM-DD-<变更名>.md
 ```
+
+生成详细实现计划后做语言审查：
+
+- 若 `language.artifacts: zh-CN`，检查计划是否残留这些英文模板骨架：`Implementation Plan`、`For agentic workers`、`Project Rules`、`File Structure`、`Task `、`Step `、`Self-Review`
+- 如果残留，先重写计划文案骨架再执行实现；不得带着中英文混排的执行计划进入 build
+- 审查只处理自然语言骨架，不翻译代码标识符、路径、命令、事件名、OpenSpec schema 标题或协议关键字
 
 ### 4. 执行实现
 

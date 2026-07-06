@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { checkOpenSpecInitialized } from './dependency-check.js';
+import { checkDependencies, checkOpenSpecInitialized } from './dependency-check.js';
 
 describe('checkOpenSpecInitialized', () => {
   let tmpDir: string;
@@ -33,5 +33,118 @@ describe('checkOpenSpecInitialized', () => {
     fs.writeFileSync(path.join(tmpDir, 'openspec/project.md'), '# Project\n', 'utf-8');
 
     expect(checkOpenSpecInitialized(tmpDir)).toBe(true);
+  });
+});
+
+describe('checkDependencies Superpowers plugin detection', () => {
+  let tmpDir: string;
+  let fakeHome: string;
+
+  beforeEach(() => {
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'openflow-sp-'));
+    // Isolated empty home so the real machine's ~/.claude plugins never leak in.
+    fakeHome = path.join(tmpDir, 'fake-home');
+    fs.mkdirSync(fakeHome, { recursive: true });
+  });
+
+  afterEach(() => {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  it('detects Superpowers installed as a Claude plugin via installed_plugins.json', () => {
+    // Simulate a plugin installed to an arbitrary location recorded in the registry.
+    const installPath = path.join(tmpDir, 'plugins-store', 'superpowers-1.2.3');
+    fs.mkdirSync(path.join(installPath, 'skills', 'writing-plans'), { recursive: true });
+    fs.writeFileSync(
+      path.join(installPath, 'skills', 'writing-plans', 'SKILL.md'),
+      '# writing-plans\n',
+      'utf-8',
+    );
+
+    const registryDir = path.join(tmpDir, '.claude', 'plugins');
+    fs.mkdirSync(registryDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(registryDir, 'installed_plugins.json'),
+      JSON.stringify({
+        version: 2,
+        plugins: {
+          'superpowers@my-marketplace': [{ installPath }],
+        },
+      }),
+      'utf-8',
+    );
+
+    const status = checkDependencies({ cwd: tmpDir, home: fakeHome, tools: ['claude'] });
+    expect(status.superpowers.installed).toBe(true);
+    expect(status.superpowers.path).toBe(
+      path.join(installPath, 'skills', 'writing-plans', 'SKILL.md'),
+    );
+  });
+
+  it('detects Superpowers by scanning the plugin cache when the registry is missing', () => {
+    const skillFile = path.join(
+      tmpDir,
+      '.claude',
+      'plugins',
+      'cache',
+      'my-marketplace',
+      'superpowers',
+      '4.5.6',
+      'skills',
+      'writing-plans',
+      'SKILL.md',
+    );
+    fs.mkdirSync(path.dirname(skillFile), { recursive: true });
+    fs.writeFileSync(skillFile, '# writing-plans\n', 'utf-8');
+
+    const status = checkDependencies({ cwd: tmpDir, home: fakeHome, tools: ['claude'] });
+    expect(status.superpowers.installed).toBe(true);
+    expect(status.superpowers.path).toBe(skillFile);
+  });
+
+  it('does not match superpowers-chrome as the superpowers plugin', () => {
+    const installPath = path.join(tmpDir, 'plugins-store', 'superpowers-chrome-1.0.0');
+    fs.mkdirSync(path.join(installPath, 'skills', 'writing-plans'), { recursive: true });
+    fs.writeFileSync(
+      path.join(installPath, 'skills', 'writing-plans', 'SKILL.md'),
+      '# not the real one\n',
+      'utf-8',
+    );
+
+    const registryDir = path.join(tmpDir, '.claude', 'plugins');
+    fs.mkdirSync(registryDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(registryDir, 'installed_plugins.json'),
+      JSON.stringify({
+        version: 2,
+        plugins: {
+          'superpowers-chrome@my-marketplace': [{ installPath }],
+        },
+      }),
+      'utf-8',
+    );
+
+    const status = checkDependencies({ cwd: tmpDir, home: fakeHome, tools: ['claude'] });
+    expect(status.superpowers.installed).toBe(false);
+  });
+
+  it('ignores plugin locations when claude is not among the selected tools', () => {
+    const skillFile = path.join(
+      tmpDir,
+      '.claude',
+      'plugins',
+      'cache',
+      'my-marketplace',
+      'superpowers',
+      '4.5.6',
+      'skills',
+      'writing-plans',
+      'SKILL.md',
+    );
+    fs.mkdirSync(path.dirname(skillFile), { recursive: true });
+    fs.writeFileSync(skillFile, '# writing-plans\n', 'utf-8');
+
+    const status = checkDependencies({ cwd: tmpDir, home: fakeHome, tools: ['codex'] });
+    expect(status.superpowers.installed).toBe(false);
   });
 });

@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+## 0.4.6
+
+- Fixed Superpowers plugin detection for Claude Code — `openflow init` now checks `installed_plugins.json` registry and `plugins/cache` directory, resolving false "not installed" warnings when Superpowers is installed as a plugin (#17).
+- Narrowed OpenSpec init guard to `proposal` and `brainstorming` entry phases only; `grill`/`spec`/`amend`/`build`/`close` no longer trigger init prompts.
+- Added `Grill decision` gate — capture phase is now `blocked` after proposal until the user explicitly skips or completes grill-me, preventing premature state transitions.
+- Persisted artifact language in `openspec/config.yaml` via `language.artifacts` field with `inferred`/`user-confirmed`/`defaulted` detection source.
+- Added delta structure self-check in spec/amend/close phases — new capabilities must use only `ADDED Requirements`; `MODIFIED`/`REMOVED`/`RENAMED` are rejected when the base spec does not exist.
+- Added build-phase language review instructions to reject mixed Chinese/English Superpowers plan skeletons before implementation starts.
+
+## 0.4.6-beta.0
+
+- Added a language bridge from OpenFlow `plan-ready.md` to Superpowers `writing-plans`, so generated implementation plans must localize human-readable template headings for Chinese projects while preserving code identifiers, commands, paths, event names, and OpenSpec keywords.
+- Added build-phase language review instructions to reject mixed Chinese/English Superpowers plan skeletons before implementation starts.
+
 ## 0.4.5
 
 - Added GLM-5.2 sponsor section to English and Chinese READMEs with a clickable link to the iFlytek MaaS platform.

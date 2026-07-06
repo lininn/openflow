@@ -165,7 +165,7 @@ function injectRuntimeDepCheck(content: string, depStatus: DepStatus): string {
 
 | 依赖 | 检测方式 | 不可用时 |
 |------|----------|----------|
-| Superpowers writing-plans | 当前工具的本地或全局 skills 目录下是否存在 \`writing-plans/SKILL.md\` | 降级为手动拆解 plan-ready.md 中的步骤，逐条执行 |
+| Superpowers writing-plans | 当前工具的本地或全局 skills 目录下是否存在 \`writing-plans/SKILL.md\`；对 Claude Code 还需检查插件目录（\`~/.claude/plugins/installed_plugins.json\` 中 \`superpowers@<marketplace>\` 的 installPath，或 \`~/.claude/plugins/cache/<marketplace>/superpowers/<version>/skills/writing-plans/SKILL.md\`） | 降级为手动拆解 plan-ready.md 中的步骤，逐条执行 |
 | OpenSpec CLI | \`openspec\` 命令是否可执行 | 不影响 build 阶段，但 close 阶段归档需手动 mv |
 
 如果 Superpowers 不可用，提示用户：

@@ -82,6 +82,7 @@ openspec validate <变更名> --strict
 - `plan-ready.md` 必须显式包含 `## Project Context` 与 `## Applicable OpenSpec Rules`，把 OpenSpec 注入给规划阶段的项目规则继续传递给 Superpowers
 - `plan-ready.md` 的人类可读内容必须遵循 `openspec/config.yaml` 的 `language.artifacts`；若为 `zh-CN`，计划、节点、验收说明和摘要使用中文，但 OpenSpec schema 标题、CLI 命令、代码标识符和协议关键字保持原文
 - `plan-ready.md` 必须遵循 Superpowers `writing-plans` 的输入预期：计划应让“没有项目上下文的执行者”也能按 TDD、精确文件路径、验证命令和无占位符规则继续展开
+- `plan-ready.md` 必须包含详细实现计划的语言契约：Superpowers 模板里的自然语言标题、段落、任务名和步骤说明也必须遵循 `language.artifacts`；若为 `zh-CN`，将 `Goal/Architecture/Tech Stack/File Structure/Project Rules/Task/Step/Self-Review` 等模板骨架中文化，代码标识符、路径、命令、事件名、OpenSpec schema 标题和协议关键字保持原文
 
 **翻译规则：**
 1. 覆盖 OpenSpec 的每个 requirement、scenario 和 task；不得只转写 tasks.md 标题
@@ -171,7 +172,8 @@ openspec validate <变更名> --strict
 ## Superpowers Handoff
 - `writing-plans` 必须基于本文件生成 `docs/superpowers/plans/YYYY-MM-DD-<变更名>.md`
 - 详细实现计划必须把本文件的 `## Project Context` 与 `## Applicable OpenSpec Rules` 复制/压缩到 plan header 或专门的 Project Rules 章节，使后续 `executing-plans` 不需要重新读取 OpenSpec 也能遵守项目规范
-- 详细实现计划必须使用 Superpowers plan header：Goal、Architecture、Tech Stack，并包含文件结构、2-5 分钟 checkbox 步骤、RED-GREEN-REFACTOR 测试节奏、精确验证命令和 Self-Review
+- 详细实现计划必须遵循 `openspec/config.yaml` 的 `language.artifacts`：自然语言标题、段落、任务名和步骤说明使用项目语言；若为 `zh-CN`，将 Superpowers 模板骨架中文化（例如 `Goal`→`目标`、`Architecture`→`架构`、`Tech Stack`→`技术栈`、`File Structure`→`文件结构`、`Project Rules`→`项目规则`、`Task`→`任务`、`Step`→`步骤`、`Self-Review`→`自检`），但代码标识符、路径、命令、事件名、OpenSpec schema 标题和协议关键字保持原文
+- 详细实现计划必须包含 Superpowers plan header 对应信息：目标、架构、技术栈，并包含文件结构、2-5 分钟 checkbox 步骤、RED-GREEN-REFACTOR 测试节奏、精确验证命令和自检
 - 详细实现计划不得出现 TBD/TODO/“适当处理”/“类似上一步”等占位话术
 - 详细实现计划必须使用 checkbox，并把每个 slice 展开为 2-5 分钟步骤
 - 详细实现计划不得省略 Source Coverage 中的任何验收点
@@ -182,6 +184,7 @@ openspec validate <变更名> --strict
 - 新 capability 的 spec delta 是否只包含 `ADDED Requirements`
 - 是否仍有 TBD/TODO/“适当处理”等占位话术
 - 每个 slice 是否都有文件、测试、验证命令和完成标准
+- 如果 `language.artifacts: zh-CN`，`## Superpowers Handoff` 是否明确要求详细实现计划中文化 Superpowers 模板骨架
 - build 阶段是否可以不重新理解需求，仅按 handoff 展开详细计划
 
 ### 4.5 更新 workflow-status.md
