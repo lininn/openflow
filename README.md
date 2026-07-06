@@ -26,7 +26,7 @@ CLI `init` will automatically:
 2. Detect Superpowers and show install instructions
 3. Check if OpenSpec is initialized in the project
 4. Create or refine the OpenSpec project context scaffold in `openspec/config.yaml`
-5. Generate openflow skills to the selected tools' local skill directories, such as `.claude/skills/openflow/`, `.codex/skills/openflow/`, `.cursor/skills/openflow/`, or `.opencode/commands/openflow/`
+5. Generate openflow skills to the selected tools' local skill directories, such as `.claude/skills/openflow/`, `.codex/skills/openflow/`, `.cursor/skills/openflow/`, or `.opencode/skills/openflow/`
 
 Supported tools: `claude`, `codex`, `cursor`, `opencode` (comma-separated, e.g. `--tools claude,codex`)
 
@@ -44,7 +44,7 @@ With `-g` / `--global`, `openflow` installs skills under the selected tools' hom
 | `claude` | `~/.claude/skills/openflow/` |
 | `codex` | `~/.codex/skills/openflow/` |
 | `cursor` | `~/.cursor/skills/openflow/` |
-| `opencode` | `~/.opencode/commands/openflow/` |
+| `opencode` | `~/.opencode/skills/openflow/` |
 
 Global install only writes reusable skills. Project context is still initialized per repository with local `openflow init` or through the AI workflow command `/openflow init`.
 

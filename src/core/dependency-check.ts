@@ -60,6 +60,40 @@ function getSuperpowersSkillPaths(cwd: string, home: string, tools: string[]): s
     candidates.add(path.join(home, toolPaths.skillsDir, DEPS.superpowers.checkPath));
   }
 
+  // OpenCode-specific: superpowers plugin installs to the package cache.
+  // The cache structure varies by install source:
+  //   npm:   packages/superpowers/node_modules/superpowers/skills/...
+  //   git:   packages/superpowers@<protocol>:/<host>/<path>/node_modules/superpowers/skills/...
+  // We search up to 4 levels deep for node_modules/superpowers/skills/{checkPath}.
+  if (tools.includes('opencode')) {
+    const cacheBase = path.join(home, '.cache', 'opencode', 'packages');
+    if (fs.existsSync(cacheBase)) {
+      const skillsRelPath = path.join('node_modules', 'superpowers', 'skills', DEPS.superpowers.checkPath);
+      for (const entry of fs.readdirSync(cacheBase, { withFileTypes: true })) {
+        if (!entry.isDirectory() || !entry.name.startsWith('superpowers@')) continue;
+        // Walk up to 4 directory levels under the package dir, adding
+        // candidates at each level + skillsRelPath.
+        const walkDirs = [path.join(cacheBase, entry.name)];
+        const visited = new Set<string>();
+        for (let depth = 0; depth < 4 && walkDirs.length > 0; depth++) {
+          const nextWalk: string[] = [];
+          for (const dir of walkDirs) {
+            if (visited.has(dir)) continue;
+            visited.add(dir);
+            candidates.add(path.join(dir, skillsRelPath));
+            for (const sub of fs.readdirSync(dir, { withFileTypes: true })) {
+              if (sub.isDirectory()) {
+                nextWalk.push(path.join(dir, sub.name));
+              }
+            }
+          }
+          walkDirs.length = 0;
+          walkDirs.push(...nextWalk);
+        }
+      }
+    }
+  }
+
   // Superpowers is usually installed as a Claude Code *plugin*, not into
   // ~/.claude/skills/. Include plugin install locations so that a
   // plugin-based install is detected correctly.
