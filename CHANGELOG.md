@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.5.0
+
+- Fixed Superpowers plugin detection for OpenCode — corrected `TOOL_PATHS.opencode.skillsDir` from `.opencode/commands` to `.opencode/skills`, and added a bounded scan of the OpenCode package cache (`~/.cache/opencode/packages/superpowers@*/`) for `node_modules/superpowers/skills/writing-plans/SKILL.md`, covering both flat-npm and nested git-URL layouts. Resolves false "not installed" warnings under OpenCode (#19).
+- Added regression coverage for both OpenCode cache layouts and the tool-selection guard.
+
 ## 0.4.6
 
 - Fixed Superpowers plugin detection for Claude Code — `openflow init` now checks `installed_plugins.json` registry and `plugins/cache` directory, resolving false "not installed" warnings when Superpowers is installed as a plugin (#17).
