@@ -14,8 +14,10 @@ export const DEPS = {
   superpowers: {
     name: 'Superpowers',
     checkPath: 'writing-plans/SKILL.md',
-    // Relative skill path inside a Claude Code plugin package.
+    // Relative skill path inside a plugin package.
     pluginSkillPath: 'skills/writing-plans/SKILL.md',
+    // Codex plugin cache containing marketplace/plugin/revision directories.
+    codexPluginCacheDir: '.codex/plugins/cache',
     // Claude Code plugin registry that records每个已安装插件的 installPath。
     claudePluginRegistry: '.claude/plugins/installed_plugins.json',
     // Fallback: glob root for plugin skills when the registry is unavailable.
