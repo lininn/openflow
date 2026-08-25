@@ -148,6 +148,47 @@ describe('checkDependencies Superpowers plugin detection', () => {
     expect(status.superpowers.installed).toBe(false);
   });
 
+  it('detects Superpowers in the Codex plugin cache', () => {
+    const skillFile = path.join(
+      fakeHome,
+      '.codex',
+      'plugins',
+      'cache',
+      'openai-curated',
+      'superpowers',
+      '11c74d6b',
+      'skills',
+      'writing-plans',
+      'SKILL.md',
+    );
+    fs.mkdirSync(path.dirname(skillFile), { recursive: true });
+    fs.writeFileSync(skillFile, '# writing-plans\n', 'utf-8');
+
+    const status = checkDependencies({ cwd: tmpDir, home: fakeHome, tools: ['codex'] });
+    expect(status.superpowers.installed).toBe(true);
+    expect(status.superpowers.path).toBe(skillFile);
+  });
+
+  it('ignores the Codex plugin cache when codex is not among the selected tools', () => {
+    const skillFile = path.join(
+      fakeHome,
+      '.codex',
+      'plugins',
+      'cache',
+      'openai-curated',
+      'superpowers',
+      '11c74d6b',
+      'skills',
+      'writing-plans',
+      'SKILL.md',
+    );
+    fs.mkdirSync(path.dirname(skillFile), { recursive: true });
+    fs.writeFileSync(skillFile, '# writing-plans\n', 'utf-8');
+
+    const status = checkDependencies({ cwd: tmpDir, home: fakeHome, tools: ['cursor'] });
+    expect(status.superpowers.installed).toBe(false);
+  });
+
   it('detects Superpowers in the OpenCode package cache (nested git-URL layout)', () => {
     // Mirrors the real OpenCode git install layout from issue #19:
     //   ~/.cache/opencode/packages/superpowers@git+https:/github.com/obra/superpowers.git/

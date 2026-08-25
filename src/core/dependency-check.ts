@@ -94,6 +94,18 @@ function getSuperpowersSkillPaths(cwd: string, home: string, tools: string[]): s
     }
   }
 
+  // Codex plugins install under the marketplace cache rather than
+  // ~/.codex/skills/. Include the cached Superpowers writing-plans skill.
+  if (tools.includes('codex')) {
+    const cacheDir = path.join(home, DEPS.superpowers.codexPluginCacheDir);
+    for (const skillPath of scanPluginCacheForSuperpowers(
+      cacheDir,
+      DEPS.superpowers.pluginSkillPath,
+    )) {
+      candidates.add(skillPath);
+    }
+  }
+
   // Superpowers is usually installed as a Claude Code *plugin*, not into
   // ~/.claude/skills/. Include plugin install locations so that a
   // plugin-based install is detected correctly.
