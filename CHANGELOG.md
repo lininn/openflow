@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.5.1
+
+- Fixed Superpowers plugin detection for Codex — added scan of the Codex plugin marketplace cache (`~/.codex/plugins/cache/`) for Superpowers `writing-plans` skill, resolving false "not installed" warnings under Codex (#24).
+- Added regression coverage for Codex plugin cache detection and tool-selection guard.
+
 ## 0.5.0
 
 - Fixed Superpowers plugin detection for OpenCode — corrected `TOOL_PATHS.opencode.skillsDir` from `.opencode/commands` to `.opencode/skills`, and added a bounded scan of the OpenCode package cache (`~/.cache/opencode/packages/superpowers@*/`) for `node_modules/superpowers/skills/writing-plans/SKILL.md`, covering both flat-npm and nested git-URL layouts. Resolves false "not installed" warnings under OpenCode (#19).
