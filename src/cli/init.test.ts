@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { ensureOpenSpecProjectContext } from './init.js';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { ensureOpenSpecProjectContext, initCommand } from './init.js';
 
 describe('OpenSpec project context initialization', () => {
   let tmpDir: string;
@@ -98,5 +98,50 @@ describe('OpenSpec project context initialization', () => {
     ensureOpenSpecProjectContext(tmpDir);
 
     expect(fs.readFileSync(path.join(tmpDir, 'openspec/config.yaml'), 'utf-8')).toBe(original);
+  });
+});
+
+describe('init tool selection', () => {
+  let tmpDir: string;
+
+  beforeEach(() => {
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'openflow-init-tools-'));
+    fs.mkdirSync(path.join(tmpDir, 'openspec'), { recursive: true });
+    fs.writeFileSync(path.join(tmpDir, 'openspec/config.yaml'), 'schema: spec-driven\n');
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllEnvs();
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  it('shows the selected tools and matching Superpowers guidance', async () => {
+    const originalCwd = process.cwd();
+    const lines: string[] = [];
+    vi.stubEnv('HOME', path.join(tmpDir, 'home'));
+    vi.spyOn(console, 'log').mockImplementation((...args: unknown[]) => {
+      lines.push(args.join(' '));
+    });
+
+    try {
+      process.chdir(tmpDir);
+      await initCommand.parseAsync(['node', 'openflow', '--tools', 'cursor']);
+    } finally {
+      process.chdir(originalCwd);
+    }
+
+    const output = lines.join('\n');
+    expect(output).toContain('Selected tools: cursor');
+    expect(output).toContain('Superpowers not found for selected tools: cursor');
+    expect(output).toContain('Run `/add-plugin superpowers` in Cursor Agent chat.');
+  });
+
+  it('rejects an unsupported tool', async () => {
+    initCommand.exitOverride();
+
+    await expect(
+      initCommand.parseAsync(['node', 'openflow', '--tools', 'codex;invalid']),
+    ).rejects.toThrow('Unsupported tool: codex;invalid');
   });
 });

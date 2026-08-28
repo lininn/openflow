@@ -66,4 +66,12 @@ describe('shell utilities', () => {
     expect(failure.exitCode).toBe(7);
     expect(exec('node -e "process.exit(7)"')).toBe('');
   });
+
+  it('treats a successful inherited-stdio command as successful', () => {
+    const result = execResult('node -e ""', { stdio: 'inherit' });
+
+    expect(result.ok).toBe(true);
+    expect(result.stdout).toBe('');
+    expect(result.exitCode).toBe(0);
+  });
 });

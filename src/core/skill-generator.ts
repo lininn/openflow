@@ -4,7 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { fileExists } from '../utils/shell.js';
 import { logger } from '../utils/logger.js';
-import { SKILL_NAME, TOOL_PATHS, DEPS } from './constants.js';
+import { SKILL_NAME, TOOL_PATHS, getSuperpowersCheckHint, getSuperpowersInstallHint } from './constants.js';
 import type { DepStatus } from './dependency-check.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -83,7 +83,7 @@ function generateSkillFile(skillsDir: string, filename: string, depStatus: DepSt
 
   // Inject runtime dependency checks into build.md
   if (filename === 'build.md') {
-    content = injectRuntimeDepCheck(content, depStatus);
+    content = injectRuntimeDepCheck(content, depStatus, tool);
   }
 
   // Inject runtime dependency checks into spec.md for OpenSpec
@@ -157,7 +157,7 @@ ${projectInitGuard}
 `;
 }
 
-function injectRuntimeDepCheck(content: string, depStatus: DepStatus): string {
+function injectRuntimeDepCheck(content: string, depStatus: DepStatus, tool: string): string {
   const checkSection = `
 ### 0. 依赖检测
 
@@ -165,11 +165,11 @@ function injectRuntimeDepCheck(content: string, depStatus: DepStatus): string {
 
 | 依赖 | 检测方式 | 不可用时 |
 |------|----------|----------|
-| Superpowers writing-plans | 当前工具的本地或全局 skills 目录下是否存在 \`writing-plans/SKILL.md\`；对 Claude Code 还需检查插件目录（\`~/.claude/plugins/installed_plugins.json\` 中 \`superpowers@<marketplace>\` 的 installPath，或 \`~/.claude/plugins/cache/<marketplace>/superpowers/<version>/skills/writing-plans/SKILL.md\`） | 降级为手动拆解 plan-ready.md 中的步骤，逐条执行 |
+| Superpowers writing-plans | ${getSuperpowersCheckHint(tool)} | 降级为手动拆解 plan-ready.md 中的步骤，逐条执行 |
 | OpenSpec CLI | \`openspec\` 命令是否可执行 | 不影响 build 阶段，但 close 阶段归档需手动 mv |
 
 如果 Superpowers 不可用，提示用户：
-> "Superpowers 未安装，build 将使用手动执行模式。安装后体验更佳：${DEPS.superpowers.installHint}"
+> "Superpowers 未安装，build 将使用手动执行模式。安装后体验更佳：${getSuperpowersInstallHint([tool])}"
 
 如果 Superpowers 可用，调用其 \`writing-plans\` skill 生成详细实现计划。
 `;
