@@ -67,9 +67,11 @@ Status now renders an OpenFlow dashboard for each active OpenSpec change:
 
 ```bash
 openflow update
+openflow update --tools codex
 ```
 
-Re-generates project skills after upgrading the npm package.
+Re-generates project skills after upgrading the npm package. Without `--tools`,
+the command uses the saved tool list. An override replaces and saves that list.
 
 ## Workflow Commands
 
@@ -106,7 +108,7 @@ Works without them: yes, with manual-file fallback
 | Dependency | Install | Fallback when missing |
 |------------|---------|----------------------|
 | OpenSpec | `npm install -g @fission-ai/openspec@latest` | Manually create `openspec/changes/` directories and files |
-| Superpowers | `/plugin install superpowers@claude-plugins-official` | Manually break down plan-ready.md steps in build phase |
+| Superpowers | Follow the tool-specific message from `openflow init` | Manually break down plan-ready.md steps in build phase |
 
 ### Dual-layer dependency check
 

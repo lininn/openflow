@@ -67,9 +67,10 @@ Status 现在会为每个活跃 OpenSpec 变更渲染 OpenFlow 仪表盘：
 
 ```bash
 openflow update
+openflow update --tools codex
 ```
 
-升级 npm 包后运行，重新生成项目内的 skills 文件。
+升级 npm 包后运行，重新生成项目内的 skills 文件。不指定 `--tools` 时使用已保存的工具列表；指定后会替换并保存该列表。
 
 ## 工作流命令
 
@@ -105,7 +106,7 @@ Works without them: yes, with manual-file fallback
 | 依赖 | 安装方式 | 缺失时降级 |
 |------|----------|-----------|
 | OpenSpec | `npm install -g @fission-ai/openspec@latest` | 手动创建 `openspec/changes/` 目录和文件 |
-| Superpowers | `/plugin install superpowers@claude-plugins-official` | build 阶段手动拆解 plan-ready.md 步骤执行 |
+| Superpowers | 按 `openflow init` 给出的当前工具提示安装 | build 阶段手动拆解 plan-ready.md 步骤执行 |
 
 ### 双层依赖保障
 

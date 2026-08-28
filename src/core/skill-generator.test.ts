@@ -171,6 +171,10 @@ describe('skill template resolution', () => {
     expect(buildContent).toContain('## Project Context');
     expect(buildContent).toContain('OpenSpec `tasks.md` 是归档前置状态');
     expect(buildContent).toContain('只能反映已验证完成的任务，不能改写任务内容或规格要求');
+    expect(buildContent).toContain('Open `/plugins`, install Superpowers, then start a new session.');
+    expect(buildContent).toContain('~/.codex/plugins/cache');
+    expect(buildContent).not.toContain('~/.claude/plugins');
+    expect(buildContent).not.toContain('superpowers@claude-plugins-official');
     expect(closeContent).toContain('确认并同步实现状态');
     expect(closeContent).toContain('自动比对是否已有对应实现、测试或验证证据');
     expect(closeContent).toContain('直接将 `tasks.md` 中对应 checkbox 从 `- [ ]` 更新为 `- [x]`');
@@ -199,6 +203,7 @@ describe('skill template resolution', () => {
     const proposalContent = fs.readFileSync(path.join(tmpDir, '.opencode/skills/openflow/proposal.md'), 'utf-8');
     const brainstormingContent = fs.readFileSync(path.join(tmpDir, '.opencode/skills/openflow/brainstorming.md'), 'utf-8');
     const specContent = fs.readFileSync(path.join(tmpDir, '.opencode/skills/openflow/spec.md'), 'utf-8');
+    const buildContent = fs.readFileSync(path.join(tmpDir, '.opencode/skills/openflow/build.md'), 'utf-8');
 
     expect(skillContent).toContain('proposal | init | brainstorming | grill | spec | amend | build | close');
     expect(skillContent).toContain('OpenSpec 初始化入口门禁');
@@ -228,6 +233,9 @@ describe('skill template resolution', () => {
     expect(specContent).toContain('openspec/config.yaml');
     expect(specContent).toContain('## File Responsibility Map');
     expect(specContent).toContain('## Superpowers Handoff');
+    expect(buildContent).toContain('~/.cache/opencode/packages');
+    expect(buildContent).not.toContain('~/.claude/plugins');
+    expect(buildContent).toContain('https://github.com/obra/superpowers/blob/main/.opencode/INSTALL.md');
     expect(skillContent).toContain('workflow-status.md');
     expect(skillContent).toContain('状态检测与 Dashboard');
     expect(proposalContent).toContain('workflow-status.md');

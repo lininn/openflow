@@ -1,6 +1,6 @@
 import { execSync } from 'child_process';
 import { cmdExists, fileExists, dirExists, exec } from '../utils/shell.js';
-import { DEPS, TOOL_PATHS } from './constants.js';
+import { DEPS, TOOL_PATHS, getSuperpowersInstallHint } from './constants.js';
 import { logger } from '../utils/logger.js';
 import path from 'path';
 import os from 'os';
@@ -8,7 +8,13 @@ import fs from 'fs';
 
 export interface DepStatus {
   openspec: { installed: boolean; version?: string; autoInstalled?: boolean };
-  superpowers: { installed: boolean; hint?: string; path?: string; checkedPaths: string[] };
+  superpowers: {
+    installed: boolean;
+    hint?: string;
+    path?: string;
+    checkedPaths: string[];
+    missingTools?: string[];
+  };
 }
 
 export interface CheckDependencyOptions {
@@ -21,7 +27,8 @@ export interface CheckDependencyOptions {
 export function checkDependencies(options: CheckDependencyOptions = {}): DepStatus {
   const home = options.home ?? os.homedir();
   const cwd = options.cwd ?? process.cwd();
-  const tools = options.tools?.length ? options.tools : Object.keys(TOOL_PATHS);
+  const hasSelectedTools = Boolean(options.tools?.length);
+  const tools = hasSelectedTools ? options.tools! : Object.keys(TOOL_PATHS);
 
   // Check OpenSpec
   const openspecInstalled = cmdExists(DEPS.openspec.cliCmd);
@@ -31,9 +38,20 @@ export function checkDependencies(options: CheckDependencyOptions = {}): DepStat
   }
 
   // Check Superpowers in the selected tools' local and global skill dirs.
-  const superpowersSkillPaths = getSuperpowersSkillPaths(cwd, home, tools);
-  const superpowersSkillPath = superpowersSkillPaths.find((candidate) => fs.existsSync(candidate));
-  const superpowersInstalled = Boolean(superpowersSkillPath);
+  const toolChecks = tools.map((tool) => {
+    const checkedPaths = getSuperpowersSkillPaths(cwd, home, [tool]);
+    return {
+      tool,
+      checkedPaths,
+      path: checkedPaths.find((candidate) => fs.existsSync(candidate)),
+    };
+  });
+  const missingTools = toolChecks.filter((check) => !check.path).map((check) => check.tool);
+  const superpowersSkillPath = toolChecks.find((check) => check.path)?.path;
+  const superpowersInstalled = hasSelectedTools
+    ? missingTools.length === 0
+    : Boolean(superpowersSkillPath);
+  const superpowersSkillPaths = toolChecks.flatMap((check) => check.checkedPaths);
 
   return {
     openspec: {
@@ -42,9 +60,10 @@ export function checkDependencies(options: CheckDependencyOptions = {}): DepStat
     },
     superpowers: {
       installed: superpowersInstalled,
-      hint: superpowersInstalled ? undefined : DEPS.superpowers.installHint,
+      hint: superpowersInstalled ? undefined : getSuperpowersInstallHint(missingTools),
       path: superpowersSkillPath,
       checkedPaths: superpowersSkillPaths,
+      missingTools,
     },
   };
 }
@@ -104,6 +123,23 @@ function getSuperpowersSkillPaths(cwd: string, home: string, tools: string[]): s
     )) {
       candidates.add(skillPath);
     }
+  }
+
+  // Cursor marketplace plugins use a versioned cache. Local development
+  // plugins use ~/.cursor/plugins/local/<plugin>.
+  if (tools.includes('cursor')) {
+    const cacheDir = path.join(home, DEPS.superpowers.cursorPluginCacheDir);
+    for (const skillPath of scanPluginCacheForSuperpowers(
+      cacheDir,
+      DEPS.superpowers.pluginSkillPath,
+    )) {
+      candidates.add(skillPath);
+    }
+    candidates.add(path.join(
+      home,
+      DEPS.superpowers.cursorPluginLocalDir,
+      DEPS.superpowers.pluginSkillPath,
+    ));
   }
 
   // Superpowers is usually installed as a Claude Code *plugin*, not into

@@ -1,27 +1,31 @@
 import fs from 'node:fs';
-import { Command } from 'commander';
+import { Command, Option } from 'commander';
 import inquirer from 'inquirer';
 import path from 'path';
 import { checkDependencies, tryAutoInstall, checkOpenSpecInitialized, writeState } from '../core/dependency-check.js';
 import { generateSkills } from '../core/skill-generator.js';
-import { TOOL_PATHS, DEPS } from '../core/constants.js';
+import { DEPS } from '../core/constants.js';
 import { logger } from '../utils/logger.js';
-import { exec, dirExists, fileExists } from '../utils/shell.js';
+import { execResult, dirExists, fileExists } from '../utils/shell.js';
 import { parse as parseYaml } from 'yaml';
-
-const SUPPORTED_TOOLS = Object.keys(TOOL_PATHS);
+import { parseToolOption } from './tool-selection.js';
 
 export const initCommand = new Command('init')
   .description('Initialize openflow skills in the current project')
-  .option('-t, --tools <tools>', 'Target tools, comma-separated', 'claude')
+  .addOption(
+    new Option('-t, --tools <tools>', 'Target tools, comma-separated')
+      .argParser(parseToolOption)
+      .default(['claude'], 'claude'),
+  )
   .option('-g, --global', 'Install skills globally under home tool directories')
   .action(async (options) => {
     const cwd = process.cwd();
-    const tools = options.tools.split(',').map((t: string) => t.trim());
+    const tools = options.tools as string[];
     const installGlobally = Boolean(options.global);
 
     logger.blank();
     logger.info(`openflow init — ${installGlobally ? 'global skill setup' : 'workflow orchestrator setup'}`);
+    logger.info(`Selected tools: ${tools.join(', ')}`);
     logger.blank();
 
     // Step 1: Check OpenSpec
@@ -54,8 +58,9 @@ export const initCommand = new Command('init')
     logger.step('Checking Superpowers ...');
 
     if (!depStatus.superpowers.installed) {
-      logger.warn('Superpowers not installed');
-      logger.info(DEPS.superpowers.installHint);
+      const missingTools = depStatus.superpowers.missingTools ?? tools;
+      logger.warn(`Superpowers not found for selected tools: ${missingTools.join(', ')}`);
+      if (depStatus.superpowers.hint) logger.info(depStatus.superpowers.hint);
       logger.info('Re-run openflow init after installing, or build phase will use manual fallback');
     } else {
       logger.success(`Superpowers installed${depStatus.superpowers.path ? ` (${depStatus.superpowers.path})` : ''}`);
@@ -81,10 +86,14 @@ export const initCommand = new Command('init')
           ]);
 
           if (initOpenSpec) {
-            const toolsFlag = tools.map((t: string) => t).join(',');
-            exec(`openspec init --tools ${toolsFlag}`, { stdio: 'inherit' });
-            logger.success('OpenSpec project initialized');
-            shouldEnsureContext = true;
+            // parseToolOption restricts every value to a supported tool name.
+            const initResult = execResult(`openspec init --tools ${tools.join(',')}`, { stdio: 'inherit' });
+            if (initResult.ok) {
+              logger.success('OpenSpec project initialized');
+              shouldEnsureContext = true;
+            } else {
+              logger.error('OpenSpec project initialization failed');
+            }
           }
         } else {
           logger.info('OpenSpec CLI not available — creating OpenFlow project context scaffold without CLI metadata');
@@ -119,8 +128,9 @@ export const initCommand = new Command('init')
     logger.blank();
 
     if (!depStatus.superpowers.installed) {
-      logger.warn('Note: Superpowers not installed — /openflow build will use manual execution mode');
-      logger.info(`  Install with: ${DEPS.superpowers.installHint}`);
+      const missingTools = depStatus.superpowers.missingTools ?? tools;
+      logger.warn(`Note: Superpowers was not found for ${missingTools.join(', ')} — /openflow build will use manual execution mode`);
+      if (depStatus.superpowers.hint) logger.info(`  ${depStatus.superpowers.hint}`);
       logger.blank();
     }
 

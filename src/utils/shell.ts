@@ -16,10 +16,11 @@ export function exec(cmd: string, options?: { stdio?: 'inherit' | 'pipe' }): str
 
 export function execResult(cmd: string, options?: { stdio?: 'inherit' | 'pipe' }): ExecResult {
   try {
-    const stdout = execSync(cmd, {
+    const output = execSync(cmd, {
       encoding: 'utf-8',
       stdio: options?.stdio ?? 'pipe',
-    }).trim();
+    });
+    const stdout = bufferToString(output).trim();
     return { ok: true, stdout, stderr: '', exitCode: 0 };
   } catch (error) {
     const execError = error as {
@@ -36,7 +37,7 @@ export function execResult(cmd: string, options?: { stdio?: 'inherit' | 'pipe' }
   }
 }
 
-function bufferToString(value: Buffer | string | undefined): string {
+function bufferToString(value: Buffer | string | null | undefined): string {
   if (!value) return '';
   return Buffer.isBuffer(value) ? value.toString('utf-8') : value;
 }
