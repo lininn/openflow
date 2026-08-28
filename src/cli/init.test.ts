@@ -108,6 +108,14 @@ describe('init tool selection', () => {
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'openflow-init-tools-'));
     fs.mkdirSync(path.join(tmpDir, 'openspec'), { recursive: true });
     fs.writeFileSync(path.join(tmpDir, 'openspec/config.yaml'), 'schema: spec-driven\n');
+    const binDir = path.join(tmpDir, 'bin');
+    fs.mkdirSync(binDir);
+    fs.writeFileSync(
+      path.join(binDir, 'openspec'),
+      '#!/bin/sh\nprintf "1.11.0\\n"\n',
+      { mode: 0o755 },
+    );
+    vi.stubEnv('PATH', `${binDir}${path.delimiter}${process.env.PATH ?? ''}`);
   });
 
   afterEach(() => {
