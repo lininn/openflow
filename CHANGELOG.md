@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 0.5.2
+
+- Made tool selection explicit in `init` and `update` — both commands now show the selected tools, `update --tools <tools>` replaces and saves the list, and saved lists that are empty/unknown/invalid are rejected with guidance (#25).
+- Superpowers install hints and dependency checks are now tool-specific (Claude Code, Codex, Cursor, OpenCode); Cursor marketplace cache and local plugin dirs are scanned.
+- `init` reports OpenSpec project initialization failure instead of assuming success.
+- Added regression coverage for tool selection, update overrides, and Cursor plugin cache detection.
+
 ## 0.5.1
 
 - Fixed Superpowers plugin detection for Codex — added scan of the Codex plugin marketplace cache (`~/.codex/plugins/cache/`) for Superpowers `writing-plans` skill, resolving false "not installed" warnings under Codex (#24).
